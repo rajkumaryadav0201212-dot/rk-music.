@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rk Music Point</title>
+  
+  <meta name="theme-color" content="#121212">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3844/3844724.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      padding-bottom: 120px;
+    }
+    header {
+      padding: 16px 20px;
+      font-size: 20px;
+      font-weight: 700;
+      background: #181818;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid #282828;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .install-btn {
+      background: #1db954;
+      color: #000;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      display: none;
+    }
+    .search-box {
+      padding: 10px 16px;
+      background: #181818;
+    }
+    .search-input {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #242424;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+    }
+    .search-input:focus {
+      border-color: #1db954;
+    }
+
+    /* Ad Banner Button */
+    .ad-banner-btn {
+      display: block;
+      margin: 10px 16px;
+      padding: 12px;
+      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      color: #fff;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 13px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(255, 75, 43, 0.3);
+      cursor: pointer;
+    }
+
+    .song-list {
+      list-style: none;
+      padding: 10px 16px;
+    }
+    .song-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #1e1e1e;
+      cursor: pointer;
+    }
+    .song-item:active {
+      opacity: 0.7;
+    }
+    .song-item img {
+      width: 52px;
+      height: 52px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-right: 14px;
+      background-color: #282828;
+    }
+    .song-info {
+      flex: 1;
+      overflow: hidden;
+    }
+    .song-title {
+      font-size: 15px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .song-title.active {
+      color: #1db954;
+    }
+    .song-artist {
+      font-size: 13px;
+      color: #b3b3b3;
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .play-btn-icon {
+      font-size: 20px;
+      color: #b3b3b3;
+      padding: 10px;
+    }
+    .play-btn-icon.active {
+      color: #1db954;
+    }
+
+    /* Bottom Player Bar */
+    .player-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #1e1e1e;
+      border-top: 1px solid #282828;
+      padding: 10px 16px 14px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.5);
+      z-index: 20;
+    }
+    .player-bar.visible {
+      display: flex;
+    }
+    .player-top {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .player-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      object-fit: cover;
+      margin-right: 12px;
+    }
+    .player-details {
+      flex: 1;
+      overflow: hidden;
+    }
+    .player-title {
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .player-artist {
+      font-size: 12px;
+      color: #b3b3b3;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .controls button {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .controls #toggleBtn {
+      font-size: 28px;
+    }
+
+    .seek-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .time-text {
+      font-size: 11px;
+      color: #888;
+      width: 32px;
+    }
+    .seek-bar {
+      flex: 1;
+      height: 4px;
+      accent-color: #1db954;
+      cursor: pointer;
+    }
+    .loader {
+      text-align: center;
+      padding: 40px;
+      color: #888;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span>Rk Music Point</span>
+    <button id="installAppBtn" class="install-btn">Install App</button>
+  </header>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" class="search-input" placeholder="Gaana ya singer khojein..." onkeyup="filterSongs()">
+  </div>
+
+  <!-- Monetag Direct Ad Link Button -->
+  <a href="https://omg10.com/4/11936214" target="_blank" class="ad-banner-btn">
+    🔥 Special Offers & Rewards (Tap Here)
+  </a>
+
+  <div id="loader" class="loader">Gaane load ho rahe hain...</div>
+  <ul class="song-list" id="songList"></ul>
+
+  <!-- Bottom Player Bar -->
+  <div class="player-bar" id="playerBar">
+    <div class="player-top">
+      <img id="playerCover" class="player-thumb" src="" alt="Cover">
+      <div class="player-details">
+        <div id="playerTitle" class="player-title"></div>
+        <div id="playerArtist" class="player-artist"></div>
+      </div>
+      <div class="controls">
+        <button onclick="prevSong()"><i class="fas fa-step-backward"></i></button>
+        <button id="toggleBtn" onclick="togglePlay()"><i class="fas fa-play"></i></button>
+        <button onclick="nextSong()"><i class="fas fa-step-forward"></i></button>
+      </div>
+    </div>
+    
+    <div class="seek-container">
+      <span id="currentTime" class="time-text">0:00</span>
+      <input type="range" id="seekBar" class="seek-bar" value="0" min="0" max="100" oninput="seekAudio(this.value)">
+      <span id="durationTime" class="time-text">0:00</span>
+    </div>
+  </div>
+
+  <audio id="audioElement"></audio>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script>
+    const MONETAG_AD_URL = "https://omg10.com/4/11936214";
+    let songSwitchCounter = 0;
+
+    const firebaseConfig = {
+      databaseURL: "https://rk-music-point-default-rtdb.firebaseio.com",
+      projectId: "rk-music-point"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const songListEl = document.getElementById('songList');
+    const loaderEl = document.getElementById('loader');
+    const audio = document.getElementById('audioElement');
+    const playerBar = document.getElementById('playerBar');
+    const playerCover = document.getElementById('playerCover');
+    const playerTitle = document.getElementById('playerTitle');
+    const playerArtist = document.getElementById('playerArtist');
+    const toggleBtn = document.getElementById('toggleBtn');
+    const seekBar = document.getElementById('seekBar');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationTimeEl = document.getElementById('durationTime');
+    const searchInput = document.getElementById('searchInput');
+
+    let allSongs = [];
+    let displayedSongs = [];
+    let currentSongIndex = -1;
+
+    db.ref("songs").once("value", (snapshot) => {
+      loaderEl.style.display = 'none';
+      const data = snapshot.val();
+      
+      if (!data) {
+        loaderEl.innerText = "Koi gaana nahi mila.";
+        loaderEl.style.display = 'block';
+        return;
+      }
+
+      allSongs = Array.isArray(data) ? data.filter(Boolean) : Object.values(data);
+      displayedSongs = [...allSongs];
+      renderSongList();
+    }).catch((err) => {
+      loaderEl.innerText = "Error: " + err.message;
+    });
+
+    function renderSongList() {
+      songListEl.innerHTML = '';
+      if (displayedSongs.length === 0) {
+        songListEl.innerHTML = '<li style="text-align:center; color:#777; margin-top:20px;">Koi gaana match nahi hua</li>';
+        return;
+      }
+
+      displayedSongs.forEach((song, index) => {
+        const isCurrent = currentSongIndex === index;
+        const isPlaying = isCurrent && !audio.paused;
+
+        const li = document.createElement('li');
+        li.className = 'song-item';
+        li.onclick = () => selectSong(index);
+
+        li.innerHTML = `
+          <img src="${song.coverUrl || 'https://via.placeholder.com/150'}" alt="cover">
+          <div class="song-info">
+            <div class="song-title ${isCurrent ? 'active' : ''}">${song.title || 'Untitled'}</div>
+            <div class="song-artist">${song.artist || 'Unknown'}</div>
+          </div>
+          <div class="play-btn-icon ${isCurrent ? 'active' : ''}">
+            <i class="fas ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>
+          </div>
+        `;
+        songListEl.appendChild(li);
+      });
+    }
+
+    function triggerAdCheck() {
+      songSwitchCounter++;
+      // Har 2 baar gana badalne par ad trigger karein
+      if (songSwitchCounter % 2 === 0) {
+        window.open(MONETAG_AD_URL, '_blank');
+      }
+    }
+
+    function selectSong(index) {
+      if (currentSongIndex === index) {
+        togglePlay();
+      } else {
+        triggerAdCheck();
+        currentSongIndex = index;
+        const song = displayedSongs[index];
+
+        audio.src = song.url;
+        audio.play().catch(e => console.log("Play error: " + e));
+
+        playerCover.src = song.coverUrl || 'https://via.placeholder.com/150';
+        playerTitle.innerText = song.title || 'Untitled';
+        playerArtist.innerText = song.artist || 'Unknown';
+        playerBar.classList.add('visible');
+
+        updateButtonState(true);
+        renderSongList();
+      }
+    }
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play();
+        updateButtonState(true);
+      } else {
+        audio.pause();
+        updateButtonState(false);
+      }
+      renderSongList();
+    }
+
+    function prevSong() {
+      if (currentSongIndex > 0) {
+        selectSong(currentSongIndex - 1);
+      }
+    }
+
+    function nextSong() {
+      if (currentSongIndex + 1 < displayedSongs.length) {
+        selectSong(currentSongIndex + 1);
+      }
+    }
+
+    function updateButtonState(isPlaying) {
+      toggleBtn.innerHTML = `<i class="fas ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>`;
+    }
+
+    audio.ontimeupdate = () => {
+      if (!isNaN(audio.duration)) {
+        const progress = (audio.currentTime / audio.duration) * 100;
+        seekBar.value = progress;
+        currentTimeEl.innerText = formatTime(audio.currentTime);
+        durationTimeEl.innerText = formatTime(audio.duration);
+      }
+    };
+
+    function seekAudio(value) {
+      if (!isNaN(audio.duration)) {
+        audio.currentTime = (value / 100) * audio.duration;
+      }
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function filterSongs() {
+      const q = searchInput.value.toLowerCase();
+      displayedSongs = allSongs.filter(s => 
+        (s.title && s.title.toLowerCase().includes(q)) || 
+        (s.artist && s.artist.toLowerCase().includes(q))
+      );
+      renderSongList();
+    }
+
+    audio.onended = () => {
+      nextSong();
+    };
+
+    let deferredPrompt;
+    const installBtn = document.getElementById('installAppBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'block';
+    });
+
+    installBtn.addEventListener('click', () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(() => {
+          installBtn.style.display = 'none';
+          deferredPrompt = null;
+        });
+      }
+    });
+  </script>
+</body>
+</html>
