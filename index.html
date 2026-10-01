@@ -20,7 +20,7 @@
     body {
       background-color: #121212;
       color: #ffffff;
-      padding-bottom: 140px;
+      padding-bottom: 160px;
     }
     header {
       padding: 14px 18px;
@@ -81,7 +81,6 @@
       white-space: nowrap;
     }
 
-    /* Ad Banner Button */
     .ad-banner-btn {
       display: block;
       margin: 10px 16px;
@@ -142,6 +141,47 @@
     }
     .play-btn-icon.active {
       color: #1db954;
+    }
+
+    /* YouTube Mini Player Screen */
+    .yt-screen-container {
+      display: none;
+      margin: 10px 16px;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #333;
+      position: relative;
+    }
+    .yt-screen-container.active {
+      display: block;
+    }
+    .yt-iframe-wrap {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 ratio */
+      height: 0;
+      overflow: hidden;
+    }
+    .yt-iframe-wrap iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .yt-close-btn {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      cursor: pointer;
+      z-index: 5;
     }
 
     /* Bottom Player Bar */
@@ -223,7 +263,7 @@
       cursor: pointer;
     }
 
-    /* Simple User Modal */
+    /* Modal */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -284,14 +324,6 @@
       font-size: 18px;
       cursor: pointer;
     }
-    #ytContainer {
-      position: absolute;
-      top: -9999px;
-      left: -9999px;
-      width: 1px;
-      height: 1px;
-      opacity: 0;
-    }
   </style>
 </head>
 <body>
@@ -304,9 +336,15 @@
   <div class="search-box">
     <input type="text" id="searchInput" class="search-input" placeholder="Gaana ya singer khojein..." onkeyup="filterSongs()">
     <div class="yt-box">
-      <input type="text" id="ytInput" class="search-input" placeholder="YouTube URL ya Video ID daalein...">
+      <input type="text" id="ytInput" class="search-input" placeholder="YouTube Video Link daalein...">
       <button class="yt-btn" onclick="playYouTube()"><i class="fab fa-youtube"></i> Play YT</button>
     </div>
+  </div>
+
+  <!-- YouTube Video Player Container -->
+  <div class="yt-screen-container" id="ytContainer">
+    <button class="yt-close-btn" onclick="closeYT()">✕</button>
+    <div class="yt-iframe-wrap" id="ytWrapper"></div>
   </div>
 
   <!-- Monetag Direct Ad Link -->
@@ -340,29 +378,21 @@
   </div>
 
   <audio id="audioElement"></audio>
-  <div id="ytContainer"><div id="ytPlayerDiv"></div></div>
 
-  <!-- User Login / Profile Modal -->
+  <!-- Login Modal -->
   <div class="modal-overlay" id="authModal">
     <div class="modal-box">
       <button class="modal-close" onclick="closeAuthModal()">✕</button>
-      <div class="modal-title" id="modalTitle">User Account</div>
+      <div class="modal-title">User Account</div>
       <input type="text" id="userNameInput" class="modal-input" placeholder="Apna Naam Daalein">
       <input type="tel" id="userPhoneInput" class="modal-input" placeholder="Mobile Number">
       <button class="modal-btn" onclick="saveUserProfile()">Save & Login</button>
     </div>
   </div>
 
-  <!-- Firebase Database Script -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="https://www.youtube.com/iframe_api"></script>
-
   <script>
     const MONETAG_AD_URL = "https://omg10.com/4/11936214";
     let songSwitchCounter = 0;
-
-    // Direct Database REST Connection (Kahi kabhi nahi rukega)
     const DB_URL = "https://rk-music-point-default-rtdb.firebaseio.com/songs.json";
 
     const songListEl = document.getElementById('songList');
@@ -378,57 +408,32 @@
     const durationTimeEl = document.getElementById('durationTime');
     const searchInput = document.getElementById('searchInput');
     const authBtn = document.getElementById('authBtn');
+    const ytContainer = document.getElementById('ytContainer');
+    const ytWrapper = document.getElementById('ytWrapper');
 
     let allSongs = [];
     let displayedSongs = [];
     let currentSongIndex = -1;
-    let isYT = false;
-    let ytPlayer = null;
 
-    // 1. YouTube Player Initialize
-    window.onYouTubeIframeAPIReady = function() {
-      ytPlayer = new YT.Player('ytPlayerDiv', {
-        height: '10',
-        width: '10',
-        playerVars: { 'autoplay': 1, 'controls': 0 },
-        events: {
-          'onStateChange': function(e) {
-            if (e.data === YT.PlayerState.PLAYING) updateButtonState(true);
-            if (e.data === YT.PlayerState.PAUSED) updateButtonState(false);
-            if (e.data === YT.PlayerState.ENDED) nextSong();
-          }
-        }
-      });
-    };
-
-    // 2. Load Songs Directly (100% Reliable)
+    // Load Songs
     fetch(DB_URL)
       .then(res => res.json())
       .then(data => {
         loaderEl.style.display = 'none';
-        if (!data) {
-          loaderEl.innerText = "Koi gaana nahi mila.";
-          loaderEl.style.display = 'block';
-          return;
-        }
+        if (!data) return;
         allSongs = Array.isArray(data) ? data.filter(Boolean) : Object.values(data);
         displayedSongs = [...allSongs];
         renderSongList();
       })
       .catch(err => {
-        loaderEl.innerText = "Error loading songs: " + err.message;
+        loaderEl.innerText = "Error: " + err.message;
       });
 
     function renderSongList() {
       songListEl.innerHTML = '';
-      if (displayedSongs.length === 0) {
-        songListEl.innerHTML = '<li style="text-align:center; color:#777; margin-top:20px;">Koi gaana nahi mila</li>';
-        return;
-      }
-
       displayedSongs.forEach((song, index) => {
         const isCurrent = currentSongIndex === index;
-        const isPlaying = isCurrent && !audio.paused && !isYT;
+        const isPlaying = isCurrent && !audio.paused;
 
         const li = document.createElement('li');
         li.className = 'song-item';
@@ -457,8 +462,7 @@
 
     function selectSong(index) {
       triggerAdCheck();
-      isYT = false;
-      if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
+      closeYT();
 
       currentSongIndex = index;
       const song = displayedSongs[index];
@@ -475,53 +479,53 @@
       renderSongList();
     }
 
-    // YouTube Play Logic
+    // YouTube Play Function (100% Reliable Embed)
     function playYouTube() {
       const val = document.getElementById('ytInput').value.trim();
-      if (!val) return alert("Pehle YouTube link ya ID daalein!");
+      if (!val) return alert("Pehle YouTube link daalein!");
 
-      let videoId = val;
-      if (val.includes("v=")) {
-        videoId = val.split("v=")[1].split("&")[0];
-      } else if (val.includes("youtu.be/")) {
+      let videoId = "";
+      if (val.includes("youtu.be/")) {
         videoId = val.split("youtu.be/")[1].split("?")[0];
+      } else if (val.includes("watch?v=")) {
+        videoId = val.split("watch?v=")[1].split("&")[0];
+      } else if (val.includes("embed/")) {
+        videoId = val.split("embed/")[1].split("?")[0];
+      } else {
+        videoId = val;
       }
 
+      if (!videoId) return alert("Sahi YouTube link nahi hai!");
+
+      // Stop Audio Player
       audio.pause();
-      isYT = true;
-      currentSongIndex = -1;
+      playerBar.classList.remove('visible');
 
-      if (ytPlayer && ytPlayer.loadVideoById) {
-        ytPlayer.loadVideoById(videoId);
-        ytPlayer.playVideo();
-      }
+      // Load YouTube Embed
+      ytWrapper.innerHTML = `
+        <iframe 
+          src="https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
+      `;
+      ytContainer.classList.add('active');
 
-      playerCover.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-      playerTitle.innerText = "YouTube Audio";
-      playerArtist.innerText = "Online Stream";
-      playerBar.classList.add('visible');
-      updateButtonState(true);
-      renderSongList();
       triggerAdCheck();
     }
 
+    function closeYT() {
+      ytWrapper.innerHTML = '';
+      ytContainer.classList.remove('active');
+    }
+
     function togglePlay() {
-      if (isYT) {
-        if (ytPlayer && ytPlayer.getPlayerState() === 1) {
-          ytPlayer.pauseVideo();
-          updateButtonState(false);
-        } else if (ytPlayer) {
-          ytPlayer.playVideo();
-          updateButtonState(true);
-        }
+      if (audio.paused) {
+        audio.play();
+        updateButtonState(true);
       } else {
-        if (audio.paused) {
-          audio.play();
-          updateButtonState(true);
-        } else {
-          audio.pause();
-          updateButtonState(false);
-        }
+        audio.pause();
+        updateButtonState(false);
       }
       renderSongList();
     }
@@ -539,7 +543,7 @@
     }
 
     audio.ontimeupdate = () => {
-      if (!isYT && !isNaN(audio.duration)) {
+      if (!isNaN(audio.duration)) {
         seekBar.value = (audio.currentTime / audio.duration) * 100;
         currentTimeEl.innerText = formatTime(audio.currentTime);
         durationTimeEl.innerText = formatTime(audio.duration);
@@ -547,7 +551,7 @@
     };
 
     function seekAudio(value) {
-      if (!isYT && !isNaN(audio.duration)) {
+      if (!isNaN(audio.duration)) {
         audio.currentTime = (value / 100) * audio.duration;
       }
     }
@@ -569,11 +573,11 @@
 
     audio.onended = () => { nextSong(); };
 
-    // --- User Auth Modal System ---
+    // --- User Login Modal ---
     function openAuthModal() {
       const savedUser = localStorage.getItem("rk_user");
       if (savedUser) {
-        if (confirm("Aap " + savedUser + " ke roop me logged in hain. Kya Logout karna hai?")) {
+        if (confirm("Aap " + savedUser + " ke roop me logged in hain. Logout karein?")) {
           localStorage.removeItem("rk_user");
           checkUserStatus();
         }
@@ -589,11 +593,9 @@
     function saveUserProfile() {
       const name = document.getElementById('userNameInput').value.trim();
       const phone = document.getElementById('userPhoneInput').value.trim();
-      if (!name || !phone) return alert("Kripya Naam aur Mobile number dono bharein!");
+      if (!name) return alert("Kripya Naam bharein!");
 
       localStorage.setItem("rk_user", name);
-      localStorage.setItem("rk_phone", phone);
-      alert("Swagat hai, " + name + "! Aap login ho gaye hain.");
       closeAuthModal();
       checkUserStatus();
     }
