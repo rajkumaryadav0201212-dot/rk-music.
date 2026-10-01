@@ -21,11 +21,11 @@
     body {
       background-color: #121212;
       color: #ffffff;
-      padding-bottom: 120px;
+      padding-bottom: 130px;
     }
     header {
-      padding: 16px 20px;
-      font-size: 20px;
+      padding: 14px 18px;
+      font-size: 18px;
       font-weight: 700;
       background: #181818;
       position: sticky;
@@ -36,20 +36,27 @@
       justify-content: space-between;
       align-items: center;
     }
-    .install-btn {
-      background: #1db954;
-      color: #000;
-      border: none;
+    .header-btns {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .user-btn {
+      background: #242424;
+      color: #1db954;
+      border: 1px solid #333;
       padding: 6px 12px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: bold;
       cursor: pointer;
-      display: none;
     }
     .search-box {
       padding: 10px 16px;
       background: #181818;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
     .search-input {
       width: 100%;
@@ -64,18 +71,33 @@
     .search-input:focus {
       border-color: #1db954;
     }
+    .yt-box {
+      display: flex;
+      gap: 6px;
+    }
+    .yt-btn {
+      background: #ff0000;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      white-space: nowrap;
+    }
 
     /* Ad Banner Button */
     .ad-banner-btn {
       display: block;
       margin: 10px 16px;
-      padding: 12px;
+      padding: 10px;
       background: linear-gradient(45deg, #ff416c, #ff4b2b);
       color: #fff;
       text-align: center;
       text-decoration: none;
       font-weight: bold;
-      font-size: 13px;
+      font-size: 12px;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(255, 75, 43, 0.3);
       cursor: pointer;
@@ -92,15 +114,12 @@
       border-bottom: 1px solid #1e1e1e;
       cursor: pointer;
     }
-    .song-item:active {
-      opacity: 0.7;
-    }
     .song-item img {
-      width: 52px;
-      height: 52px;
+      width: 50px;
+      height: 50px;
       border-radius: 8px;
       object-fit: cover;
-      margin-right: 14px;
+      margin-right: 12px;
       background-color: #282828;
     }
     .song-info {
@@ -108,7 +127,7 @@
       overflow: hidden;
     }
     .song-title {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
@@ -118,15 +137,12 @@
       color: #1db954;
     }
     .song-artist {
-      font-size: 13px;
+      font-size: 12px;
       color: #b3b3b3;
       margin-top: 3px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
     .play-btn-icon {
-      font-size: 20px;
+      font-size: 18px;
       color: #b3b3b3;
       padding: 10px;
     }
@@ -157,8 +173,8 @@
       width: 100%;
     }
     .player-thumb {
-      width: 48px;
-      height: 48px;
+      width: 46px;
+      height: 46px;
       border-radius: 6px;
       object-fit: cover;
       margin-right: 12px;
@@ -168,14 +184,14 @@
       overflow: hidden;
     }
     .player-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .player-artist {
-      font-size: 12px;
+      font-size: 11px;
       color: #b3b3b3;
     }
     .controls {
@@ -187,11 +203,11 @@
       background: none;
       border: none;
       color: #fff;
-      font-size: 20px;
+      font-size: 18px;
       cursor: pointer;
     }
     .controls #toggleBtn {
-      font-size: 28px;
+      font-size: 26px;
     }
 
     .seek-container {
@@ -202,7 +218,7 @@
       margin-top: 6px;
     }
     .time-text {
-      font-size: 11px;
+      font-size: 10px;
       color: #888;
       width: 32px;
     }
@@ -212,11 +228,85 @@
       accent-color: #1db954;
       cursor: pointer;
     }
-    .loader {
+
+    /* Auth Modal Popup */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-box {
+      background: #1e1e1e;
+      border-radius: 12px;
+      padding: 24px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    .modal-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 16px;
       text-align: center;
-      padding: 40px;
-      color: #888;
+    }
+    .modal-input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      background: #2a2a2a;
+      border: 1px solid #444;
+      color: #fff;
+      margin-bottom: 12px;
+      font-size: 13px;
+      outline: none;
+    }
+    .modal-btn {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      background: #1db954;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
       font-size: 14px;
+      margin-top: 4px;
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      background: none;
+      border: none;
+      color: #aaa;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .switch-auth {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 12px;
+      color: #aaa;
+      cursor: pointer;
+    }
+    .switch-auth span {
+      color: #1db954;
+      text-decoration: underline;
+    }
+    #recaptcha-container {
+      margin: 10px 0;
+    }
+    #ytHiddenPlayer {
+      display: none;
     }
   </style>
 </head>
@@ -224,11 +314,17 @@
 
   <header>
     <span>Rk Music Point</span>
-    <button id="installAppBtn" class="install-btn">Install App</button>
+    <div class="header-btns">
+      <button id="authBtn" class="user-btn" onclick="openAuthModal()"><i class="fas fa-user"></i> Login</button>
+    </div>
   </header>
 
   <div class="search-box">
     <input type="text" id="searchInput" class="search-input" placeholder="Gaana ya singer khojein..." onkeyup="filterSongs()">
+    <div class="yt-box">
+      <input type="text" id="ytInput" class="search-input" placeholder="YouTube Song Link ya Video ID daalein...">
+      <button class="yt-btn" onclick="playYouTubeFromInput()"><i class="fab fa-youtube"></i> Play YT</button>
+    </div>
   </div>
 
   <!-- Monetag Direct Ad Link Button -->
@@ -236,7 +332,7 @@
     🔥 Special Offers & Rewards (Tap Here)
   </a>
 
-  <div id="loader" class="loader">Gaane load ho rahe hain...</div>
+  <div id="loader" style="text-align:center; padding:30px; color:#888;">Gaane load ho rahe hain...</div>
   <ul class="song-list" id="songList"></ul>
 
   <!-- Bottom Player Bar -->
@@ -261,16 +357,54 @@
     </div>
   </div>
 
+  <!-- Audio Element & Hidden YouTube Iframe -->
   <audio id="audioElement"></audio>
+  <div id="ytHiddenPlayer"></div>
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeAuthModal()">✕</button>
+      <div class="modal-title" id="modalTitle">Login / Register</div>
+
+      <!-- Tab: Phone OTP -->
+      <div id="phoneAuthSection">
+        <input type="tel" id="userPhone" class="modal-input" placeholder="Mobile Number (+919876543210)">
+        <div id="recaptcha-container"></div>
+        <button class="modal-btn" id="sendOtpBtn" onclick="sendOtp()">Send OTP</button>
+
+        <div id="otpInputSection" style="display:none; margin-top:10px;">
+          <input type="number" id="otpCode" class="modal-input" placeholder="6-digit OTP Daalein">
+          <button class="modal-btn" onclick="verifyOtp()">Verify & Login</button>
+        </div>
+      </div>
+
+      <!-- Tab: Password Auth -->
+      <div id="passwordAuthSection" style="display:none; margin-top:10px;">
+        <input type="email" id="userEmail" class="modal-input" placeholder="Email ID">
+        <input type="password" id="userPassword" class="modal-input" placeholder="Password (Min 6 digits)">
+        <button class="modal-btn" id="passSubmitBtn" onclick="handleEmailAuth()">Login / Register</button>
+      </div>
+
+      <div class="switch-auth" id="toggleAuthMethod" onclick="toggleAuthType()">
+        Ya <span id="toggleText">Password se Login karein</span>
+      </div>
+    </div>
+  </div>
 
   <!-- Firebase Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
 
   <script>
     const MONETAG_AD_URL = "https://omg10.com/4/11936214";
     let songSwitchCounter = 0;
 
+    // Firebase Config
     const firebaseConfig = {
       databaseURL: "https://rk-music-point-default-rtdb.firebaseio.com",
       projectId: "rk-music-point"
@@ -278,7 +412,9 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
+    const auth = firebase.auth();
 
+    // DOM Elements
     const songListEl = document.getElementById('songList');
     const loaderEl = document.getElementById('loader');
     const audio = document.getElementById('audioElement');
@@ -291,21 +427,45 @@
     const currentTimeEl = document.getElementById('currentTime');
     const durationTimeEl = document.getElementById('durationTime');
     const searchInput = document.getElementById('searchInput');
+    const authBtn = document.getElementById('authBtn');
 
     let allSongs = [];
     let displayedSongs = [];
     let currentSongIndex = -1;
+    let isPlayingYouTube = false;
+    let ytPlayer = null;
 
+    // YouTube API Ready Callback
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player('ytHiddenPlayer', {
+        height: '0',
+        width: '0',
+        playerVars: { 'autoplay': 1, 'controls': 0 },
+        events: {
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.PLAYING) {
+        updateButtonState(true);
+      } else if (event.data === YT.PlayerState.PAUSED) {
+        updateButtonState(false);
+      } else if (event.data === YT.PlayerState.ENDED) {
+        nextSong();
+      }
+    }
+
+    // Load Songs from Firebase
     db.ref("songs").once("value", (snapshot) => {
       loaderEl.style.display = 'none';
       const data = snapshot.val();
-      
       if (!data) {
         loaderEl.innerText = "Koi gaana nahi mila.";
         loaderEl.style.display = 'block';
         return;
       }
-
       allSongs = Array.isArray(data) ? data.filter(Boolean) : Object.values(data);
       displayedSongs = [...allSongs];
       renderSongList();
@@ -322,7 +482,7 @@
 
       displayedSongs.forEach((song, index) => {
         const isCurrent = currentSongIndex === index;
-        const isPlaying = isCurrent && !audio.paused;
+        const isPlaying = isCurrent && !audio.paused && !isPlayingYouTube;
 
         const li = document.createElement('li');
         li.className = 'song-item';
@@ -344,17 +504,19 @@
 
     function triggerAdCheck() {
       songSwitchCounter++;
-      // Har 2 baar gana badalne par ad trigger karein
       if (songSwitchCounter % 2 === 0) {
         window.open(MONETAG_AD_URL, '_blank');
       }
     }
 
     function selectSong(index) {
-      if (currentSongIndex === index) {
+      if (currentSongIndex === index && !isPlayingYouTube) {
         togglePlay();
       } else {
         triggerAdCheck();
+        isPlayingYouTube = false;
+        if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
+
         currentSongIndex = index;
         const song = displayedSongs[index];
 
@@ -371,27 +533,63 @@
       }
     }
 
+    // Play YouTube Direct Function
+    function playYouTubeFromInput() {
+      const input = document.getElementById('ytInput').value.trim();
+      if (!input) return alert("Kripya YouTube video link ya ID daalein!");
+
+      let videoId = input;
+      if (input.includes("v=")) {
+        videoId = input.split("v=")[1].split("&")[0];
+      } else if (input.includes("youtu.be/")) {
+        videoId = input.split("youtu.be/")[1].split("?")[0];
+      }
+
+      if (!ytPlayer) return alert("YouTube Player abhi load ho raha hai, 2 second baad try karein.");
+
+      audio.pause();
+      isPlayingYouTube = true;
+      currentSongIndex = -1;
+
+      ytPlayer.loadVideoById(videoId);
+      ytPlayer.playVideo();
+
+      playerCover.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      playerTitle.innerText = "YouTube Music";
+      playerArtist.innerText = "Playing via YouTube";
+      playerBar.classList.add('visible');
+      updateButtonState(true);
+      renderSongList();
+      triggerAdCheck();
+    }
+
     function togglePlay() {
-      if (audio.paused) {
-        audio.play();
-        updateButtonState(true);
+      if (isPlayingYouTube) {
+        if (ytPlayer.getPlayerState() === 1) {
+          ytPlayer.pauseVideo();
+          updateButtonState(false);
+        } else {
+          ytPlayer.playVideo();
+          updateButtonState(true);
+        }
       } else {
-        audio.pause();
-        updateButtonState(false);
+        if (audio.paused) {
+          audio.play();
+          updateButtonState(true);
+        } else {
+          audio.pause();
+          updateButtonState(false);
+        }
       }
       renderSongList();
     }
 
     function prevSong() {
-      if (currentSongIndex > 0) {
-        selectSong(currentSongIndex - 1);
-      }
+      if (currentSongIndex > 0) selectSong(currentSongIndex - 1);
     }
 
     function nextSong() {
-      if (currentSongIndex + 1 < displayedSongs.length) {
-        selectSong(currentSongIndex + 1);
-      }
+      if (currentSongIndex + 1 < displayedSongs.length) selectSong(currentSongIndex + 1);
     }
 
     function updateButtonState(isPlaying) {
@@ -399,7 +597,7 @@
     }
 
     audio.ontimeupdate = () => {
-      if (!isNaN(audio.duration)) {
+      if (!isPlayingYouTube && !isNaN(audio.duration)) {
         const progress = (audio.currentTime / audio.duration) * 100;
         seekBar.value = progress;
         currentTimeEl.innerText = formatTime(audio.currentTime);
@@ -408,7 +606,7 @@
     };
 
     function seekAudio(value) {
-      if (!isNaN(audio.duration)) {
+      if (!isPlayingYouTube && !isNaN(audio.duration)) {
         audio.currentTime = (value / 100) * audio.duration;
       }
     }
@@ -428,28 +626,67 @@
       renderSongList();
     }
 
-    audio.onended = () => {
-      nextSong();
-    };
+    audio.onended = () => { nextSong(); };
 
-    let deferredPrompt;
-    const installBtn = document.getElementById('installAppBtn');
+    // --- Authentication Logic ---
+    let confirmationResult = null;
+    let isPhoneMode = true;
 
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.style.display = 'block';
-    });
+    function openAuthModal() {
+      if (auth.currentUser) {
+        if (confirm("Kya aap Logout karna chahte hain?")) {
+          auth.signOut();
+        }
+      } else {
+        document.getElementById('authModal').classList.add('active');
+        setupRecaptcha();
+      }
+    }
 
-    installBtn.addEventListener('click', () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(() => {
-          installBtn.style.display = 'none';
-          deferredPrompt = null;
+    function closeAuthModal() {
+      document.getElementById('authModal').classList.remove('active');
+    }
+
+    function toggleAuthType() {
+      isPhoneMode = !isPhoneMode;
+      document.getElementById('phoneAuthSection').style.display = isPhoneMode ? 'block' : 'none';
+      document.getElementById('passwordAuthSection').style.display = isPhoneMode ? 'none' : 'block';
+      document.getElementById('toggleText').innerText = isPhoneMode ? 'Password se Login karein' : 'Mobile OTP se Login karein';
+    }
+
+    function setupRecaptcha() {
+      if (!window.recaptchaVerifier) {
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+          'size': 'invisible'
         });
       }
-    });
-  </script>
-</body>
-</html>
+    }
+
+    function sendOtp() {
+      const phone = document.getElementById('userPhone').value.trim();
+      if (!phone.startsWith("+")) return alert("Number ke aage country code lagayein (+91...)");
+
+      auth.signInWithPhoneNumber(phone, window.recaptchaVerifier)
+        .then((result) => {
+          confirmationResult = result;
+          alert("OTP bhej diya gaya hai!");
+          document.getElementById('otpInputSection').style.display = 'block';
+          document.getElementById('sendOtpBtn').style.display = 'none';
+        }).catch((error) => {
+          alert("Error: " + error.message);
+        });
+    }
+
+    function verifyOtp() {
+      const code = document.getElementById('otpCode').value.trim();
+      if (!confirmationResult) return;
+      confirmationResult.confirm(code)
+        .then(() => {
+          alert("Login Safal Hua!");
+          closeAuthModal();
+        }).catch((error) => {
+          alert("Galat OTP: " + error.message);
+        });
+    }
+
+   
