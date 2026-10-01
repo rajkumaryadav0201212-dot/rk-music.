@@ -7,7 +7,6 @@
   
   <meta name="theme-color" content="#121212">
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3844/3844724.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
@@ -21,7 +20,7 @@
     body {
       background-color: #121212;
       color: #ffffff;
-      padding-bottom: 130px;
+      padding-bottom: 140px;
     }
     header {
       padding: 14px 18px;
@@ -34,11 +33,6 @@
       border-bottom: 1px solid #282828;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-    }
-    .header-btns {
-      display: flex;
-      gap: 8px;
       align-items: center;
     }
     .user-btn {
@@ -79,8 +73,8 @@
       background: #ff0000;
       color: white;
       border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
+      padding: 8px 14px;
+      border-radius: 8px;
       font-size: 12px;
       font-weight: bold;
       cursor: pointer;
@@ -91,13 +85,13 @@
     .ad-banner-btn {
       display: block;
       margin: 10px 16px;
-      padding: 10px;
+      padding: 12px;
       background: linear-gradient(45deg, #ff416c, #ff4b2b);
       color: #fff;
       text-align: center;
       text-decoration: none;
       font-weight: bold;
-      font-size: 12px;
+      font-size: 13px;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(255, 75, 43, 0.3);
       cursor: pointer;
@@ -197,13 +191,13 @@
     .controls {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
     .controls button {
       background: none;
       border: none;
       color: #fff;
-      font-size: 18px;
+      font-size: 20px;
       cursor: pointer;
     }
     .controls #toggleBtn {
@@ -215,10 +209,10 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-top: 6px;
+      margin-top: 8px;
     }
     .time-text {
-      font-size: 10px;
+      font-size: 11px;
       color: #888;
       width: 32px;
     }
@@ -229,7 +223,7 @@
       cursor: pointer;
     }
 
-    /* Auth Modal Popup */
+    /* Simple User Modal */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -246,16 +240,16 @@
     .modal-box {
       background: #1e1e1e;
       border-radius: 12px;
-      padding: 24px;
+      padding: 22px;
       width: 100%;
-      max-width: 360px;
+      max-width: 340px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.6);
       position: relative;
     }
     .modal-title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: bold;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       text-align: center;
     }
     .modal-input {
@@ -278,35 +272,25 @@
       color: #000;
       font-weight: bold;
       cursor: pointer;
-      font-size: 14px;
-      margin-top: 4px;
+      font-size: 13px;
     }
     .modal-close {
       position: absolute;
-      top: 12px;
-      right: 14px;
+      top: 10px;
+      right: 12px;
       background: none;
       border: none;
       color: #aaa;
       font-size: 18px;
       cursor: pointer;
     }
-    .switch-auth {
-      margin-top: 12px;
-      text-align: center;
-      font-size: 12px;
-      color: #aaa;
-      cursor: pointer;
-    }
-    .switch-auth span {
-      color: #1db954;
-      text-decoration: underline;
-    }
-    #recaptcha-container {
-      margin: 10px 0;
-    }
-    #ytHiddenPlayer {
-      display: none;
+    #ytContainer {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
     }
   </style>
 </head>
@@ -314,20 +298,18 @@
 
   <header>
     <span>Rk Music Point</span>
-    <div class="header-btns">
-      <button id="authBtn" class="user-btn" onclick="openAuthModal()"><i class="fas fa-user"></i> Login</button>
-    </div>
+    <button id="authBtn" class="user-btn" onclick="openAuthModal()"><i class="fas fa-user"></i> Login</button>
   </header>
 
   <div class="search-box">
     <input type="text" id="searchInput" class="search-input" placeholder="Gaana ya singer khojein..." onkeyup="filterSongs()">
     <div class="yt-box">
-      <input type="text" id="ytInput" class="search-input" placeholder="YouTube Song Link ya Video ID daalein...">
-      <button class="yt-btn" onclick="playYouTubeFromInput()"><i class="fab fa-youtube"></i> Play YT</button>
+      <input type="text" id="ytInput" class="search-input" placeholder="YouTube URL ya Video ID daalein...">
+      <button class="yt-btn" onclick="playYouTube()"><i class="fab fa-youtube"></i> Play YT</button>
     </div>
   </div>
 
-  <!-- Monetag Direct Ad Link Button -->
+  <!-- Monetag Direct Ad Link -->
   <a href="https://omg10.com/4/11936214" target="_blank" class="ad-banner-btn">
     🔥 Special Offers & Rewards (Tap Here)
   </a>
@@ -357,64 +339,32 @@
     </div>
   </div>
 
-  <!-- Audio Element & Hidden YouTube Iframe -->
   <audio id="audioElement"></audio>
-  <div id="ytHiddenPlayer"></div>
+  <div id="ytContainer"><div id="ytPlayerDiv"></div></div>
 
-  <!-- Auth Modal -->
+  <!-- User Login / Profile Modal -->
   <div class="modal-overlay" id="authModal">
     <div class="modal-box">
       <button class="modal-close" onclick="closeAuthModal()">✕</button>
-      <div class="modal-title" id="modalTitle">Login / Register</div>
-
-      <!-- Tab: Phone OTP -->
-      <div id="phoneAuthSection">
-        <input type="tel" id="userPhone" class="modal-input" placeholder="Mobile Number (+919876543210)">
-        <div id="recaptcha-container"></div>
-        <button class="modal-btn" id="sendOtpBtn" onclick="sendOtp()">Send OTP</button>
-
-        <div id="otpInputSection" style="display:none; margin-top:10px;">
-          <input type="number" id="otpCode" class="modal-input" placeholder="6-digit OTP Daalein">
-          <button class="modal-btn" onclick="verifyOtp()">Verify & Login</button>
-        </div>
-      </div>
-
-      <!-- Tab: Password Auth -->
-      <div id="passwordAuthSection" style="display:none; margin-top:10px;">
-        <input type="email" id="userEmail" class="modal-input" placeholder="Email ID">
-        <input type="password" id="userPassword" class="modal-input" placeholder="Password (Min 6 digits)">
-        <button class="modal-btn" id="passSubmitBtn" onclick="handleEmailAuth()">Login / Register</button>
-      </div>
-
-      <div class="switch-auth" id="toggleAuthMethod" onclick="toggleAuthType()">
-        Ya <span id="toggleText">Password se Login karein</span>
-      </div>
+      <div class="modal-title" id="modalTitle">User Account</div>
+      <input type="text" id="userNameInput" class="modal-input" placeholder="Apna Naam Daalein">
+      <input type="tel" id="userPhoneInput" class="modal-input" placeholder="Mobile Number">
+      <button class="modal-btn" onclick="saveUserProfile()">Save & Login</button>
     </div>
   </div>
 
-  <!-- Firebase Scripts -->
+  <!-- Firebase Database Script -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  
-  <!-- YouTube IFrame API -->
   <script src="https://www.youtube.com/iframe_api"></script>
 
   <script>
     const MONETAG_AD_URL = "https://omg10.com/4/11936214";
     let songSwitchCounter = 0;
 
-    // Firebase Config
-    const firebaseConfig = {
-      databaseURL: "https://rk-music-point-default-rtdb.firebaseio.com",
-      projectId: "rk-music-point"
-    };
+    // Direct Database REST Connection (Kahi kabhi nahi rukega)
+    const DB_URL = "https://rk-music-point-default-rtdb.firebaseio.com/songs.json";
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const auth = firebase.auth();
-
-    // DOM Elements
     const songListEl = document.getElementById('songList');
     const loaderEl = document.getElementById('loader');
     const audio = document.getElementById('audioElement');
@@ -432,57 +382,53 @@
     let allSongs = [];
     let displayedSongs = [];
     let currentSongIndex = -1;
-    let isPlayingYouTube = false;
+    let isYT = false;
     let ytPlayer = null;
 
-    // YouTube API Ready Callback
-    function onYouTubeIframeAPIReady() {
-      ytPlayer = new YT.Player('ytHiddenPlayer', {
-        height: '0',
-        width: '0',
+    // 1. YouTube Player Initialize
+    window.onYouTubeIframeAPIReady = function() {
+      ytPlayer = new YT.Player('ytPlayerDiv', {
+        height: '10',
+        width: '10',
         playerVars: { 'autoplay': 1, 'controls': 0 },
         events: {
-          'onStateChange': onPlayerStateChange
+          'onStateChange': function(e) {
+            if (e.data === YT.PlayerState.PLAYING) updateButtonState(true);
+            if (e.data === YT.PlayerState.PAUSED) updateButtonState(false);
+            if (e.data === YT.PlayerState.ENDED) nextSong();
+          }
         }
       });
-    }
+    };
 
-    function onPlayerStateChange(event) {
-      if (event.data === YT.PlayerState.PLAYING) {
-        updateButtonState(true);
-      } else if (event.data === YT.PlayerState.PAUSED) {
-        updateButtonState(false);
-      } else if (event.data === YT.PlayerState.ENDED) {
-        nextSong();
-      }
-    }
-
-    // Load Songs from Firebase
-    db.ref("songs").once("value", (snapshot) => {
-      loaderEl.style.display = 'none';
-      const data = snapshot.val();
-      if (!data) {
-        loaderEl.innerText = "Koi gaana nahi mila.";
-        loaderEl.style.display = 'block';
-        return;
-      }
-      allSongs = Array.isArray(data) ? data.filter(Boolean) : Object.values(data);
-      displayedSongs = [...allSongs];
-      renderSongList();
-    }).catch((err) => {
-      loaderEl.innerText = "Error: " + err.message;
-    });
+    // 2. Load Songs Directly (100% Reliable)
+    fetch(DB_URL)
+      .then(res => res.json())
+      .then(data => {
+        loaderEl.style.display = 'none';
+        if (!data) {
+          loaderEl.innerText = "Koi gaana nahi mila.";
+          loaderEl.style.display = 'block';
+          return;
+        }
+        allSongs = Array.isArray(data) ? data.filter(Boolean) : Object.values(data);
+        displayedSongs = [...allSongs];
+        renderSongList();
+      })
+      .catch(err => {
+        loaderEl.innerText = "Error loading songs: " + err.message;
+      });
 
     function renderSongList() {
       songListEl.innerHTML = '';
       if (displayedSongs.length === 0) {
-        songListEl.innerHTML = '<li style="text-align:center; color:#777; margin-top:20px;">Koi gaana match nahi hua</li>';
+        songListEl.innerHTML = '<li style="text-align:center; color:#777; margin-top:20px;">Koi gaana nahi mila</li>';
         return;
       }
 
       displayedSongs.forEach((song, index) => {
         const isCurrent = currentSongIndex === index;
-        const isPlaying = isCurrent && !audio.paused && !isPlayingYouTube;
+        const isPlaying = isCurrent && !audio.paused && !isYT;
 
         const li = document.createElement('li');
         li.className = 'song-item';
@@ -510,53 +456,49 @@
     }
 
     function selectSong(index) {
-      if (currentSongIndex === index && !isPlayingYouTube) {
-        togglePlay();
-      } else {
-        triggerAdCheck();
-        isPlayingYouTube = false;
-        if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
+      triggerAdCheck();
+      isYT = false;
+      if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
 
-        currentSongIndex = index;
-        const song = displayedSongs[index];
+      currentSongIndex = index;
+      const song = displayedSongs[index];
 
-        audio.src = song.url;
-        audio.play().catch(e => console.log("Play error: " + e));
+      audio.src = song.url;
+      audio.play().catch(e => console.log(e));
 
-        playerCover.src = song.coverUrl || 'https://via.placeholder.com/150';
-        playerTitle.innerText = song.title || 'Untitled';
-        playerArtist.innerText = song.artist || 'Unknown';
-        playerBar.classList.add('visible');
+      playerCover.src = song.coverUrl || 'https://via.placeholder.com/150';
+      playerTitle.innerText = song.title || 'Untitled';
+      playerArtist.innerText = song.artist || 'Unknown';
+      playerBar.classList.add('visible');
 
-        updateButtonState(true);
-        renderSongList();
-      }
+      updateButtonState(true);
+      renderSongList();
     }
 
-    // Play YouTube Direct Function
-    function playYouTubeFromInput() {
-      const input = document.getElementById('ytInput').value.trim();
-      if (!input) return alert("Kripya YouTube video link ya ID daalein!");
+    // YouTube Play Logic
+    function playYouTube() {
+      const val = document.getElementById('ytInput').value.trim();
+      if (!val) return alert("Pehle YouTube link ya ID daalein!");
 
-      let videoId = input;
-      if (input.includes("v=")) {
-        videoId = input.split("v=")[1].split("&")[0];
-      } else if (input.includes("youtu.be/")) {
-        videoId = input.split("youtu.be/")[1].split("?")[0];
+      let videoId = val;
+      if (val.includes("v=")) {
+        videoId = val.split("v=")[1].split("&")[0];
+      } else if (val.includes("youtu.be/")) {
+        videoId = val.split("youtu.be/")[1].split("?")[0];
       }
 
-      if (!ytPlayer) return alert("YouTube Player abhi load ho raha hai, 2 second baad try karein.");
-
       audio.pause();
-      isPlayingYouTube = true;
+      isYT = true;
       currentSongIndex = -1;
 
-      ytPlayer.loadVideoById(videoId);
-      ytPlayer.playVideo();
+      if (ytPlayer && ytPlayer.loadVideoById) {
+        ytPlayer.loadVideoById(videoId);
+        ytPlayer.playVideo();
+      }
 
       playerCover.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-      playerTitle.innerText = "YouTube Music";
-      playerArtist.innerText = "Playing via YouTube";
+      playerTitle.innerText = "YouTube Audio";
+      playerArtist.innerText = "Online Stream";
       playerBar.classList.add('visible');
       updateButtonState(true);
       renderSongList();
@@ -564,11 +506,11 @@
     }
 
     function togglePlay() {
-      if (isPlayingYouTube) {
-        if (ytPlayer.getPlayerState() === 1) {
+      if (isYT) {
+        if (ytPlayer && ytPlayer.getPlayerState() === 1) {
           ytPlayer.pauseVideo();
           updateButtonState(false);
-        } else {
+        } else if (ytPlayer) {
           ytPlayer.playVideo();
           updateButtonState(true);
         }
@@ -597,16 +539,15 @@
     }
 
     audio.ontimeupdate = () => {
-      if (!isPlayingYouTube && !isNaN(audio.duration)) {
-        const progress = (audio.currentTime / audio.duration) * 100;
-        seekBar.value = progress;
+      if (!isYT && !isNaN(audio.duration)) {
+        seekBar.value = (audio.currentTime / audio.duration) * 100;
         currentTimeEl.innerText = formatTime(audio.currentTime);
         durationTimeEl.innerText = formatTime(audio.duration);
       }
     };
 
     function seekAudio(value) {
-      if (!isPlayingYouTube && !isNaN(audio.duration)) {
+      if (!isYT && !isNaN(audio.duration)) {
         audio.currentTime = (value / 100) * audio.duration;
       }
     }
@@ -628,18 +569,16 @@
 
     audio.onended = () => { nextSong(); };
 
-    // --- Authentication Logic ---
-    let confirmationResult = null;
-    let isPhoneMode = true;
-
+    // --- User Auth Modal System ---
     function openAuthModal() {
-      if (auth.currentUser) {
-        if (confirm("Kya aap Logout karna chahte hain?")) {
-          auth.signOut();
+      const savedUser = localStorage.getItem("rk_user");
+      if (savedUser) {
+        if (confirm("Aap " + savedUser + " ke roop me logged in hain. Kya Logout karna hai?")) {
+          localStorage.removeItem("rk_user");
+          checkUserStatus();
         }
       } else {
         document.getElementById('authModal').classList.add('active');
-        setupRecaptcha();
       }
     }
 
@@ -647,46 +586,32 @@
       document.getElementById('authModal').classList.remove('active');
     }
 
-    function toggleAuthType() {
-      isPhoneMode = !isPhoneMode;
-      document.getElementById('phoneAuthSection').style.display = isPhoneMode ? 'block' : 'none';
-      document.getElementById('passwordAuthSection').style.display = isPhoneMode ? 'none' : 'block';
-      document.getElementById('toggleText').innerText = isPhoneMode ? 'Password se Login karein' : 'Mobile OTP se Login karein';
+    function saveUserProfile() {
+      const name = document.getElementById('userNameInput').value.trim();
+      const phone = document.getElementById('userPhoneInput').value.trim();
+      if (!name || !phone) return alert("Kripya Naam aur Mobile number dono bharein!");
+
+      localStorage.setItem("rk_user", name);
+      localStorage.setItem("rk_phone", phone);
+      alert("Swagat hai, " + name + "! Aap login ho gaye hain.");
+      closeAuthModal();
+      checkUserStatus();
     }
 
-    function setupRecaptcha() {
-      if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-          'size': 'invisible'
-        });
+    function checkUserStatus() {
+      const savedUser = localStorage.getItem("rk_user");
+      if (savedUser) {
+        authBtn.innerHTML = `<i class="fas fa-user-check"></i> ${savedUser.split(' ')[0]}`;
+        authBtn.style.color = '#fff';
+        authBtn.style.background = '#1db954';
+      } else {
+        authBtn.innerHTML = `<i class="fas fa-user"></i> Login`;
+        authBtn.style.color = '#1db954';
+        authBtn.style.background = '#242424';
       }
     }
 
-    function sendOtp() {
-      const phone = document.getElementById('userPhone').value.trim();
-      if (!phone.startsWith("+")) return alert("Number ke aage country code lagayein (+91...)");
-
-      auth.signInWithPhoneNumber(phone, window.recaptchaVerifier)
-        .then((result) => {
-          confirmationResult = result;
-          alert("OTP bhej diya gaya hai!");
-          document.getElementById('otpInputSection').style.display = 'block';
-          document.getElementById('sendOtpBtn').style.display = 'none';
-        }).catch((error) => {
-          alert("Error: " + error.message);
-        });
-    }
-
-    function verifyOtp() {
-      const code = document.getElementById('otpCode').value.trim();
-      if (!confirmationResult) return;
-      confirmationResult.confirm(code)
-        .then(() => {
-          alert("Login Safal Hua!");
-          closeAuthModal();
-        }).catch((error) => {
-          alert("Galat OTP: " + error.message);
-        });
-    }
-
-   
+    checkUserStatus();
+  </script>
+</body>
+</html>
