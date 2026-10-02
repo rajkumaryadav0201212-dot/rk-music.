@@ -7,7 +7,6 @@
   
   <meta name="theme-color" content="#121212">
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3844/3844724.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
@@ -427,69 +426,63 @@
   </div>
 
   <script>
-    const MONETAG_AD_URL = "https://omg10.com/4/11936214";
-    let songSwitchCounter = 0;
+    var MONETAG_AD_URL = "https://omg10.com/4/11936214";
+    var songSwitchCounter = 0;
 
-    // Built-in Trending Lo-Fi & Chill Songs
-    const defaultLoFiSongs = [
+    var defaultLoFiSongs = [
       {
         title: "Kesariya (Lo-Fi Chill Mix)",
         artist: "Arijit Singh • Lo-Fi Beats",
         coverUrl: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=300",
-        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-        ytId: ""
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
       },
       {
         title: "Raataan Lambiyan (Midnight Lo-Fi)",
         artist: "Jubin Nautiyal • Acoustic Vibe",
         coverUrl: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300",
-        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
-        ytId: ""
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
       },
       {
         title: "Apna Bana Le (Lo-Fi Slowed & Reverb)",
         artist: "Arijit Singh • Romantic Mood",
         coverUrl: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300",
-        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
-        ytId: ""
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
       },
       {
         title: "Shayad (Chillout Lo-Fi Vibes)",
         artist: "Pritam, Arijit Singh",
         coverUrl: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300",
-        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
-        ytId: ""
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
       }
     ];
 
-    const songListEl = document.getElementById('songList');
-    const audio = document.getElementById('audioElement');
-    const playerBar = document.getElementById('playerBar');
-    const playerCover = document.getElementById('playerCover');
-    const playerTitle = document.getElementById('playerTitle');
-    const playerArtist = document.getElementById('playerArtist');
-    const toggleBtn = document.getElementById('toggleBtn');
-    const seekBar = document.getElementById('seekBar');
-    const currentTimeEl = document.getElementById('currentTime');
-    const durationTimeEl = document.getElementById('durationTime');
-    const searchInput = document.getElementById('searchInput');
-    const authBtn = document.getElementById('authBtn');
-    const ytContainer = document.getElementById('ytContainer');
-    const ytWrapper = document.getElementById('ytWrapper');
-    const tabAll = document.getElementById('tabAll');
-    const tabHistory = document.getElementById('tabHistory');
-    const clearHistBtn = document.getElementById('clearHistBtn');
+    var allSongs = defaultLoFiSongs;
+    var displayedSongs = defaultLoFiSongs;
+    var songHistory = [];
+    var activeTab = 'all';
+    var currentSongIndex = -1;
 
-    let allSongs = [...defaultLoFiSongs];
-    let displayedSongs = [...allSongs];
-    let songHistory = [];
-    let activeTab = 'all';
-    let currentSongIndex = -1;
+    var songListEl = document.getElementById('songList');
+    var audio = document.getElementById('audioElement');
+    var playerBar = document.getElementById('playerBar');
+    var playerCover = document.getElementById('playerCover');
+    var playerTitle = document.getElementById('playerTitle');
+    var playerArtist = document.getElementById('playerArtist');
+    var toggleBtn = document.getElementById('toggleBtn');
+    var seekBar = document.getElementById('seekBar');
+    var currentTimeEl = document.getElementById('currentTime');
+    var durationTimeEl = document.getElementById('durationTime');
+    var searchInput = document.getElementById('searchInput');
+    var authBtn = document.getElementById('authBtn');
+    var ytContainer = document.getElementById('ytContainer');
+    var ytWrapper = document.getElementById('ytWrapper');
+    var tabAll = document.getElementById('tabAll');
+    var tabHistory = document.getElementById('tabHistory');
+    var clearHistBtn = document.getElementById('clearHistBtn');
 
-    // Load History
     function loadSavedHistory() {
       try {
-        const saved = localStorage.getItem('rk_song_history');
+        var saved = localStorage.getItem('rk_song_history');
         songHistory = saved ? JSON.parse(saved) : [];
       } catch(e) {
         songHistory = [];
@@ -497,10 +490,9 @@
     }
     loadSavedHistory();
 
-    // Save song in history
     function addToHistory(item) {
       if (!item || !item.title) return;
-      songHistory = songHistory.filter(s => s.title !== item.title);
+      songHistory = songHistory.filter(function(s) { return s.title !== item.title; });
       songHistory.unshift({
         title: item.title,
         artist: item.artist || 'Lo-Fi Chill',
@@ -540,48 +532,30 @@
       }
     }
 
-    // Try loading Firebase Songs if available, else keep default
-    fetch("https://rk-music-point-default-rtdb.firebaseio.com/songs.json")
-      .then(res => res.json())
-      .then(data => {
-        if (data) {
-          const fbSongs = Array.isArray(data) ? data.filter(Boolean) : Object.values(data);
-          if (fbSongs.length > 0) {
-            allSongs = [...fbSongs, ...defaultLoFiSongs];
-            displayedSongs = [...allSongs];
-            if (activeTab === 'all') renderSongList();
-          }
-        }
-      })
-      .catch(() => {
-        // Fallback to default list silently
-      });
-
     function renderSongList() {
       songListEl.innerHTML = '';
-      if (displayedSongs.length === 0) {
-        songListEl.innerHTML = '<li style="text-align:center; color:#777; margin-top:20px;">Koi gaana match nahi hua</li>';
+      if (!displayedSongs || displayedSongs.length === 0) {
+        songListEl.innerHTML = '<li style="text-align:center; color:#777; margin-top:20px;">Koi gaana nahi mila</li>';
         return;
       }
 
-      displayedSongs.forEach((song, index) => {
-        const isCurrent = currentSongIndex === index && activeTab === 'all';
-        const isPlaying = isCurrent && !audio.paused;
+      displayedSongs.forEach(function(song, index) {
+        var isCurrent = currentSongIndex === index && activeTab === 'all';
+        var isPlaying = isCurrent && !audio.paused;
 
-        const li = document.createElement('li');
+        var li = document.createElement('li');
         li.className = 'song-item';
-        li.onclick = () => selectSong(index);
+        li.onclick = function() { selectSong(index); };
 
-        li.innerHTML = `
-          <img src="${song.coverUrl || 'https://via.placeholder.com/150'}" alt="cover">
-          <div class="song-info">
-            <div class="song-title ${isCurrent ? 'active' : ''}">${song.title || 'Untitled'}</div>
-            <div class="song-artist">${song.artist || 'Lo-Fi Chill'}</div>
-          </div>
-          <div class="play-btn-icon ${isCurrent ? 'active' : ''}">
-            <i class="fas ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>
-          </div>
-        `;
+        li.innerHTML = 
+          '<img src="' + (song.coverUrl || 'https://via.placeholder.com/150') + '" alt="cover">' +
+          '<div class="song-info">' +
+            '<div class="song-title ' + (isCurrent ? 'active' : '') + '">' + (song.title || 'Untitled') + '</div>' +
+            '<div class="song-artist">' + (song.artist || 'Lo-Fi Chill') + '</div>' +
+          '</div>' +
+          '<div class="play-btn-icon ' + (isCurrent ? 'active' : '') + '">' +
+            '<i class="fas ' + (isPlaying ? 'fa-pause' : 'fa-play') + '"></i>' +
+          '</div>';
         songListEl.appendChild(li);
       });
     }
@@ -593,21 +567,18 @@
         return;
       }
 
-      songHistory.forEach((song, index) => {
-        const li = document.createElement('li');
+      songHistory.forEach(function(song, index) {
+        var li = document.createElement('li');
         li.className = 'song-item';
-        li.onclick = () => playFromHistory(index);
+        li.onclick = function() { playFromHistory(index); };
 
-        li.innerHTML = `
-          <img src="${song.coverUrl || 'https://via.placeholder.com/150'}" alt="cover">
-          <div class="song-info">
-            <div class="song-title">${song.title || 'Untitled'}</div>
-            <div class="song-artist">${song.artist || 'Lo-Fi Chill'} • <span style="color:#1db954;">${song.playedAt || ''}</span></div>
-          </div>
-          <div class="play-btn-icon">
-            <i class="fas fa-play"></i>
-          </div>
-        `;
+        li.innerHTML = 
+          '<img src="' + (song.coverUrl || 'https://via.placeholder.com/150') + '" alt="cover">' +
+          '<div class="song-info">' +
+            '<div class="song-title">' + (song.title || 'Untitled') + '</div>' +
+            '<div class="song-artist">' + (song.artist || 'Lo-Fi Chill') + ' • <span style="color:#1db954;">' + (song.playedAt || '') + '</span></div>' +
+          '</div>' +
+          '<div class="play-btn-icon"><i class="fas fa-play"></i></div>';
         songListEl.appendChild(li);
       });
     }
@@ -619,7 +590,6 @@
       }
     }
 
-    // Background playback support via MediaSession
     function setupMediaSession(title, artist, artwork) {
       if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
@@ -627,11 +597,10 @@
           artist: artist,
           artwork: [{ src: artwork, sizes: '512x512', type: 'image/png' }]
         });
-
-        navigator.mediaSession.setActionHandler('play', () => { togglePlay(); });
-        navigator.mediaSession.setActionHandler('pause', () => { togglePlay(); });
-        navigator.mediaSession.setActionHandler('previoustrack', () => { prevSong(); });
-        navigator.mediaSession.setActionHandler('nexttrack', () => { nextSong(); });
+        navigator.mediaSession.setActionHandler('play', function() { togglePlay(); });
+        navigator.mediaSession.setActionHandler('pause', function() { togglePlay(); });
+        navigator.mediaSession.setActionHandler('previoustrack', function() { prevSong(); });
+        navigator.mediaSession.setActionHandler('nexttrack', function() { nextSong(); });
       }
     }
 
@@ -640,7 +609,7 @@
       closeYT();
 
       currentSongIndex = index;
-      const song = displayedSongs[index];
+      var song = displayedSongs[index];
 
       addToHistory({
         title: song.title,
@@ -651,7 +620,7 @@
       });
 
       audio.src = song.url;
-      audio.play().catch(e => console.log(e));
+      audio.play().catch(function(e) { console.log(e); });
 
       playerCover.src = song.coverUrl || 'https://via.placeholder.com/150';
       playerTitle.innerText = song.title || 'Untitled';
@@ -664,7 +633,7 @@
     }
 
     function playFromHistory(index) {
-      const item = songHistory[index];
+      var item = songHistory[index];
       if (item.isYT && item.ytId) {
         playYouTubeWithId(item.ytId, item.title);
       } else {
@@ -672,7 +641,7 @@
         closeYT();
 
         audio.src = item.url;
-        audio.play().catch(e => console.log(e));
+        audio.play().catch(function(e) { console.log(e); });
 
         playerCover.src = item.coverUrl || 'https://via.placeholder.com/150';
         playerTitle.innerText = item.title || 'Untitled';
@@ -684,4 +653,31 @@
       }
     }
 
-    // Extract any YouTube 
+    function extractYouTubeId(url) {
+      if (!url) return "";
+      url = url.trim();
+      var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+      var match = url.match(regExp);
+      if (match && match[2].length === 11) {
+        return match[2];
+      }
+      if (url.length === 11) {
+        return url;
+      }
+      return "";
+    }
+
+    function playYouTubeFromInput() {
+      var input = document.getElementById('ytInput').value;
+      var videoId = extractYouTubeId(input);
+
+      if (!videoId) {
+        alert("Kripya sahi YouTube link ya Video ID daalein!");
+        return;
+      }
+      playYouTubeWithId(videoId, "YouTube Lo-Fi (" + videoId + ")");
+    }
+
+    function playYouTubeWithId(videoId, titleName) {
+      audio.pause();
+      playerBar.classList.remove('visible'
