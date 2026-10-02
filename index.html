@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rk Music Point</title>
+  <title>Rk Music Point - Lo-Fi Chill</title>
   
   <meta name="theme-color" content="#121212">
   <link rel="manifest" href="manifest.json">
@@ -40,22 +40,22 @@
       background: #242424;
       color: #1db954;
       border: 1px solid #333;
-      padding: 6px 12px;
+      padding: 6px 14px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: bold;
       cursor: pointer;
     }
     .search-box {
-      padding: 10px 16px;
+      padding: 12px 16px;
       background: #181818;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
     .search-input {
       width: 100%;
-      padding: 10px 14px;
+      padding: 11px 14px;
       border-radius: 8px;
       border: 1px solid #333;
       background: #242424;
@@ -68,15 +68,15 @@
     }
     .yt-box {
       display: flex;
-      gap: 6px;
+      gap: 8px;
     }
     .yt-btn {
       background: #ff0000;
       color: white;
       border: none;
-      padding: 8px 14px;
+      padding: 10px 16px;
       border-radius: 8px;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: bold;
       cursor: pointer;
       white-space: nowrap;
@@ -84,7 +84,7 @@
 
     .ad-banner-btn {
       display: block;
-      margin: 10px 16px;
+      margin: 12px 16px;
       padding: 12px;
       background: linear-gradient(45deg, #ff416c, #ff4b2b);
       color: #fff;
@@ -97,6 +97,7 @@
       cursor: pointer;
     }
 
+    /* Tab Controls */
     .tab-nav {
       display: flex;
       justify-content: space-between;
@@ -115,7 +116,7 @@
       color: #888;
       font-size: 14px;
       font-weight: 600;
-      padding: 6px 12px;
+      padding: 6px 14px;
       border-radius: 16px;
       cursor: pointer;
     }
@@ -128,12 +129,13 @@
       border: 1px solid #444;
       color: #aaa;
       font-size: 11px;
-      padding: 4px 8px;
+      padding: 4px 10px;
       border-radius: 6px;
       cursor: pointer;
       display: none;
     }
 
+    /* Song Listing */
     .song-list {
       list-style: none;
       padding: 10px 16px;
@@ -146,8 +148,8 @@
       cursor: pointer;
     }
     .song-item img {
-      width: 50px;
-      height: 50px;
+      width: 52px;
+      height: 52px;
       border-radius: 8px;
       object-fit: cover;
       margin-right: 12px;
@@ -170,7 +172,7 @@
     .song-artist {
       font-size: 12px;
       color: #b3b3b3;
-      margin-top: 3px;
+      margin-top: 4px;
     }
     .play-btn-icon {
       font-size: 18px;
@@ -181,7 +183,7 @@
       color: #1db954;
     }
 
-    /* YouTube Video View */
+    /* Embedded YouTube Screen */
     .yt-screen-container {
       display: none;
       margin: 10px 16px;
@@ -198,44 +200,36 @@
       position: relative;
       padding-bottom: 56.25%;
       height: 0;
-      overflow: hidden;
     }
     .yt-iframe-wrap iframe {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       border: 0;
     }
     .yt-close-btn {
       position: absolute;
-      top: 6px;
-      right: 8px;
+      top: 8px; right: 8px;
       background: rgba(0,0,0,0.8);
       color: #fff;
       border: none;
       border-radius: 50%;
-      width: 28px;
-      height: 28px;
+      width: 28px; height: 28px;
       cursor: pointer;
       z-index: 5;
-      font-weight: bold;
     }
 
-    /* Player Bar */
+    /* Fixed Bottom Player */
     .player-bar {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       background: #1e1e1e;
       border-top: 1px solid #282828;
       padding: 10px 16px 14px;
       display: none;
       flex-direction: column;
-      box-shadow: 0 -4px 12px rgba(0,0,0,0.5);
-      z-index: 20;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.6);
+      z-index: 30;
     }
     .player-bar.visible {
       display: flex;
@@ -302,7 +296,7 @@
       cursor: pointer;
     }
 
-    /* Modal */
+    /* Modal Popup */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -319,20 +313,20 @@
     .modal-box {
       background: #1e1e1e;
       border-radius: 12px;
-      padding: 22px;
+      padding: 24px;
       width: 100%;
       max-width: 340px;
       position: relative;
     }
     .modal-title {
-      font-size: 16px;
+      font-size: 17px;
       font-weight: bold;
       margin-bottom: 14px;
       text-align: center;
     }
     .modal-input {
       width: 100%;
-      padding: 10px;
+      padding: 11px;
       border-radius: 6px;
       background: #2a2a2a;
       border: 1px solid #444;
@@ -343,19 +337,18 @@
     }
     .modal-btn {
       width: 100%;
-      padding: 10px;
+      padding: 11px;
       border-radius: 6px;
       border: none;
       background: #1db954;
       color: #000;
       font-weight: bold;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 14px;
     }
     .modal-close {
       position: absolute;
-      top: 10px;
-      right: 12px;
+      top: 10px; right: 12px;
       background: none;
       border: none;
       color: #aaa;
@@ -367,15 +360,15 @@
 <body>
 
   <header>
-    <span>Rk Music Point</span>
+    <span>Rk Music Point 🎧</span>
     <button id="authBtn" class="user-btn" onclick="openAuthModal()"><i class="fas fa-user"></i> Login</button>
   </header>
 
   <div class="search-box">
-    <input type="text" id="searchInput" class="search-input" placeholder="Gaana ya singer khojein..." onkeyup="filterSongs()">
+    <input type="text" id="searchInput" class="search-input" placeholder="Koi bhi gaana ya singer khojein..." onkeyup="filterSongs()">
     <div class="yt-box">
-      <input type="text" id="ytInput" class="search-input" placeholder="YouTube Video Link daalein...">
-      <button class="yt-btn" onclick="playYouTube()"><i class="fab fa-youtube"></i> Play YT</button>
+      <input type="text" id="ytInput" class="search-input" placeholder="YouTube Video / Lo-Fi Link ya ID daalein...">
+      <button class="yt-btn" onclick="playYouTubeFromInput()"><i class="fab fa-youtube"></i> Play YT</button>
     </div>
   </div>
 
@@ -386,7 +379,7 @@
 
   <div class="tab-nav">
     <div class="tab-buttons">
-      <button id="tabAll" class="tab-btn active" onclick="switchTab('all')">All Songs</button>
+      <button id="tabAll" class="tab-btn active" onclick="switchTab('all')">Lo-Fi Tracks</button>
       <button id="tabHistory" class="tab-btn" onclick="switchTab('history')">🕒 History</button>
     </div>
     <button id="clearHistBtn" class="clear-history-btn" onclick="clearHistory()">Clear History</button>
@@ -396,9 +389,9 @@
     🔥 Special Offers & Rewards (Tap Here)
   </a>
 
-  <div id="loader" style="text-align:center; padding:30px; color:#888;">Gaane load ho rahe hain...</div>
   <ul class="song-list" id="songList"></ul>
 
+  <!-- Bottom Player Bar -->
   <div class="player-bar" id="playerBar">
     <div class="player-top">
       <img id="playerCover" class="player-thumb" src="" alt="Cover">
@@ -422,12 +415,13 @@
 
   <audio id="audioElement"></audio>
 
+  <!-- Login Modal -->
   <div class="modal-overlay" id="authModal">
     <div class="modal-box">
       <button class="modal-close" onclick="closeAuthModal()">✕</button>
       <div class="modal-title">User Account</div>
       <input type="text" id="userNameInput" class="modal-input" placeholder="Apna Naam Daalein">
-      <input type="tel" id="userPhoneInput" class="modal-input" placeholder="Mobile Number">
+      <input type="tel" id="userPhoneInput" class="modal-input" placeholder="Mobile Number (Optional)">
       <button class="modal-btn" onclick="saveUserProfile()">Save & Login</button>
     </div>
   </div>
@@ -435,10 +429,40 @@
   <script>
     const MONETAG_AD_URL = "https://omg10.com/4/11936214";
     let songSwitchCounter = 0;
-    const DB_URL = "https://rk-music-point-default-rtdb.firebaseio.com/songs.json";
+
+    // Built-in Trending Lo-Fi & Chill Songs
+    const defaultLoFiSongs = [
+      {
+        title: "Kesariya (Lo-Fi Chill Mix)",
+        artist: "Arijit Singh • Lo-Fi Beats",
+        coverUrl: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=300",
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+        ytId: ""
+      },
+      {
+        title: "Raataan Lambiyan (Midnight Lo-Fi)",
+        artist: "Jubin Nautiyal • Acoustic Vibe",
+        coverUrl: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300",
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+        ytId: ""
+      },
+      {
+        title: "Apna Bana Le (Lo-Fi Slowed & Reverb)",
+        artist: "Arijit Singh • Romantic Mood",
+        coverUrl: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300",
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+        ytId: ""
+      },
+      {
+        title: "Shayad (Chillout Lo-Fi Vibes)",
+        artist: "Pritam, Arijit Singh",
+        coverUrl: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300",
+        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+        ytId: ""
+      }
+    ];
 
     const songListEl = document.getElementById('songList');
-    const loaderEl = document.getElementById('loader');
     const audio = document.getElementById('audioElement');
     const playerBar = document.getElementById('playerBar');
     const playerCover = document.getElementById('playerCover');
@@ -456,13 +480,13 @@
     const tabHistory = document.getElementById('tabHistory');
     const clearHistBtn = document.getElementById('clearHistBtn');
 
-    let allSongs = [];
-    let displayedSongs = [];
+    let allSongs = [...defaultLoFiSongs];
+    let displayedSongs = [...allSongs];
     let songHistory = [];
     let activeTab = 'all';
     let currentSongIndex = -1;
 
-    // Load History safely
+    // Load History
     function loadSavedHistory() {
       try {
         const saved = localStorage.getItem('rk_song_history');
@@ -473,19 +497,20 @@
     }
     loadSavedHistory();
 
+    // Save song in history
     function addToHistory(item) {
       if (!item || !item.title) return;
       songHistory = songHistory.filter(s => s.title !== item.title);
       songHistory.unshift({
         title: item.title,
-        artist: item.artist || 'Unknown',
+        artist: item.artist || 'Lo-Fi Chill',
         url: item.url || '',
         coverUrl: item.coverUrl || 'https://via.placeholder.com/150',
         isYT: !!item.isYT,
         ytId: item.ytId || '',
         playedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       });
-      if (songHistory.length > 30) songHistory.pop();
+      if (songHistory.length > 35) songHistory.pop();
       try {
         localStorage.setItem('rk_song_history', JSON.stringify(songHistory));
       } catch(e) {}
@@ -493,7 +518,7 @@
     }
 
     function clearHistory() {
-      if (confirm("Kya aap poori history delete karna chahte hain?")) {
+      if (confirm("Kya aap poori song history delete karna chahte hain?")) {
         songHistory = [];
         localStorage.removeItem('rk_song_history');
         renderHistoryList();
@@ -515,29 +540,27 @@
       }
     }
 
-    // Load Songs with Fallback
-    fetch(DB_URL)
+    // Try loading Firebase Songs if available, else keep default
+    fetch("https://rk-music-point-default-rtdb.firebaseio.com/songs.json")
       .then(res => res.json())
       .then(data => {
-        loaderEl.style.display = 'none';
         if (data) {
-          allSongs = Array.isArray(data) ? data.filter(Boolean) : Object.values(data);
-          displayedSongs = [...allSongs];
-        } else {
-          allSongs = [];
-          displayedSongs = [];
+          const fbSongs = Array.isArray(data) ? data.filter(Boolean) : Object.values(data);
+          if (fbSongs.length > 0) {
+            allSongs = [...fbSongs, ...defaultLoFiSongs];
+            displayedSongs = [...allSongs];
+            if (activeTab === 'all') renderSongList();
+          }
         }
-        if (activeTab === 'all') renderSongList();
       })
-      .catch(err => {
-        console.error(err);
-        loaderEl.innerText = "Gaane load nahi ho sake. Please refresh karein.";
+      .catch(() => {
+        // Fallback to default list silently
       });
 
     function renderSongList() {
       songListEl.innerHTML = '';
       if (displayedSongs.length === 0) {
-        songListEl.innerHTML = '<li style="text-align:center; color:#777; margin-top:20px;">Koi gaana uplabdh nahi hai</li>';
+        songListEl.innerHTML = '<li style="text-align:center; color:#777; margin-top:20px;">Koi gaana match nahi hua</li>';
         return;
       }
 
@@ -553,7 +576,7 @@
           <img src="${song.coverUrl || 'https://via.placeholder.com/150'}" alt="cover">
           <div class="song-info">
             <div class="song-title ${isCurrent ? 'active' : ''}">${song.title || 'Untitled'}</div>
-            <div class="song-artist">${song.artist || 'Unknown'}</div>
+            <div class="song-artist">${song.artist || 'Lo-Fi Chill'}</div>
           </div>
           <div class="play-btn-icon ${isCurrent ? 'active' : ''}">
             <i class="fas ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>
@@ -566,7 +589,7 @@
     function renderHistoryList() {
       songListEl.innerHTML = '';
       if (songHistory.length === 0) {
-        songListEl.innerHTML = '<li style="text-align:center; color:#777; margin-top:30px;">Abhi tak koi gaana nahi suna gaya.<br><small style="color:#555;">Gaane sunne ke baad yahan record hoga.</small></li>';
+        songListEl.innerHTML = '<li style="text-align:center; color:#777; margin-top:30px;">Abhi tak koi gaana nahi suna gaya.<br><small style="color:#555;">Gaane sunne ke baad yahan record save hoga.</small></li>';
         return;
       }
 
@@ -579,7 +602,7 @@
           <img src="${song.coverUrl || 'https://via.placeholder.com/150'}" alt="cover">
           <div class="song-info">
             <div class="song-title">${song.title || 'Untitled'}</div>
-            <div class="song-artist">${song.artist || 'Unknown'} • <span style="color:#1db954;">${song.playedAt || ''}</span></div>
+            <div class="song-artist">${song.artist || 'Lo-Fi Chill'} • <span style="color:#1db954;">${song.playedAt || ''}</span></div>
           </div>
           <div class="play-btn-icon">
             <i class="fas fa-play"></i>
@@ -593,6 +616,22 @@
       songSwitchCounter++;
       if (songSwitchCounter % 2 === 0) {
         window.open(MONETAG_AD_URL, '_blank');
+      }
+    }
+
+    // Background playback support via MediaSession
+    function setupMediaSession(title, artist, artwork) {
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: title,
+          artist: artist,
+          artwork: [{ src: artwork, sizes: '512x512', type: 'image/png' }]
+        });
+
+        navigator.mediaSession.setActionHandler('play', () => { togglePlay(); });
+        navigator.mediaSession.setActionHandler('pause', () => { togglePlay(); });
+        navigator.mediaSession.setActionHandler('previoustrack', () => { prevSong(); });
+        navigator.mediaSession.setActionHandler('nexttrack', () => { nextSong(); });
       }
     }
 
@@ -616,9 +655,10 @@
 
       playerCover.src = song.coverUrl || 'https://via.placeholder.com/150';
       playerTitle.innerText = song.title || 'Untitled';
-      playerArtist.innerText = song.artist || 'Unknown';
+      playerArtist.innerText = song.artist || 'Lo-Fi Chill';
       playerBar.classList.add('visible');
 
+      setupMediaSession(song.title, song.artist, song.coverUrl);
       updateButtonState(true);
       if (activeTab === 'all') renderSongList();
     }
@@ -636,161 +676,12 @@
 
         playerCover.src = item.coverUrl || 'https://via.placeholder.com/150';
         playerTitle.innerText = item.title || 'Untitled';
-        playerArtist.innerText = item.artist || 'Unknown';
+        playerArtist.innerText = item.artist || 'Lo-Fi Chill';
         playerBar.classList.add('visible');
 
+        setupMediaSession(item.title, item.artist, item.coverUrl);
         updateButtonState(true);
       }
     }
 
-    // Extraction function for any YouTube URL format (including ?si=...)
-    function extractYouTubeId(url) {
-      if (!url) return "";
-      url = url.trim();
-      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-      const match = url.match(regExp);
-      if (match && match[2].length === 11) {
-        return match[2];
-      }
-      if (url.length === 11) {
-        return url;
-      }
-      return "";
-    }
-
-    function playYouTube() {
-      const input = document.getElementById('ytInput').value;
-      const videoId = extractYouTubeId(input);
-
-      if (!videoId) {
-        alert("Kripya sahi YouTube link daalein!");
-        return;
-      }
-      playYouTubeWithId(videoId, "YouTube Track (" + videoId + ")");
-    }
-
-    function playYouTubeWithId(videoId, titleName) {
-      audio.pause();
-      playerBar.classList.remove('visible');
-
-      addToHistory({
-        title: titleName,
-        artist: "YouTube Stream",
-        url: "",
-        coverUrl: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
-        isYT: true,
-        ytId: videoId
-      });
-
-      ytWrapper.innerHTML = `
-        <iframe 
-          src="https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-          allowfullscreen>
-        </iframe>
-      `;
-      ytContainer.classList.add('active');
-      triggerAdCheck();
-    }
-
-    function closeYT() {
-      ytWrapper.innerHTML = '';
-      ytContainer.classList.remove('active');
-    }
-
-    function togglePlay() {
-      if (audio.paused) {
-        audio.play();
-        updateButtonState(true);
-      } else {
-        audio.pause();
-        updateButtonState(false);
-      }
-      if (activeTab === 'all') renderSongList();
-    }
-
-    function prevSong() {
-      if (currentSongIndex > 0) selectSong(currentSongIndex - 1);
-    }
-
-    function nextSong() {
-      if (currentSongIndex + 1 < displayedSongs.length) selectSong(currentSongIndex + 1);
-    }
-
-    function updateButtonState(isPlaying) {
-      toggleBtn.innerHTML = `<i class="fas ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>`;
-    }
-
-    audio.ontimeupdate = () => {
-      if (!isNaN(audio.duration)) {
-        seekBar.value = (audio.currentTime / audio.duration) * 100;
-        currentTimeEl.innerText = formatTime(audio.currentTime);
-        durationTimeEl.innerText = formatTime(audio.duration);
-      }
-    };
-
-    function seekAudio(value) {
-      if (!isNaN(audio.duration)) {
-        audio.currentTime = (value / 100) * audio.duration;
-      }
-    }
-
-    function formatTime(sec) {
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60);
-      return `${m}:${s < 10 ? '0' : ''}${s}`;
-    }
-
-    function filterSongs() {
-      const q = searchInput.value.toLowerCase();
-      displayedSongs = allSongs.filter(s => 
-        (s.title && s.title.toLowerCase().includes(q)) || 
-        (s.artist && s.artist.toLowerCase().includes(q))
-      );
-      if (activeTab === 'all') renderSongList();
-    }
-
-    audio.onended = () => { nextSong(); };
-
-    // Login Modal
-    function openAuthModal() {
-      const saved = localStorage.getItem("rk_user");
-      if (saved) {
-        if (confirm(saved + " ke roop me login hain. Logout karein?")) {
-          localStorage.removeItem("rk_user");
-          checkUserStatus();
-        }
-      } else {
-        document.getElementById('authModal').classList.add('active');
-      }
-    }
-
-    function closeAuthModal() {
-      document.getElementById('authModal').classList.remove('active');
-    }
-
-    function saveUserProfile() {
-      const name = document.getElementById('userNameInput').value.trim();
-      if (!name) return alert("Apna naam daalein!");
-      localStorage.setItem("rk_user", name);
-      closeAuthModal();
-      checkUserStatus();
-    }
-
-    function checkUserStatus() {
-      const saved = localStorage.getItem("rk_user");
-      if (saved) {
-        authBtn.innerHTML = `<i class="fas fa-user-check"></i> ${saved.split(' ')[0]}`;
-        authBtn.style.color = '#fff';
-        authBtn.style.background = '#1db954';
-      } else {
-        authBtn.innerHTML = `<i class="fas fa-user"></i> Login`;
-        authBtn.style.color = '#1db954';
-        authBtn.style.background = '#242424';
-      }
-    }
-
-    checkUserStatus();
-  </script>
-</body>
-</html>
+    // Extract any YouTube 
