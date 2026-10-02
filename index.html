@@ -33,6 +33,9 @@ header{padding:8px 12px;background:#181818;display:flex;justify-content:space-be
 .modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:100;padding:10px;}
 .modal.act{display:flex;}
 .m-box{background:#1e1e1e;border-radius:8px;padding:14px;width:100%;max-width:290px;position:relative;text-align:center;}
+.auth-t{display:flex;gap:4px;margin-bottom:8px;}
+.atb{flex:1;background:#2a2a2a;color:#aaa;border:none;padding:5px;border-radius:4px;font-size:11px;font-weight:bold;cursor:pointer;}
+.atb.act{background:#1db954;color:#000;}
 </style>
 </head>
 <body>
@@ -82,10 +85,26 @@ header{padding:8px 12px;background:#181818;display:flex;justify-content:space-be
 </div></div>
 <div class="modal" id="logM"><div class="m-box">
 <button onclick="closeLog()" style="position:absolute;top:6px;right:8px;background:none;border:none;color:#888;cursor:pointer;">✕</button>
-<h3 style="font-size:13px;margin-bottom:6px;">User Login</h3>
+<div class="auth-t">
+<button id="tbO" class="atb act" onclick="setAuth('otp')">SMS OTP</button>
+<button id="tbP" class="atb" onclick="setAuth('pass')">Password</button>
+</div>
+<div id="secO">
 <input type="text" id="uN" class="inp" style="margin-bottom:5px;" placeholder="Naam">
-<input type="tel" id="uP" class="inp" style="margin-bottom:7px;" placeholder="Mobile Number (10 Digit)">
-<button onclick="saveU()" style="width:100%;padding:7px;border-radius:4px;border:none;background:#1db954;font-weight:bold;cursor:pointer;">Save Account</button>
+<input type="tel" id="uP" class="inp" style="margin-bottom:5px;" placeholder="Mobile Number (10 Digit)">
+<div id="rc-box"></div>
+<button id="btnO" onclick="sendOtp()" style="width:100%;padding:7px;border-radius:4px;border:none;background:#1db954;font-weight:bold;cursor:pointer;">Send OTP</button>
+<div id="vBox" style="display:none;margin-top:5px;">
+<input type="number" id="oInp" class="inp" style="margin-bottom:5px;" placeholder="6-digit OTP">
+<input type="password" id="sPass" class="inp" style="margin-bottom:5px;" placeholder="Password Banayein">
+<button onclick="verOtp()" style="width:100%;padding:7px;border-radius:4px;border:none;background:#ffca28;color:#000;font-weight:bold;cursor:pointer;">Verify & Save</button>
+</div>
+</div>
+<div id="secP" style="display:none;">
+<input type="tel" id="pP" class="inp" style="margin-bottom:5px;" placeholder="Mobile Number">
+<input type="password" id="pPwd" class="inp" style="margin-bottom:6px;" placeholder="Password">
+<button onclick="logPass()" style="width:100%;padding:7px;border-radius:4px;border:none;background:#1db954;font-weight:bold;cursor:pointer;">Login</button>
+</div>
 </div></div>
 <div class="modal" id="wM"><div class="m-box">
 <button onclick="closeW()" style="position:absolute;top:6px;right:8px;background:none;border:none;color:#888;cursor:pointer;">✕</button>
@@ -99,11 +118,12 @@ header{padding:8px 12px;background:#181818;display:flex;justify-content:space-be
 <button onclick="reqW()" style="width:100%;padding:7px;border-radius:4px;border:none;background:#1db954;font-weight:bold;cursor:pointer;">Nikashi Bhejein</button>
 </div></div>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
 firebase.initializeApp({databaseURL:"https://rk-music-point-default-rtdb.firebaseio.com"});
-var db=firebase.database(),songs=[
+var db=firebase.database(),auth=firebase.auth(),songs=[
 {t:"Tum Hi Ho - LoFi",a:"Arijit Singh",id:"jc886ZiQHtY"},
 {t:"Sunn Raha Hai Na Tu",a:"Ankit Tiwari",id:"heui5PvDGfU"},
 {t:"Chahun Main Ya Naa",a:"Arijit, Palak",id:"y692c_Z-U34"},
@@ -118,7 +138,7 @@ var db=firebase.database(),songs=[
 {t:"Kesariya - LoFi Flip",a:"Arijit Singh",id:"feQH573pdXU"},
 {t:"Raataan Lambiyan - Chill",a:"Jubin Nautiyal",id:"BddP6PYo2gs"}
 ];
-var curU=JSON.parse(localStorage.getItem('rk_u')||"null"),userC=0,hist=JSON.parse(localStorage.getItem('rk_h')||"[]"),dispS=songs.slice(),curTab='all',ytP=null,curT=null,done=false,ads=0;
+var curU=JSON.parse(localStorage.getItem('rk_u')||"null"),userC=0,hist=JSON.parse(localStorage.getItem('rk_h')||"[]"),dispS=songs.slice(),curTab='all',ytP=null,curT=null,done=false,ads=0,cRes=null,recaptcha=null;
 function getRef(){return new URLSearchParams(location.search).get('ref');}
 function initU(){
 if(curU&&curU.p){
@@ -136,18 +156,44 @@ if(curU&&curU.p){localStorage.setItem('rk_c_'+curU.p,userC);db.ref('users/'+curU
 }
 function showM(m){document.getElementById('mTxt').innerText=m;document.getElementById('msgM').className='modal act';}
 function closeM(){document.getElementById('msgM').className='modal';}
-function openLog(){if(curU&&confirm("Logout karein?")){localStorage.removeItem('rk_u');location.reload();}else document.getElementById('logM').className='modal act';}
+function openLog(){
+if(curU&&confirm("Logout karein?")){localStorage.removeItem('rk_u');location.reload();}
+else{document.getElementById('logM').className='modal act';if(!recaptcha)recaptcha=new firebase.auth.RecaptchaVerifier('rc-box',{'size':'invisible'});}
+}
 function closeLog(){document.getElementById('logM').className='modal';}
-function saveU(){
-var n=document.getElementById('uN').value.trim(),p=document.getElementById('uP').value.trim().replace(/\D/g,'');
-if(!n||p.length<10)return alert("Sahi Naam aur 10-digit number daalein!");
-curU={n:n,p:p};localStorage.setItem('rk_u',JSON.stringify(curU));closeLog();
-var r=getRef();
-db.ref('users/'+p).once('value').then(function(s){
+function setAuth(m){
+document.getElementById('tbO').className='atb '+(m==='otp'?'act':'');document.getElementById('tbP').className='atb '+(m==='pass'?'act':'');
+document.getElementById('secO').style.display=m==='otp'?'block':'none';document.getElementById('secP').style.display=m==='pass'?'block':'none';
+}
+function sendOtp(){
+var p=document.getElementById('uP').value.trim().replace(/\D/g,'');
+if(p.length<10)return alert("10-digit number daalein!");
+if(!recaptcha)recaptcha=new firebase.auth.RecaptchaVerifier('rc-box',{'size':'invisible'});
+document.getElementById('btnO').innerText="Sending...";
+auth.signInWithPhoneNumber("+91"+p,recaptcha).then(function(r){
+cRes=r;document.getElementById('btnO').style.display='none';document.getElementById('vBox').style.display='block';alert("SMS OTP bhej diya gaya hai!");
+}).catch(function(e){alert("Error: "+e.message);document.getElementById('btnO').innerText="Send OTP";});
+}
+function verOtp(){
+var code=document.getElementById('oInp').value.trim(),pwd=document.getElementById('sPass').value.trim(),name=document.getElementById('uN').value.trim()||"User",phone=document.getElementById('uP').value.trim().replace(/\D/g,'');
+if(code.length<6||pwd.length<4)return alert("6-digit OTP aur 4+ akshar ka password daalein!");
+cRes.confirm(code).then(function(){
+curU={n:name,p:phone};localStorage.setItem('rk_u',JSON.stringify(curU));closeLog();
+var ref=getRef();
+db.ref('users/'+phone).once('value').then(function(s){
 if(!s.exists()){
-var ic=0;if(r&&r!==p&&r.length>=10){ic=50;db.ref('users/'+r+'/coins').transaction(function(c){return(c||0)+100;});db.ref('referrals').push({by:r,to:p,time:new Date().toLocaleString()});showM("Referral se judne par +50 Coins bonus mile!");}else showM("Swagat hai "+n+"!");
-userC=ic;db.ref('users/'+p).set({name:n,coins:userC});localStorage.setItem('rk_c_'+p,userC);upBal();
-}else{initU();showM("Welcome back "+n+"!");}
+var ic=0;if(ref&&ref!==phone&&ref.length>=10){ic=50;db.ref('users/'+ref+'/coins').transaction(function(c){return(c||0)+100;});db.ref('referrals').push({by:ref,to:phone,time:new Date().toLocaleString()});showM("Referral se judne par +50 Coins bonus mile!");}else showM("Swagat hai "+name+"!");
+userC=ic;db.ref('users/'+phone).set({name:name,pass:pwd,coins:userC});localStorage.setItem('rk_c_'+phone,userC);upBal();
+}else{db.ref('users/'+phone).update({name:name,pass:pwd});initU();showM("Password update ho gaya!");}
+});
+}).catch(function(){alert("Galat OTP!");});
+}
+function logPass(){
+var p=document.getElementById('pP').value.trim().replace(/\D/g,''),pwd=document.getElementById('pPwd').value.trim();
+if(p.length<10||!pwd)return alert("Number aur Password bharein!");
+db.ref('users/'+p).once('value').then(function(s){
+if(s.exists()&&s.val().pass===pwd){curU={n:s.val().name||"User",p:p};localStorage.setItem('rk_u',JSON.stringify(curU));closeLog();initU();showM("Login safal! Welcome "+curU.n);}
+else alert("Galat details! Agar password nahi banaya to SMS OTP se karein.");
 });
 }
 function openRef(){
