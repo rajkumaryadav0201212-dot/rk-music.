@@ -59,6 +59,8 @@ header{padding:8px 12px;background:#181818;display:flex;justify-content:space-be
 <a href="https://omg10.com/4/11936214" target="_blank" class="ad">🔥 Special Bonus Rewards (Tap Here)</a>
 <div id="sList"></div>
 
+<audio id="bgAud" loop playsinline src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA"></audio>
+
 <div class="modal" id="msgM"><div class="m-box">
 <h3 style="color:#1db954;font-size:13px;margin-bottom:4px;">Rk Music Point 🎧</h3>
 <p id="mTxt" style="font-size:11px;color:#ddd;margin-bottom:8px;"></p>
@@ -114,6 +116,7 @@ var songs=[
 {t:"Raataan Lambiyan - Chill",a:"Jubin Nautiyal",id:"BddP6PYo2gs"}
 ];
 var curU=JSON.parse(localStorage.getItem('rk_u')||"null"),userC=0,hist=JSON.parse(localStorage.getItem('rk_h')||"[]"),dispS=songs.slice(),curTab='all',ytP=null,curT=null,done=false,ads=0,db=null;
+var bgAud=document.getElementById('bgAud');
 try{firebase.initializeApp({databaseURL:"https://rk-music-point-default-rtdb.firebaseio.com"});db=firebase.database();}catch(e){}
 
 function getRef(){return new URLSearchParams(location.search).get('ref');}
@@ -150,6 +153,7 @@ userC=ic;db.ref('users/'+p).set({name:n,pass:pwd,coins:userC});localStorage.setI
 function openRef(){if(!curU){alert("Pehle Login karein!");openLog();return;}document.getElementById('rLink').innerText=location.origin+location.pathname+"?ref="+curU.p;document.getElementById('refM').className='modal act';}
 function closeRef(){document.getElementById('refM').className='modal';}
 function shareWA(){var t=encodeURIComponent("🎧 Rk Music Point par gaana suno aur Real Cash kamao! 💰 Join bonus +50 Coins: "+location.origin+location.pathname+"?ref="+curU.p);window.open("https://api.whatsapp.com/send?text="+t,'_blank');}
+
 function render(){
 var el=document.getElementById('sList');el.innerHTML='';
 if(curTab==='all'){
@@ -167,6 +171,22 @@ el.appendChild(d);
 });
 }
 }
+
+function setMediaSession(s){
+if('mediaSession' in navigator){
+navigator.mediaSession.metadata=new MediaMetadata({title:s.t,artist:s.a||"Rk Music Point",artwork:[{src:'https://img.youtube.com/vi/'+s.id+'/hqdefault.jpg',sizes:'512x512',type:'image/jpeg'}]});
+navigator.mediaSession.setActionHandler('play',function(){if(ytP&&ytP.playVideo)ytP.playVideo();bgAud.play().catch(function(){});});
+navigator.mediaSession.setActionHandler('pause',function(){if(ytP&&ytP.pauseVideo)ytP.pauseVideo();bgAud.pause();});
+}
+}
+
+document.addEventListener("visibilitychange",function(){
+if(document.hidden&&ytP&&curT){
+bgAud.play().catch(function(){});
+setTimeout(function(){if(ytP&&ytP.playVideo)ytP.playVideo();},150);
+}
+});
+
 function onYouTubeIframeAPIReady(){}
 function playS(s){
 ads++;if(ads%2===0)window.open("https://omg10.com/4/11936214",'_blank');
@@ -176,14 +196,22 @@ if(hist.length>25)hist.pop();localStorage.setItem('rk_h',JSON.stringify(hist));
 document.getElementById('pTitle').innerText='▶ '+s.t;
 document.getElementById('ytBox').style.display='block';
 document.getElementById('vHold').innerHTML='<div id="activeYT"></div>';
+setMediaSession(s);
+bgAud.play().catch(function(){});
 ytP=new YT.Player('activeYT',{
 height:'100%',width:'100%',videoId:s.id,playerVars:{autoplay:1,playsinline:1,rel:0},
-events:{'onStateChange':function(e){if(e.data===0&&!done&&curT){done=true;userC+=5;upBal();showM('Mubarak! "'+curT.t+'" par +5 Coins mile!');}}}
+events:{
+'onStateChange':function(e){
+if(e.data===1)bgAud.play().catch(function(){});
+if(e.data===2)bgAud.pause();
+if(e.data===0&&!done&&curT){done=true;userC+=5;upBal();showM('Mubarak! "'+curT.t+'" par +5 Coins mile!');}
+}
+}
 });
 document.getElementById('ytBox').scrollIntoView({behavior:'smooth'});
 if(curTab==='hist')render();
 }
-function closeP(){if(ytP&&ytP.stopVideo)ytP.stopVideo();document.getElementById('vHold').innerHTML='';document.getElementById('ytBox').style.display='none';}
+function closeP(){if(ytP&&ytP.stopVideo)ytP.stopVideo();bgAud.pause();document.getElementById('vHold').innerHTML='';document.getElementById('ytBox').style.display='none';}
 function playCustom(){
 var v=document.getElementById('ytInp').value.trim();if(!v)return alert('Link daalein!');
 var id=v.indexOf('youtu.be/')!==-1?v.split('youtu.be/')[1].split('?')[0]:(v.indexOf('v=')!==-1?v.split('v=')[1].split('&')[0]:v);
