@@ -2,119 +2,115 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rk Music Point - Listen & Earn</title>
+  <title>Rk Music Point 🎧</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     *{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif;-webkit-tap-highlight-color:transparent;}
     body{background:#121212;color:#fff;padding-bottom:140px;}
-    header{padding:12px 16px;background:#181818;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #282828;position:sticky;top:0;z-index:10;}
-    .logo{font-size:16px;font-weight:bold;color:#1db954;}
-    .head-right{display:flex;align-items:center;gap:8px;}
-    .u-btn{background:#242424;color:#1db954;border:1px solid #333;padding:5px 10px;border-radius:16px;font-size:11px;font-weight:bold;cursor:pointer;}
-    .w-btn{background:#242424;color:#ffca28;border:1px solid #444;padding:5px 10px;border-radius:16px;font-size:12px;font-weight:bold;cursor:pointer;}
-    .card{margin:10px 16px;padding:12px;background:linear-gradient(135deg,#1e3c72,#2a5298);border-radius:8px;display:flex;justify-content:space-between;align-items:center;}
-    .ad-btn{display:block;margin:10px 16px;padding:10px;background:linear-gradient(45deg,#ff416c,#ff4b2b);color:#fff;text-align:center;text-decoration:none;font-weight:bold;font-size:12px;border-radius:8px;}
-    .search-box{padding:8px 16px;display:flex;flex-direction:column;gap:6px;}
-    .inp{width:100%;padding:9px 12px;border-radius:6px;border:1px solid #333;background:#242424;color:#fff;font-size:13px;outline:none;}
-    .yt-box{display:flex;gap:6px;}
-    .yt-btn{background:#ff0000;color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:bold;cursor:pointer;white-space:nowrap;}
-    .tab-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-bottom:1px solid #222;}
-    .tab-btn{background:none;border:none;color:#777;font-size:13px;font-weight:bold;padding:6px 10px;border-radius:12px;cursor:pointer;}
-    .tab-btn.active{background:#252525;color:#1db954;}
-    .song-list{list-style:none;padding:6px 16px;}
-    .song-item{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid #1a1a1a;cursor:pointer;}
-    .song-item img{width:50px;height:50px;border-radius:6px;object-fit:cover;margin-right:12px;background:#242424;}
-    .song-info{flex:1;overflow:hidden;}
-    .song-title{font-size:13px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .song-tag{display:inline-block;background:#2e7d32;color:#fff;font-size:10px;padding:2px 5px;border-radius:4px;margin-top:3px;}
-    .yt-view{display:none;margin:10px 16px;background:#000;border-radius:8px;overflow:hidden;position:relative;}
-    .yt-header{padding:8px 10px;background:#1a1a1a;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#1db954;}
-    .yt-wrap{position:relative;padding-bottom:56.25%;height:0;}
-    .yt-wrap div, .yt-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
-    .modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:100;padding:16px;}
-    .modal.active{display:flex;}
-    .modal-box{background:#1e1e1e;border-radius:10px;padding:18px;width:100%;max-width:320px;position:relative;}
+    header{padding:10px 14px;background:#181818;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;border-bottom:1px solid #282828;}
+    .logo{font-size:15px;font-weight:bold;color:#1db954;}
+    .hr{display:flex;align-items:center;gap:5px;}
+    .btn-r{background:#25d366;color:#000;border:none;padding:5px 8px;border-radius:14px;font-size:11px;font-weight:bold;cursor:pointer;}
+    .btn-u{background:#242424;color:#1db954;border:1px solid #333;padding:5px 8px;border-radius:14px;font-size:11px;font-weight:bold;cursor:pointer;}
+    .btn-w{background:#242424;color:#ffca28;border:1px solid #444;padding:5px 8px;border-radius:14px;font-size:11px;font-weight:bold;cursor:pointer;}
+    .c-box{margin:8px 14px;padding:10px;background:linear-gradient(135deg,#1e3c72,#2a5298);border-radius:8px;display:flex;justify-content:space-between;align-items:center;}
+    .ad{display:block;margin:8px 14px;padding:9px;background:linear-gradient(45deg,#ff416c,#ff4b2b);color:#fff;text-align:center;text-decoration:none;font-weight:bold;font-size:11px;border-radius:6px;}
+    .s-box{padding:6px 14px;display:flex;flex-direction:column;gap:5px;}
+    .inp{width:100%;padding:8px 10px;border-radius:6px;border:1px solid #333;background:#242424;color:#fff;font-size:12px;outline:none;}
+    .t-bar{display:flex;justify-content:space-between;padding:6px 14px;border-bottom:1px solid #222;}
+    .tb{background:none;border:none;color:#777;font-size:12px;font-weight:bold;padding:5px 8px;border-radius:10px;cursor:pointer;}
+    .tb.act{background:#252525;color:#1db954;}
+    .s-list{list-style:none;padding:4px 14px;}
+    .s-item{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid #1a1a1a;cursor:pointer;}
+    .s-item img{width:46px;height:46px;border-radius:6px;object-fit:cover;margin-right:10px;background:#222;}
+    .s-info{flex:1;overflow:hidden;}
+    .s-title{font-size:12px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .s-tag{display:inline-block;background:#2e7d32;color:#fff;font-size:9px;padding:1px 4px;border-radius:3px;margin-top:2px;}
+    .yt-v{display:none;margin:8px 14px;background:#000;border-radius:6px;overflow:hidden;position:relative;}
+    .yt-h{padding:6px 8px;background:#1a1a1a;display:flex;justify-content:space-between;font-size:11px;color:#1db954;}
+    .yt-w{position:relative;padding-bottom:56.25%;height:0;}
+    .yt-w div{position:absolute;top:0;left:0;width:100%;height:100%;}
+    .modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:100;padding:14px;}
+    .modal.act{display:flex;}
+    .m-box{background:#1e1e1e;border-radius:8px;padding:16px;width:100%;max-width:300px;position:relative;text-align:center;}
   </style>
 </head>
 <body>
   <header>
     <div class="logo">Rk Music Point 🎧</div>
-    <div class="head-right">
-      <button class="u-btn" id="userBtn" onclick="openLogin()"><i class="fas fa-user"></i> Login</button>
-      <button class="w-btn" onclick="openWallet()"><i class="fas fa-coins"></i> <span id="hBal">₹0.00</span></button>
+    <div class="hr">
+      <button class="btn-r" onclick="openRef()"><i class="fab fa-whatsapp"></i> Refer</button>
+      <button class="btn-u" id="uBtn" onclick="openLog()"><i class="fas fa-user"></i> Login</button>
+      <button class="btn-w" onclick="openW()"><i class="fas fa-coins"></i> <span id="hBal">₹0.00</span></button>
     </div>
   </header>
 
-  <div class="card">
-    <div><h4 style="font-size:13px;">Suney Aur Kamayein 💰</h4><p style="font-size:10px;color:#ddd;">1 Poora Gaana = 5 Coins (100 Coins = ₹1)</p></div>
-    <button style="background:#ffca28;border:none;padding:6px 12px;border-radius:5px;font-weight:bold;font-size:11px;cursor:pointer;" onclick="openWallet()">Withdraw</button>
+  <div class="c-box">
+    <div><h4 style="font-size:12px;">Suney Aur Kamayein 💰</h4><p style="font-size:9px;color:#ddd;">1 Song = 5 Coins | 1 Refer = 100 Coins (₹1)</p></div>
+    <button style="background:#ffca28;border:none;padding:5px 10px;border-radius:4px;font-weight:bold;font-size:10px;cursor:pointer;" onclick="openW()">Withdraw</button>
   </div>
 
-  <div class="search-box">
+  <div class="s-box">
     <input type="text" id="sInp" class="inp" placeholder="Gaana ya singer khojein..." onkeyup="filterSongs()">
-    <div class="yt-box">
+    <div style="display:flex;gap:5px;">
       <input type="text" id="ytInp" class="inp" placeholder="YouTube Link ya ID...">
-      <button class="yt-btn" onclick="playCustom()"><i class="fab fa-youtube"></i> Play</button>
+      <button onclick="playCustom()" style="background:#ff0000;color:#fff;border:none;padding:7px 12px;border-radius:6px;font-size:11px;font-weight:bold;cursor:pointer;">Play</button>
     </div>
   </div>
 
-  <div id="ytBox" class="yt-view">
-    <div class="yt-header">
-      <span id="pTitle">Playing...</span>
-      <button onclick="closePlayer()" style="background:none;border:none;color:#fff;font-size:16px;cursor:pointer;">✕</button>
-    </div>
-    <div class="yt-wrap">
-      <div id="pElement"></div>
-    </div>
+  <div id="ytBox" class="yt-v">
+    <div class="yt-h"><span id="pTitle">Playing...</span><button onclick="closeP()" style="background:none;border:none;color:#fff;cursor:pointer;">✕</button></div>
+    <div class="yt-w"><div id="pEl"></div></div>
   </div>
 
-  <div class="tab-bar">
+  <div class="t-bar">
     <div>
-      <button id="tAll" class="tab-btn active" onclick="setTab('all')">Lo-Fi Songs</button>
-      <button id="tHist" class="tab-btn" onclick="setTab('hist')">🕒 History</button>
+      <button id="tA" class="tb act" onclick="setTab('all')">Lo-Fi Songs</button>
+      <button id="tH" class="tb" onclick="setTab('hist')">🕒 History</button>
     </div>
-    <button id="cBtn" style="background:none;border:1px solid #444;color:#888;font-size:10px;padding:3px 6px;border-radius:4px;display:none;cursor:pointer;" onclick="clearHist()">Clear</button>
+    <button id="cB" style="background:none;border:1px solid #444;color:#888;font-size:9px;padding:2px 5px;border-radius:3px;display:none;cursor:pointer;" onclick="clearH()">Clear</button>
   </div>
 
-  <a href="https://omg10.com/4/11936214" target="_blank" class="ad-btn">🔥 Special Bonus Rewards (Tap Here)</a>
-  <ul class="song-list" id="list"></ul>
+  <a href="https://omg10.com/4/11936214" target="_blank" class="ad">🔥 Special Bonus Rewards (Tap Here)</a>
+  <ul class="s-list" id="sList"></ul>
 
-  <!-- Custom Popup (Rk Music Point Name) -->
-  <div class="modal" id="rewardModal">
-    <div class="modal-box" style="text-align:center;">
-      <div style="font-size:36px;margin-bottom:8px;">🎉</div>
-      <h3 style="font-size:16px;color:#1db954;margin-bottom:6px;">Rk Music Point 🎧</h3>
-      <p id="rewardMsg" style="font-size:13px;color:#ddd;line-height:1.5;margin-bottom:14px;"></p>
-      <button onclick="closeReward()" style="width:100%;padding:10px;border-radius:6px;border:none;background:#1db954;color:#000;font-weight:bold;cursor:pointer;">OK, Thank You!</button>
-    </div>
-  </div>
+  <!-- Alert Modal -->
+  <div class="modal" id="msgM"><div class="m-box">
+    <h3 style="color:#1db954;font-size:15px;margin-bottom:6px;">Rk Music Point 🎧</h3>
+    <p id="mTxt" style="font-size:12px;color:#ddd;margin-bottom:12px;"></p>
+    <button onclick="closeM()" style="width:100%;padding:8px;border-radius:5px;border:none;background:#1db954;font-weight:bold;cursor:pointer;">OK</button>
+  </div></div>
+
+  <!-- Refer Modal -->
+  <div class="modal" id="refM"><div class="m-box">
+    <button onclick="closeRef()" style="position:absolute;top:6px;right:8px;background:none;border:none;color:#888;font-size:16px;cursor:pointer;">✕</button>
+    <h3 style="color:#25d366;font-size:14px;margin-bottom:6px;">Refer & Earn 🎁</h3>
+    <p style="font-size:11px;color:#bbb;margin-bottom:8px;">Dost ko bhejein: Aapko <b>100 Coins (₹1)</b>, Dost ko <b>50 Coins</b>!</p>
+    <div id="rLink" style="background:#121212;padding:6px;font-size:10px;color:#ffca28;word-break:break-all;margin-bottom:10px;"></div>
+    <button onclick="shareWA()" style="width:100%;padding:8px;border-radius:5px;border:none;background:#25d366;color:#000;font-weight:bold;font-size:12px;cursor:pointer;"><i class="fab fa-whatsapp"></i> WhatsApp Share</button>
+  </div></div>
 
   <!-- Login Modal -->
-  <div class="modal" id="loginModal">
-    <div class="modal-box">
-      <button onclick="closeLogin()" style="position:absolute;top:8px;right:10px;background:none;border:none;color:#888;font-size:18px;cursor:pointer;">✕</button>
-      <h3 style="font-size:15px;text-align:center;margin-bottom:12px;">User Account</h3>
-      <input type="text" id="uName" class="inp" style="margin-bottom:8px;" placeholder="Apna Naam Daalein">
-      <input type="tel" id="uPhone" class="inp" style="margin-bottom:10px;" placeholder="Mobile Number (10 Digit)">
-      <button onclick="saveUser()" style="width:100%;padding:10px;border-radius:6px;border:none;background:#1db954;font-weight:bold;cursor:pointer;">Login / Save Account</button>
-    </div>
-  </div>
+  <div class="modal" id="logM"><div class="m-box">
+    <button onclick="closeLog()" style="position:absolute;top:6px;right:8px;background:none;border:none;color:#888;font-size:16px;cursor:pointer;">✕</button>
+    <h3 style="font-size:14px;margin-bottom:8px;">User Login</h3>
+    <input type="text" id="uN" class="inp" style="margin-bottom:6px;" placeholder="Naam">
+    <input type="tel" id="uP" class="inp" style="margin-bottom:8px;" placeholder="Mobile Number (10 Digit)">
+    <button onclick="saveU()" style="width:100%;padding:8px;border-radius:5px;border:none;background:#1db954;font-weight:bold;cursor:pointer;">Save Account</button>
+  </div></div>
 
   <!-- Wallet Modal -->
-  <div class="modal" id="wModal">
-    <div class="modal-box">
-      <button onclick="closeWallet()" style="position:absolute;top:8px;right:10px;background:none;border:none;color:#888;font-size:18px;cursor:pointer;">✕</button>
-      <h3 style="font-size:15px;text-align:center;margin-bottom:10px;">Earning Wallet</h3>
-      <div style="background:#121212;padding:10px;border-radius:6px;text-align:center;margin-bottom:12px;">
-        <div style="font-size:22px;font-weight:bold;color:#1db954;" id="wAmt">₹0.00</div>
-        <div style="font-size:11px;color:#ffca28;" id="cAmt">0 Coins</div>
-      </div>
-      <input type="text" id="uId" class="inp" style="margin-bottom:8px;" placeholder="UPI ID (jaise: 9876543210@paytm)">
-      <input type="number" id="wVal" class="inp" style="margin-bottom:10px;" placeholder="Amount (Min ₹10)">
-      <button onclick="reqWithdraw()" style="width:100%;padding:10px;border-radius:6px;border:none;background:#1db954;font-weight:bold;cursor:pointer;">Withdrawal Request Bhejein</button>
-      <p style="font-size:9px;color:#888;text-align:center;margin-top:6px;">24 ghante ke andar UPI par transfer ho jayega.</p>
+  <div class="modal" id="wM"><div class="m-box">
+    <button onclick="closeW()" style="position:absolute;top:6px;right:8px;background:none;border:none;color:#888;font-size:16px;cursor:pointer;">✕</button>
+    <h3 style="font-size:14px;margin-bottom:6px;">Earning Wallet</h3>
+    <div style="background:#121212;padding:8px;border-radius:5px;margin-bottom:8px;">
+      <div style="font-size:20px;font-weight:bold;color:#1db954;" id="wAmt">₹0.00</div>
+      <div style="font-size:10px;color:#ffca28;" id="cAmt">0 Coins</div>
     </div>
-  </div>
+    <input type="text" id="uId" class="inp" style="margin-bottom:6px;" placeholder="UPI ID (jaise: 9876543210@paytm)">
+    <input type="number" id="wVal" class="inp" style="margin-bottom:8px;" placeholder="Amount (Min ₹10)">
+    <button onclick="reqW()" style="width:100%;padding:8px;border-radius:5px;border:none;background:#1db954;font-weight:bold;cursor:pointer;">Nikashi Bhejein</button>
+  </div></div>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -122,209 +118,190 @@
 
   <script>
     firebase.initializeApp({databaseURL:"https://rk-music-point-default-rtdb.firebaseio.com"});
-    var db = firebase.database();
+    var db=firebase.database();
 
-    var songs = [
-      {t:"Tum Hi Ho - LoFi Flip", a:"Arijit Singh (Aashiqui 2)", id:"jc886ZiQHtY"},
-      {t:"Sunn Raha Hai Na Tu - Chill LoFi", a:"Ankit Tiwari / Shreya", id:"heui5PvDGfU"},
-      {t:"Chahun Main Ya Naa - LoFi Reverb", a:"Arijit Singh, Palak", id:"y692c_Z-U34"},
-      {t:"Milne Hai Mujhse Aayi - LoFi Mix", a:"Arijit Singh", id:"tOQfVqA7sSg"},
-      {t:"Piya Aaye Na - Acoustic LoFi", a:"KK, Tulsi Kumar", id:"b_6e8R98w_I"},
-      {t:"Bhula Dena Mujhe - Soul LoFi", a:"Mustafa Zahid", id:"4xDzrJKXOOY"},
-      {t:"Galliyan - Slowed & Reverb", a:"Ankit Tiwari (Ek Villain)", id:"0Z5_oNGEgbs"},
-      {t:"Banjaara - Chill LoFi Flip", a:"Mohd. Irfan (Ek Villain)", id:"5uH2b0w--6g"},
-      {t:"Humdard - Midnight LoFi", a:"Arijit Singh (Ek Villain)", id:"ElZfdU54Cp8"},
-      {t:"Zaroorat - LoFi Acoustic", a:"Mustafa Zahid (Ek Villain)", id:"z3pWe8Hq9uI"},
-      {t:"Humnava - Slowed Reverb", a:"Papon (Hamari Adhuri Kahani)", id:"huk8XmmoZX4"},
-      {t:"Humnava Mere - Chill LoFi", a:"Jubin Nautiyal", id:"eZe4Q_X8VOM"},
-      {t:"Apna Bana Le - Slowed & Reverb", a:"Arijit Singh", id:"ElZfdU54Cp8"},
-      {t:"Kesariya - LoFi Flip", a:"Arijit Singh", id:"feQH573pdXU"},
-      {t:"Raataan Lambiyan - Midnight Chill", a:"Jubin Nautiyal", id:"BddP6PYo2gs"}
+    var songs=[
+      {t:"Tum Hi Ho - LoFi",a:"Arijit Singh (Aashiqui 2)",id:"jc886ZiQHtY"},
+      {t:"Sunn Raha Hai Na Tu",a:"Ankit Tiwari (Aashiqui 2)",id:"heui5PvDGfU"},
+      {t:"Chahun Main Ya Naa",a:"Arijit, Palak (Aashiqui 2)",id:"y692c_Z-U34"},
+      {t:"Milne Hai Mujhse Aayi",a:"Arijit Singh",id:"tOQfVqA7sSg"},
+      {t:"Galliyan - Slowed Reverb",a:"Ankit Tiwari (Ek Villain)",id:"0Z5_oNGEgbs"},
+      {t:"Banjaara - LoFi Flip",a:"Mohd. Irfan (Ek Villain)",id:"5uH2b0w--6g"},
+      {t:"Humdard - Midnight LoFi",a:"Arijit Singh (Ek Villain)",id:"ElZfdU54Cp8"},
+      {t:"Zaroorat - Acoustic LoFi",a:"Mustafa Zahid",id:"z3pWe8Hq9uI"},
+      {t:"Humnava - Slowed Reverb",a:"Papon",id:"huk8XmmoZX4"},
+      {t:"Humnava Mere - Chill",a:"Jubin Nautiyal",id:"eZe4Q_X8VOM"},
+      {t:"Apna Bana Le - Slowed",a:"Arijit Singh",id:"ElZfdU54Cp8"},
+      {t:"Kesariya - LoFi Flip",a:"Arijit Singh",id:"feQH573pdXU"},
+      {t:"Raataan Lambiyan - Chill",a:"Jubin Nautiyal",id:"BddP6PYo2gs"}
     ];
 
-    var curUser = JSON.parse(localStorage.getItem('rk_active_user') || "null");
-    var userCoins = 0;
-    var hist = JSON.parse(localStorage.getItem('rk_h') || "[]");
-    var dispSongs = songs.slice();
-    var curTab = 'all', ytPlayer = null, curTrack = null, completed = false, adCount = 0;
+    var curU=JSON.parse(localStorage.getItem('rk_u')||"null");
+    var userC=0, hist=JSON.parse(localStorage.getItem('rk_h')||"[]");
+    var dispS=songs.slice(), curTab='all', ytP=null, curT=null, done=false, ads=0;
 
-    function initUser() {
-      if (curUser && curUser.phone) {
-        document.getElementById('userBtn').innerHTML = '<i class="fas fa-check-circle"></i> ' + curUser.name.split(' ')[0];
-        document.getElementById('userBtn').style.background = '#1db954';
-        document.getElementById('userBtn').style.color = '#fff';
-        
-        var localBal = localStorage.getItem('rk_coins_' + curUser.phone);
-        userCoins = localBal ? parseInt(localBal) : 0;
-        
-        db.ref('users/' + curUser.phone + '/coins').once('value').then(function(snap) {
-          if (snap.exists()) {
-            userCoins = snap.val();
-            localStorage.setItem('rk_coins_' + curUser.phone, userCoins);
-          }
-          updateBal();
+    function getRef(){return new URLSearchParams(location.search).get('ref');}
+
+    function initU(){
+      if(curU&&curU.p){
+        document.getElementById('uBtn').innerHTML='<i class="fas fa-check-circle"></i> '+curU.n.split(' ')[0];
+        document.getElementById('uBtn').style.background='#1db954';
+        document.getElementById('uBtn').style.color='#fff';
+        userC=parseInt(localStorage.getItem('rk_c_'+curU.p)||"0");
+        db.ref('users/'+curU.p+'/coins').once('value').then(function(s){
+          if(s.exists()){userC=s.val();localStorage.setItem('rk_c_'+curU.p,userC);}
+          upBal();
         });
-      } else {
-        userCoins = parseInt(localStorage.getItem('rk_temp_coins') || "0");
-      }
-      updateBal();
+      }else{userC=parseInt(localStorage.getItem('rk_temp_c')||"0");}
+      upBal();
     }
 
-    function updateBal() {
-      var r = (userCoins / 100).toFixed(2);
-      document.getElementById('hBal').innerText = '₹' + r;
-      document.getElementById('wAmt').innerText = '₹' + r;
-      document.getElementById('cAmt').innerText = userCoins + ' Coins';
-      
-      if (curUser && curUser.phone) {
-        localStorage.setItem('rk_coins_' + curUser.phone, userCoins);
-        db.ref('users/' + curUser.phone).update({ name: curUser.name, coins: userCoins });
-      } else {
-        localStorage.setItem('rk_temp_coins', userCoins);
-      }
+    function upBal(){
+      var r=(userC/100).toFixed(2);
+      document.getElementById('hBal').innerText='₹'+r;
+      document.getElementById('wAmt').innerText='₹'+r;
+      document.getElementById('cAmt').innerText=userC+' Coins';
+      if(curU&&curU.p){
+        localStorage.setItem('rk_c_'+curU.p,userC);
+        db.ref('users/'+curU.p).update({name:curU.n,coins:userC});
+      }else{localStorage.setItem('rk_temp_c',userC);}
     }
 
-    function showReward(msg) {
-      document.getElementById('rewardMsg').innerText = msg;
-      document.getElementById('rewardModal').className = 'modal active';
-    }
-    function closeReward() { document.getElementById('rewardModal').className = 'modal'; }
+    function showM(m){document.getElementById('mTxt').innerText=m;document.getElementById('msgM').className='modal act';}
+    function closeM(){document.getElementById('msgM').className='modal';}
 
-    function openLogin() {
-      if (curUser) {
-        if (confirm("Aap " + curUser.name + " (" + curUser.phone + ") se logged in hain. Logout karein?")) {
-          localStorage.removeItem('rk_active_user');
-          location.reload();
-        }
-      } else {
-        document.getElementById('loginModal').className = 'modal active';
-      }
+    function openLog(){
+      if(curU&&confirm("Logout karein?")){localStorage.removeItem('rk_u');location.reload();}
+      else document.getElementById('logM').className='modal act';
     }
-    function closeLogin() { document.getElementById('loginModal').className = 'modal'; }
+    function closeLog(){document.getElementById('logM').className='modal';}
 
-    function saveUser() {
-      var name = document.getElementById('uName').value.trim();
-      var phone = document.getElementById('uPhone').value.trim().replace(/\D/g, '');
-      if (!name || phone.length < 10) return alert("Sahi Naam aur 10-digit Mobile number bharein!");
-      
-      curUser = { name: name, phone: phone };
-      localStorage.setItem('rk_active_user', JSON.stringify(curUser));
-      closeLogin();
-      initUser();
-      showReward("Swagat hai " + name + "! Aapka account safe save ho gaya hai.");
-    }
+    function saveU(){
+      var n=document.getElementById('uN').value.trim();
+      var p=document.getElementById('uP').value.trim().replace(/\D/g,'');
+      if(!n||p.length<10)return alert("Sahi Naam aur 10-digit number daalein!");
+      curU={n:n,p:p};localStorage.setItem('rk_u',JSON.stringify(curU));
+      closeLog();
 
-    function render() {
-      var el = document.getElementById('list'); el.innerHTML = '';
-      if (curTab === 'all') {
-        dispSongs.forEach(function(s) {
-          var li = document.createElement('li'); li.className = 'song-item';
-          li.onclick = function() { playSong(s); };
-          li.innerHTML = '<img src="https://img.youtube.com/vi/' + s.id + '/hqdefault.jpg" onerror="this.src=\'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100\'"><div class="song-info"><div class="song-title">' + s.t + '</div><div style="font-size:11px;color:#888;">' + s.a + '</div><span class="song-tag">🎁 Pura Suno = +5 Coins</span></div><i class="fas fa-play" style="color:#1db954;padding:8px;"></i>';
-          el.appendChild(li);
-        });
-      } else {
-        if (hist.length === 0) { el.innerHTML = '<li style="text-align:center;padding:25px;color:#666;">Koi history nahi hai.</li>'; return; }
-        hist.forEach(function(h) {
-          var li = document.createElement('li'); li.className = 'song-item';
-          li.onclick = function() { playSong(h); };
-          li.innerHTML = '<img src="https://img.youtube.com/vi/' + h.id + '/hqdefault.jpg" onerror="this.src=\'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100\'"><div class="song-info"><div class="song-title">' + h.t + '</div><div style="font-size:11px;color:#888;">' + (h.time || '') + '</div></div><i class="fas fa-play" style="color:#1db954;padding:8px;"></i>';
-          el.appendChild(li);
-        });
-      }
-    }
-
-    function onYouTubeIframeAPIReady() {
-      ytPlayer = new YT.Player('pElement', {
-        height: '100%', width: '100%',
-        playerVars: { autoplay: 1, playsinline: 1, rel: 0, modestbranding: 1 },
-        events: {
-          'onStateChange': function(e) {
-            if (e.data === 0 && !completed && curTrack) {
-              completed = true;
-              userCoins += 5;
-              updateBal();
-              showReward('Mubarak! "' + curTrack.t + '" poora sunne par +5 Coins add ho gaye!');
-            }
-          }
-        }
+      var r=getRef();
+      db.ref('users/'+p).once('value').then(function(s){
+        if(!s.exists()){
+          var ic=0;
+          if(r&&r!==p&&r.length>=10){
+            ic=50;
+            db.ref('users/'+r+'/coins').transaction(function(c){return(c||0)+100;});
+            db.ref('referrals').push({by:r,to:p,time:new Date().toLocaleString()});
+            showM("Referral se judne par +50 Coins bonus mile!");
+          }else showM("Swagat hai "+n+"!");
+          userC=ic;db.ref('users/'+p).set({name:n,coins:userC});
+          localStorage.setItem('rk_c_'+p,userC);upBal();
+        }else{initU();showM("Welcome back "+n+"!");}
       });
     }
 
-    function playSong(s) {
-      adCount++; if (adCount % 2 === 0) window.open("https://omg10.com/4/11936214", '_blank');
-      curTrack = s; completed = false;
-      hist = hist.filter(function(x) { return x.t !== s.t; });
-      hist.unshift({ t: s.t, a: s.a || "Lo-Fi", id: s.id, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
-      if (hist.length > 30) hist.pop();
-      localStorage.setItem('rk_h', JSON.stringify(hist));
+    function openRef(){
+      if(!curU){alert("Pehle Login karein!");openLog();return;}
+      var l=location.origin+location.pathname+"?ref="+curU.p;
+      document.getElementById('rLink').innerText=l;
+      document.getElementById('refM').className='modal act';
+    }
+    function closeRef(){document.getElementById('refM').className='modal';}
 
-      document.getElementById('pTitle').innerText = '▶ ' + s.t;
-      document.getElementById('ytBox').style.display = 'block';
+    function shareWA(){
+      var l=location.origin+location.pathname+"?ref="+curU.p;
+      var t=encodeURIComponent("🎧 Rk Music Point par gana suno aur Real Cash kamao! 💰 Mere link se join karte hi +50 Coins (₹0.50) bonus: "+l);
+      window.open("https://api.whatsapp.com/send?text="+t,'_blank');
+    }
 
-      if (ytPlayer && ytPlayer.loadVideoById) {
-        ytPlayer.loadVideoById(s.id);
+    function render(){
+      var el=document.getElementById('sList');el.innerHTML='';
+      if(curTab==='all'){
+        dispS.forEach(function(s){
+          var li=document.createElement('li');li.className='s-item';
+          li.onclick=function(){playS(s);};
+          li.innerHTML='<img src="https://img.youtube.com/vi/'+s.id+'/hqdefault.jpg" onerror="this.src=\'https://via.placeholder.com/80\'"><div class="s-info"><div class="s-title">'+s.t+'</div><div style="font-size:10px;color:#888;">'+s.a+'</div><span class="s-tag">🎁 Pura Suno = +5 Coins</span></div><i class="fas fa-play" style="color:#1db954;padding:6px;"></i>';
+          el.appendChild(li);
+        });
+      }else{
+        if(hist.length===0){el.innerHTML='<li style="text-align:center;padding:20px;color:#666;font-size:12px;">History khali hai.</li>';return;}
+        hist.forEach(function(h){
+          var li=document.createElement('li');li.className='s-item';
+          li.onclick=function(){playS(h);};
+          li.innerHTML='<img src="https://img.youtube.com/vi/'+h.id+'/hqdefault.jpg"><div class="s-info"><div class="s-title">'+h.t+'</div><div style="font-size:10px;color:#888;">'+(h.time||'')+'</div></div><i class="fas fa-play" style="color:#1db954;padding:6px;"></i>';
+          el.appendChild(li);
+        });
       }
-      document.getElementById('ytBox').scrollIntoView({ behavior: 'smooth' });
-      if (curTab === 'hist') render();
     }
 
-    function closePlayer() {
-      if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
-      document.getElementById('ytBox').style.display = 'none';
+    function onYouTubeIframeAPIReady(){
+      ytP=new YT.Player('pEl',{
+        height:'100%',width:'100%',playerVars:{autoplay:1,playsinline:1,rel:0},
+        events:{'onStateChange':function(e){
+          if(e.data===0&&!done&&curT){
+            done=true;userC+=5;upBal();
+            showM('Mubarak! "'+curT.t+'" poora sunne par +5 Coins add ho gaye!');
+          }
+        }}
+      });
     }
 
-    function playCustom() {
-      var v = document.getElementById('ytInp').value.trim(); if (!v) return alert('Link daalein!');
-      var id = v.indexOf('youtu.be/') !== -1 ? v.split('youtu.be/')[1].split('?')[0] : (v.indexOf('v=') !== -1 ? v.split('v=')[1].split('&')[0] : v);
-      if (id.length === 11) playSong({ t: 'Custom Lo-Fi Track', a: 'YouTube Stream', id: id });
+    function playS(s){
+      ads++;if(ads%2===0)window.open("https://omg10.com/4/11936214",'_blank');
+      curT=s;done=false;
+      hist=hist.filter(function(x){return x.t!==s.t;});
+      hist.unshift({t:s.t,a:s.a||"",id:s.id,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})});
+      if(hist.length>25)hist.pop();
+      localStorage.setItem('rk_h',JSON.stringify(hist));
+
+      document.getElementById('pTitle').innerText='▶ '+s.t;
+      document.getElementById('ytBox').style.display='block';
+      if(ytP&&ytP.loadVideoById)ytP.loadVideoById(s.id);
+      document.getElementById('ytBox').scrollIntoView({behavior:'smooth'});
+      if(curTab==='hist')render();
+    }
+
+    function closeP(){if(ytP&&ytP.stopVideo)ytP.stopVideo();document.getElementById('ytBox').style.display='none';}
+
+    function playCustom(){
+      var v=document.getElementById('ytInp').value.trim();if(!v)return alert('Link daalein!');
+      var id=v.indexOf('youtu.be/')!==-1?v.split('youtu.be/')[1].split('?')[0]:(v.indexOf('v=')!==-1?v.split('v=')[1].split('&')[0]:v);
+      if(id.length===11)playS({t:'Custom Song',a:'YouTube',id:id});
       else alert('Sahi YouTube link nahi hai!');
     }
 
-    function setTab(t) {
-      curTab = t;
-      document.getElementById('tAll').className = 'tab-btn ' + (t === 'all' ? 'active' : '');
-      document.getElementById('tHist').className = 'tab-btn ' + (t === 'hist' ? 'active' : '');
-      document.getElementById('cBtn').style.display = (t === 'hist' ? 'block' : 'none');
+    function setTab(t){
+      curTab=t;
+      document.getElementById('tA').className='tb '+(t==='all'?'act':'');
+      document.getElementById('tH').className='tb '+(t==='hist'?'act':'');
+      document.getElementById('cB').style.display=(t==='hist'?'block':'none');
       render();
     }
-    function clearHist() { if (confirm('Delete history?')) { hist = []; localStorage.removeItem('rk_h'); render(); } }
+    function clearH(){if(confirm('Delete history?')){hist=[];localStorage.removeItem('rk_h');render();}}
 
-    function filterSongs() {
-      var q = document.getElementById('sInp').value.toLowerCase();
-      dispSongs = songs.filter(function(s) { return s.t.toLowerCase().indexOf(q) !== -1; });
-      if (curTab === 'all') render();
+    function filterSongs(){
+      var q=document.getElementById('sInp').value.toLowerCase();
+      dispS=songs.filter(function(s){return s.t.toLowerCase().indexOf(q)!==-1||s.a.toLowerCase().indexOf(q)!==-1;});
+      if(curTab==='all')render();
     }
 
-    function openWallet() { updateBal(); document.getElementById('wModal').className = 'modal active'; }
-    function closeWallet() { document.getElementById('wModal').className = 'modal'; }
+    function openW(){upBal();document.getElementById('wM').className='modal act';}
+    function closeW(){document.getElementById('wM').className='modal';}
 
-    function reqWithdraw() {
-      if (!curUser) return alert("Pehle upar Login button daba kar apna mobile number register karein!");
-      var upi = document.getElementById('uId').value.trim();
-      var amt = parseFloat(document.getElementById('wVal').value);
-      var bal = userCoins / 100;
-      if (!upi || upi.indexOf('@') === -1) return alert('Sahi UPI ID bharein!');
-      if (isNaN(amt) || amt < 10) return alert('Minimum withdrawal ₹10 hai!');
-      if (amt > bal) return alert('Aapke paas sirf ₹' + bal.toFixed(2) + ' hain!');
-      
-      userCoins -= Math.round(amt * 100);
-      updateBal();
-      db.ref("withdrawals").push({
-        name: curUser.name,
-        phone: curUser.phone,
-        upi: upi,
-        amt: amt,
-        time: new Date().toLocaleString(),
-        status: "Pending"
-      }).then(function() {
-        showReward('✅ ₹' + amt + ' ki request lag gayi!\nUPI: ' + upi + ' par transfer ho jayega.');
-        closeWallet();
+    function reqW(){
+      if(!curU){alert("Pehle Login karein!");openLog();return;}
+      var upi=document.getElementById('uId').value.trim();
+      var amt=parseFloat(document.getElementById('wVal').value);
+      var bal=userC/100;
+      if(!upi||upi.indexOf('@')===-1)return alert('Sahi UPI ID bharein!');
+      if(isNaN(amt)||amt<10)return alert('Minimum ₹10 withdrawal hai!');
+      if(amt>bal)return alert('Aapke paas sirf ₹'+bal.toFixed(2)+' hain!');
+      userC-=Math.round(amt*100);upBal();
+      db.ref("withdrawals").push({name:curU.n,phone:curU.p,upi:upi,amt:amt,time:new Date().toLocaleString(),status:"Pending"}).then(function(){
+        showM('✅ ₹'+amt+' ki request lag gayi!\nUPI: '+upi+' par transfer ho jayega.');closeW();
       });
     }
 
-    initUser();
-    render();
+    initU();render();
   </script>
 </body>
 </html>
