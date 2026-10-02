@@ -97,7 +97,6 @@
       cursor: pointer;
     }
 
-    /* Tab Navigation */
     .tab-nav {
       display: flex;
       justify-content: space-between;
@@ -182,7 +181,7 @@
       color: #1db954;
     }
 
-    /* YouTube Mini Player Screen */
+    /* YouTube Video View */
     .yt-screen-container {
       display: none;
       margin: 10px 16px;
@@ -213,17 +212,18 @@
       position: absolute;
       top: 6px;
       right: 8px;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.8);
       color: #fff;
       border: none;
       border-radius: 50%;
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       cursor: pointer;
       z-index: 5;
+      font-weight: bold;
     }
 
-    /* Bottom Player Bar */
+    /* Player Bar */
     .player-bar {
       position: fixed;
       bottom: 0;
@@ -306,7 +306,7 @@
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.85);
       display: none;
       align-items: center;
       justify-content: center;
@@ -322,7 +322,6 @@
       padding: 22px;
       width: 100%;
       max-width: 340px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.6);
       position: relative;
     }
     .modal-title {
@@ -360,7 +359,7 @@
       background: none;
       border: none;
       color: #aaa;
-      font-size: 18px;
+      font-size: 20px;
       cursor: pointer;
     }
   </style>
@@ -380,13 +379,11 @@
     </div>
   </div>
 
-  <!-- YouTube Video Player Container -->
   <div class="yt-screen-container" id="ytContainer">
     <button class="yt-close-btn" onclick="closeYT()">✕</button>
     <div class="yt-iframe-wrap" id="ytWrapper"></div>
   </div>
 
-  <!-- Tab Navigation (All Songs vs History) -->
   <div class="tab-nav">
     <div class="tab-buttons">
       <button id="tabAll" class="tab-btn active" onclick="switchTab('all')">All Songs</button>
@@ -395,7 +392,6 @@
     <button id="clearHistBtn" class="clear-history-btn" onclick="clearHistory()">Clear History</button>
   </div>
 
-  <!-- Monetag Direct Ad Link -->
   <a href="https://omg10.com/4/11936214" target="_blank" class="ad-banner-btn">
     🔥 Special Offers & Rewards (Tap Here)
   </a>
@@ -403,7 +399,6 @@
   <div id="loader" style="text-align:center; padding:30px; color:#888;">Gaane load ho rahe hain...</div>
   <ul class="song-list" id="songList"></ul>
 
-  <!-- Bottom Player Bar -->
   <div class="player-bar" id="playerBar">
     <div class="player-top">
       <img id="playerCover" class="player-thumb" src="" alt="Cover">
@@ -427,7 +422,6 @@
 
   <audio id="audioElement"></audio>
 
-  <!-- Login Modal -->
   <div class="modal-overlay" id="authModal">
     <div class="modal-box">
       <button class="modal-close" onclick="closeAuthModal()">✕</button>
@@ -465,55 +459,47 @@
     let allSongs = [];
     let displayedSongs = [];
     let songHistory = [];
-    let activeTab = 'all'; // 'all' ya 'history'
+    let activeTab = 'all';
     let currentSongIndex = -1;
 
-    // Load History from localStorage
+    // Load History safely
     function loadSavedHistory() {
-      const saved = localStorage.getItem('rk_song_history');
-      if (saved) {
-        try {
-          songHistory = JSON.parse(saved);
-        } catch(e) {
-          songHistory = [];
-        }
+      try {
+        const saved = localStorage.getItem('rk_song_history');
+        songHistory = saved ? JSON.parse(saved) : [];
+      } catch(e) {
+        songHistory = [];
       }
     }
     loadSavedHistory();
 
-    // Save song to History
-    function addToHistory(songObj) {
-      if (!songObj || !songObj.title) return;
-      // Agar pehle se list me hai to purana hata kar top par layenge
-      songHistory = songHistory.filter(s => s.title !== songObj.title);
+    function addToHistory(item) {
+      if (!item || !item.title) return;
+      songHistory = songHistory.filter(s => s.title !== item.title);
       songHistory.unshift({
-        title: songObj.title,
-        artist: songObj.artist || 'Unknown',
-        url: songObj.url || '',
-        coverUrl: songObj.coverUrl || 'https://via.placeholder.com/150',
-        isYT: songObj.isYT || false,
-        ytId: songObj.ytId || '',
+        title: item.title,
+        artist: item.artist || 'Unknown',
+        url: item.url || '',
+        coverUrl: item.coverUrl || 'https://via.placeholder.com/150',
+        isYT: !!item.isYT,
+        ytId: item.ytId || '',
         playedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       });
-
-      // Max 30 songs save rakhenge
       if (songHistory.length > 30) songHistory.pop();
-      localStorage.setItem('rk_song_history', JSON.stringify(songHistory));
-
-      if (activeTab === 'history') {
-        renderHistoryList();
-      }
+      try {
+        localStorage.setItem('rk_song_history', JSON.stringify(songHistory));
+      } catch(e) {}
+      if (activeTab === 'history') renderHistoryList();
     }
 
     function clearHistory() {
-      if (confirm("Kya aap poori play history delete karna chahte hain?")) {
+      if (confirm("Kya aap poori history delete karna chahte hain?")) {
         songHistory = [];
         localStorage.removeItem('rk_song_history');
         renderHistoryList();
       }
     }
 
-    // Switch between All Songs and History
     function switchTab(tab) {
       activeTab = tab;
       if (tab === 'all') {
@@ -529,24 +515,29 @@
       }
     }
 
-    // Load Songs from Firebase
+    // Load Songs with Fallback
     fetch(DB_URL)
       .then(res => res.json())
       .then(data => {
         loaderEl.style.display = 'none';
-        if (!data) return;
-        allSongs = Array.isArray(data) ? data.filter(Boolean) : Object.values(data);
-        displayedSongs = [...allSongs];
+        if (data) {
+          allSongs = Array.isArray(data) ? data.filter(Boolean) : Object.values(data);
+          displayedSongs = [...allSongs];
+        } else {
+          allSongs = [];
+          displayedSongs = [];
+        }
         if (activeTab === 'all') renderSongList();
       })
       .catch(err => {
-        loaderEl.innerText = "Error: " + err.message;
+        console.error(err);
+        loaderEl.innerText = "Gaane load nahi ho sake. Please refresh karein.";
       });
 
     function renderSongList() {
       songListEl.innerHTML = '';
       if (displayedSongs.length === 0) {
-        songListEl.innerHTML = '<li style="text-align:center; color:#777; margin-top:20px;">Koi gaana nahi mila</li>';
+        songListEl.innerHTML = '<li style="text-align:center; color:#777; margin-top:20px;">Koi gaana uplabdh nahi hai</li>';
         return;
       }
 
@@ -575,7 +566,7 @@
     function renderHistoryList() {
       songListEl.innerHTML = '';
       if (songHistory.length === 0) {
-        songListEl.innerHTML = '<li style="text-align:center; color:#777; margin-top:30px;">Abhi tak koi gana nahi suna gaya hai.<br><small style="color:#555;">Gaane sunne ke baad yahan history dikhegi.</small></li>';
+        songListEl.innerHTML = '<li style="text-align:center; color:#777; margin-top:30px;">Abhi tak koi gaana nahi suna gaya.<br><small style="color:#555;">Gaane sunne ke baad yahan record hoga.</small></li>';
         return;
       }
 
@@ -612,7 +603,6 @@
       currentSongIndex = index;
       const song = displayedSongs[index];
 
-      // Add to History
       addToHistory({
         title: song.title,
         artist: song.artist,
@@ -653,34 +643,38 @@
       }
     }
 
-    // YouTube Play Function
-    function playYouTube() {
-      const val = document.getElementById('ytInput').value.trim();
-      if (!val) return alert("Pehle YouTube link daalein!");
-
-      let videoId = "";
-      if (val.includes("youtu.be/")) {
-        videoId = val.split("youtu.be/")[1].split("?")[0];
-      } else if (val.includes("watch?v=")) {
-        videoId = val.split("watch?v=")[1].split("&")[0];
-      } else if (val.includes("embed/")) {
-        videoId = val.split("embed/")[1].split("?")[0];
-      } else {
-        videoId = val;
+    // Extraction function for any YouTube URL format (including ?si=...)
+    function extractYouTubeId(url) {
+      if (!url) return "";
+      url = url.trim();
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+      const match = url.match(regExp);
+      if (match && match[2].length === 11) {
+        return match[2];
       }
+      if (url.length === 11) {
+        return url;
+      }
+      return "";
+    }
 
-      if (!videoId) return alert("Sahi YouTube link nahi hai!");
+    function playYouTube() {
+      const input = document.getElementById('ytInput').value;
+      const videoId = extractYouTubeId(input);
 
-      playYouTubeWithId(videoId, "YouTube Audio Track");
+      if (!videoId) {
+        alert("Kripya sahi YouTube link daalein!");
+        return;
+      }
+      playYouTubeWithId(videoId, "YouTube Track (" + videoId + ")");
     }
 
     function playYouTubeWithId(videoId, titleName) {
       audio.pause();
       playerBar.classList.remove('visible');
 
-      // Add YouTube Song to History
       addToHistory({
-        title: titleName || "YouTube Audio Track",
+        title: titleName,
         artist: "YouTube Stream",
         url: "",
         coverUrl: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
@@ -709,4 +703,94 @@
         audio.play();
         updateButtonState(true);
       } else {
-    
+        audio.pause();
+        updateButtonState(false);
+      }
+      if (activeTab === 'all') renderSongList();
+    }
+
+    function prevSong() {
+      if (currentSongIndex > 0) selectSong(currentSongIndex - 1);
+    }
+
+    function nextSong() {
+      if (currentSongIndex + 1 < displayedSongs.length) selectSong(currentSongIndex + 1);
+    }
+
+    function updateButtonState(isPlaying) {
+      toggleBtn.innerHTML = `<i class="fas ${isPlaying ? 'fa-pause' : 'fa-play'}"></i>`;
+    }
+
+    audio.ontimeupdate = () => {
+      if (!isNaN(audio.duration)) {
+        seekBar.value = (audio.currentTime / audio.duration) * 100;
+        currentTimeEl.innerText = formatTime(audio.currentTime);
+        durationTimeEl.innerText = formatTime(audio.duration);
+      }
+    };
+
+    function seekAudio(value) {
+      if (!isNaN(audio.duration)) {
+        audio.currentTime = (value / 100) * audio.duration;
+      }
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function filterSongs() {
+      const q = searchInput.value.toLowerCase();
+      displayedSongs = allSongs.filter(s => 
+        (s.title && s.title.toLowerCase().includes(q)) || 
+        (s.artist && s.artist.toLowerCase().includes(q))
+      );
+      if (activeTab === 'all') renderSongList();
+    }
+
+    audio.onended = () => { nextSong(); };
+
+    // Login Modal
+    function openAuthModal() {
+      const saved = localStorage.getItem("rk_user");
+      if (saved) {
+        if (confirm(saved + " ke roop me login hain. Logout karein?")) {
+          localStorage.removeItem("rk_user");
+          checkUserStatus();
+        }
+      } else {
+        document.getElementById('authModal').classList.add('active');
+      }
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authModal').classList.remove('active');
+    }
+
+    function saveUserProfile() {
+      const name = document.getElementById('userNameInput').value.trim();
+      if (!name) return alert("Apna naam daalein!");
+      localStorage.setItem("rk_user", name);
+      closeAuthModal();
+      checkUserStatus();
+    }
+
+    function checkUserStatus() {
+      const saved = localStorage.getItem("rk_user");
+      if (saved) {
+        authBtn.innerHTML = `<i class="fas fa-user-check"></i> ${saved.split(' ')[0]}`;
+        authBtn.style.color = '#fff';
+        authBtn.style.background = '#1db954';
+      } else {
+        authBtn.innerHTML = `<i class="fas fa-user"></i> Login`;
+        authBtn.style.color = '#1db954';
+        authBtn.style.background = '#242424';
+      }
+    }
+
+    checkUserStatus();
+  </script>
+</body>
+</html>
