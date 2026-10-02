@@ -58,7 +58,6 @@
     </div>
   </div>
 
-  <!-- Video & Audio Player Screen -->
   <div id="ytBox" class="yt-view">
     <div class="yt-header">
       <span id="pTitle">Playing...</span>
@@ -80,8 +79,15 @@
   <a href="https://omg10.com/4/11936214" target="_blank" class="ad-btn">🔥 Special Bonus Rewards (Tap Here)</a>
   <ul class="song-list" id="list"></ul>
 
-  <!-- Hidden Background Audio Context -->
-  <audio id="bgAudio" loop playsinline></audio>
+  <!-- Custom Reward Popup (No GitHub Name) -->
+  <div class="modal" id="rewardModal">
+    <div class="modal-box" style="text-align:center;">
+      <div style="font-size:36px;margin-bottom:8px;">🎉</div>
+      <h3 style="font-size:16px;color:#1db954;margin-bottom:6px;">Rk Music Point 🎧</h3>
+      <p id="rewardMsg" style="font-size:13px;color:#ddd;line-height:1.5;margin-bottom:14px;"></p>
+      <button onclick="closeReward()" style="width:100%;padding:10px;border-radius:6px;border:none;background:#1db954;color:#000;font-weight:bold;cursor:pointer;">OK, Thank You!</button>
+    </div>
+  </div>
 
   <!-- Login Modal -->
   <div class="modal" id="loginModal">
@@ -118,7 +124,6 @@
     firebase.initializeApp({databaseURL:"https://rk-music-point-default-rtdb.firebaseio.com"});
     var db = firebase.database();
 
-    // 100% Tested Working Video IDs (No Black Screen / No Embedding Restrictions)
     var songs = [
       {t:"Kesariya - LoFi Flip (Vocal)", a:"Arijit Singh", id:"feQH573pdXU"},
       {t:"Raataan Lambiyan - Midnight Chill", a:"Jubin Nautiyal", id:"BddP6PYo2gs"},
@@ -137,10 +142,6 @@
     var hist = JSON.parse(localStorage.getItem('rk_h') || "[]");
     var dispSongs = songs.slice();
     var curTab = 'all', ytPlayer = null, curTrack = null, completed = false, adCount = 0;
-    var bgAudio = document.getElementById('bgAudio');
-
-    // Create a 1-second silent audio data URI to keep background playback active on phones
-    bgAudio.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
 
     function initUser() {
       if (curUser && curUser.phone) {
@@ -178,6 +179,14 @@
       }
     }
 
+    function showReward(msg) {
+      document.getElementById('rewardMsg').innerText = msg;
+      document.getElementById('rewardModal').className = 'modal active';
+    }
+    function closeReward() {
+      document.getElementById('rewardModal').className = 'modal';
+    }
+
     function openLogin() {
       if (curUser) {
         if (confirm("Aap " + curUser.name + " (" + curUser.phone + ") se logged in hain. Logout karein?")) {
@@ -199,7 +208,7 @@
       localStorage.setItem('rk_active_user', JSON.stringify(curUser));
       closeLogin();
       initUser();
-      alert("Swagat hai " + name + "! Aapka account safe save ho gaya hai.");
+      showReward("Swagat hai " + name + "! Aapka account safe save ho gaya hai.");
     }
 
     function render() {
@@ -225,49 +234,18 @@
     function onYouTubeIframeAPIReady() {
       ytPlayer = new YT.Player('pElement', {
         height: '100%', width: '100%',
-        playerVars: {
-          autoplay: 1,
-          playsinline: 1,
-          rel: 0,
-          modestbranding: 1,
-          origin: window.location.origin
-        },
+        playerVars: { autoplay: 1, playsinline: 1, rel: 0, modestbranding: 1 },
         events: {
           'onStateChange': function(e) {
-            if (e.data === YT.PlayerState.PLAYING) {
-              // Keep background media channel alive
-              bgAudio.play().catch(function(){});
-            } else if (e.data === YT.PlayerState.PAUSED) {
-              bgAudio.pause();
-            } else if (e.data === YT.PlayerState.ENDED && !completed && curTrack) {
+            if (e.data === 0 && !completed && curTrack) {
               completed = true;
               userCoins += 5;
               updateBal();
-              alert('🎉 Mubarak! "' + curTrack.t + '" poora sunne par +5 Coins add ho gaye!');
+              showReward('Mubarak! "' + curTrack.t + '" poora sunne par +5 Coins add ho gaye!');
             }
           }
         }
       });
-    }
-
-    // MediaSession for Lock Screen / Background notification controls
-    function setupBackgroundSession(track) {
-      if ('mediaSession' in navigator) {
-        navigator.mediaSession.metadata = new MediaMetadata({
-          title: track.t,
-          artist: track.a || "Lo-Fi Beats",
-          album: "Rk Music Point",
-          artwork: [{ src: "https://img.youtube.com/vi/" + track.id + "/hqdefault.jpg", sizes: '512x512', type: 'image/jpeg' }]
-        });
-        navigator.mediaSession.setActionHandler('play', function() {
-          if (ytPlayer && ytPlayer.playVideo) ytPlayer.playVideo();
-          bgAudio.play().catch(function(){});
-        });
-        navigator.mediaSession.setActionHandler('pause', function() {
-          if (ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo();
-          bgAudio.pause();
-        });
-      }
     }
 
     function playSong(s) {
@@ -282,22 +260,14 @@
       document.getElementById('ytBox').style.display = 'block';
 
       if (ytPlayer && ytPlayer.loadVideoById) {
-        ytPlayer.loadVideoById({
-          videoId: s.id,
-          suggestedQuality: 'small'
-        });
+        ytPlayer.loadVideoById(s.id);
       }
-      
-      setupBackgroundSession(s);
-      bgAudio.play().catch(function(){});
-
       document.getElementById('ytBox').scrollIntoView({ behavior: 'smooth' });
       if (curTab === 'hist') render();
     }
 
     function closePlayer() {
       if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
-      bgAudio.pause();
       document.getElementById('ytBox').style.display = 'none';
     }
 
@@ -345,7 +315,7 @@
         time: new Date().toLocaleString(),
         status: "Pending"
       }).then(function() {
-        alert('✅ ₹' + amt + ' ki request lag gayi!\nUPI: ' + upi + ' par transfer ho jayega.');
+        showReward('✅ ₹' + amt + ' ki request lag gayi!\nUPI: ' + upi + ' par transfer ho jayega.');
         closeWallet();
       });
     }
