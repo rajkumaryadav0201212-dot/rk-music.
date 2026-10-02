@@ -5,125 +5,100 @@
 <title>Rk Music Point 🎧</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif;-webkit-tap-highlight-color:transparent;}
-body{background:#121212;color:#fff;padding-bottom:120px;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif;}
+body{background:#121212;color:#fff;padding-bottom:110px;}
 header{padding:8px 12px;background:#181818;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;border-bottom:1px solid #282828;}
 .logo{font-size:14px;font-weight:bold;color:#1db954;}
 .hr{display:flex;gap:4px;}
-.btn-r{background:#25d366;color:#000;border:none;padding:4px 7px;border-radius:12px;font-size:10px;font-weight:bold;cursor:pointer;}
-.btn-u{background:#242424;color:#1db954;border:1px solid #333;padding:4px 7px;border-radius:12px;font-size:10px;font-weight:bold;cursor:pointer;}
-.btn-w{background:#242424;color:#ffca28;border:1px solid #444;padding:4px 7px;border-radius:12px;font-size:10px;font-weight:bold;cursor:pointer;}
-.c-box{margin:6px 12px;padding:8px;background:linear-gradient(135deg,#1e3c72,#2a5298);border-radius:6px;display:flex;justify-content:space-between;align-items:center;}
-.ad{display:block;margin:6px 12px;padding:7px;background:linear-gradient(45deg,#ff416c,#ff4b2b);color:#fff;text-align:center;text-decoration:none;font-weight:bold;font-size:11px;border-radius:5px;}
-.s-box{padding:4px 12px;display:flex;flex-direction:column;gap:4px;}
-.inp{width:100%;padding:7px 9px;border-radius:5px;border:1px solid #333;background:#242424;color:#fff;font-size:12px;outline:none;}
-.t-bar{display:flex;justify-content:space-between;padding:4px 12px;border-bottom:1px solid #222;}
-.tb{background:none;border:none;color:#777;font-size:11px;font-weight:bold;padding:4px 6px;border-radius:8px;cursor:pointer;}
+.btn{background:#242424;color:#fff;border:1px solid #333;padding:4px 7px;border-radius:12px;font-size:10px;font-weight:bold;cursor:pointer;}
+.card{margin:6px 10px;padding:8px;background:linear-gradient(135deg,#1e3c72,#2a5298);border-radius:6px;display:flex;justify-content:space-between;align-items:center;}
+.ad{display:block;margin:6px 10px;padding:7px;background:linear-gradient(45deg,#ff416c,#ff4b2b);color:#fff;text-align:center;text-decoration:none;font-weight:bold;font-size:11px;border-radius:5px;}
+.inp{width:100%;padding:7px;border-radius:5px;border:1px solid #333;background:#242424;color:#fff;font-size:11px;outline:none;}
+.tb{background:none;border:none;color:#777;font-size:11px;font-weight:bold;padding:4px 6px;border-radius:6px;cursor:pointer;}
 .tb.act{background:#252525;color:#1db954;}
-.s-list{list-style:none;padding:2px 12px;}
-.s-item{display:flex;align-items:center;padding:6px 0;border-bottom:1px solid #1a1a1a;cursor:pointer;}
-.s-item img{width:42px;height:42px;border-radius:5px;object-fit:cover;margin-right:8px;background:#222;}
+.s-item{display:flex;align-items:center;padding:6px 10px;border-bottom:1px solid #1a1a1a;cursor:pointer;}
+.s-item img{width:40px;height:40px;border-radius:4px;object-fit:cover;margin-right:8px;background:#222;}
 .s-info{flex:1;overflow:hidden;}
 .s-title{font-size:11px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.s-tag{display:inline-block;background:#2e7d32;color:#fff;font-size:8px;padding:1px 3px;border-radius:2px;}
-.yt-v{display:none;margin:6px 12px;background:#000;border-radius:6px;overflow:hidden;border:1px solid #333;}
-.yt-h{padding:5px 8px;background:#1a1a1a;display:flex;justify-content:space-between;font-size:10px;color:#1db954;}
-.yt-w{position:relative;width:100%;padding-bottom:56.25%;height:0;background:#000;}
+.yt-v{display:none;margin:6px 10px;background:#000;border-radius:6px;overflow:hidden;border:1px solid #333;}
+.yt-w{position:relative;width:100%;padding-bottom:56.25%;height:0;}
 .yt-w iframe{position:absolute;top:0;left:0;width:100%!important;height:100%!important;border:0;}
 .modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:100;padding:10px;}
 .modal.act{display:flex;}
-.m-box{background:#1e1e1e;border-radius:8px;padding:14px;width:100%;max-width:290px;position:relative;text-align:center;}
-.auth-t{display:flex;gap:4px;margin-bottom:8px;}
-.atb{flex:1;background:#2a2a2a;color:#aaa;border:none;padding:5px;border-radius:4px;font-size:11px;font-weight:bold;cursor:pointer;}
-.atb.act{background:#1db954;color:#000;}
+.m-box{background:#1e1e1e;border-radius:8px;padding:12px;width:100%;max-width:280px;text-align:center;}
 </style>
 </head>
 <body>
 <header>
 <div class="logo">Rk Music Point 🎧</div>
 <div class="hr">
-<button class="btn-r" onclick="openRef()"><i class="fab fa-whatsapp"></i> Refer</button>
-<button class="btn-u" id="uBtn" onclick="openLog()"><i class="fas fa-user"></i> Login</button>
-<button class="btn-w" onclick="openW()"><i class="fas fa-coins"></i> <span id="hBal">₹0.00</span></button>
+<button class="btn" style="background:#25d366;color:#000;" onclick="openRef()"><i class="fab fa-whatsapp"></i> Refer</button>
+<button class="btn" id="uBtn" onclick="openLog()"><i class="fas fa-user"></i> Login</button>
+<button class="btn" style="color:#ffca28;" onclick="openW()"><i class="fas fa-coins"></i> <span id="hBal">₹0.00</span></button>
 </div>
 </header>
-<div class="c-box">
+<div class="card">
 <div><h4 style="font-size:11px;">Suney Aur Kamayein 💰</h4><p style="font-size:9px;color:#ddd;">1 Song = 5 Coins | 1 Refer = 100 Coins (₹1)</p></div>
-<button style="background:#ffca28;border:none;padding:4px 8px;border-radius:4px;font-weight:bold;font-size:10px;cursor:pointer;" onclick="openW()">Withdraw</button>
+<button class="btn" style="background:#ffca28;color:#000;" onclick="openW()">Withdraw</button>
 </div>
-<div class="s-box">
+<div style="padding:4px 10px;display:flex;flex-direction:column;gap:4px;">
 <input type="text" id="sInp" class="inp" placeholder="Gaana khojein..." onkeyup="filterSongs()">
 <div style="display:flex;gap:4px;">
 <input type="text" id="ytInp" class="inp" placeholder="YouTube Link/ID...">
-<button onclick="playCustom()" style="background:#f00;color:#fff;border:none;padding:6px 10px;border-radius:5px;font-size:10px;font-weight:bold;cursor:pointer;">Play</button>
+<button onclick="playCustom()" class="btn" style="background:#f00;">Play</button>
 </div>
 </div>
 <div id="ytBox" class="yt-v">
-<div class="yt-h"><span id="pTitle">Playing...</span><button onclick="closeP()" style="background:none;border:none;color:#fff;cursor:pointer;">✕</button></div>
+<div style="padding:4px 8px;background:#1a1a1a;display:flex;justify-content:space-between;font-size:10px;color:#1db954;"><span id="pTitle">Playing...</span><button onclick="closeP()" style="background:none;border:none;color:#fff;cursor:pointer;">✕</button></div>
 <div class="yt-w" id="vHold"></div>
 </div>
-<div class="t-bar">
-<div>
-<button id="tA" class="tb act" onclick="setTab('all')">Lo-Fi Songs</button>
-<button id="tH" class="tb" onclick="setTab('hist')">🕒 History</button>
-</div>
-<button id="cB" style="background:none;border:1px solid #444;color:#888;font-size:9px;padding:2px 4px;border-radius:3px;display:none;cursor:pointer;" onclick="clearH()">Clear</button>
+<div style="display:flex;justify-content:space-between;padding:4px 10px;border-bottom:1px solid #222;">
+<div><button id="tA" class="tb act" onclick="setTab('all')">Songs</button><button id="tH" class="tb" onclick="setTab('hist')">🕒 History</button></div>
+<button id="cB" style="background:none;border:1px solid #444;color:#888;font-size:9px;padding:1px 4px;border-radius:3px;display:none;cursor:pointer;" onclick="clearH()">Clear</button>
 </div>
 <a href="https://omg10.com/4/11936214" target="_blank" class="ad">🔥 Special Bonus Rewards (Tap Here)</a>
-<ul class="s-list" id="sList"></ul>
+<div id="sList"></div>
+
 <div class="modal" id="msgM"><div class="m-box">
-<h3 style="color:#1db954;font-size:14px;margin-bottom:6px;">Rk Music Point 🎧</h3>
-<p id="mTxt" style="font-size:11px;color:#ddd;margin-bottom:10px;"></p>
-<button onclick="closeM()" style="width:100%;padding:6px;border-radius:4px;border:none;background:#1db954;font-weight:bold;cursor:pointer;">OK</button>
+<h3 style="color:#1db954;font-size:13px;margin-bottom:4px;">Rk Music Point 🎧</h3>
+<p id="mTxt" style="font-size:11px;color:#ddd;margin-bottom:8px;"></p>
+<button onclick="closeM()" class="btn" style="width:100%;background:#1db954;color:#000;">OK</button>
 </div></div>
+
 <div class="modal" id="refM"><div class="m-box">
-<button onclick="closeRef()" style="position:absolute;top:6px;right:8px;background:none;border:none;color:#888;cursor:pointer;">✕</button>
 <h3 style="color:#25d366;font-size:13px;margin-bottom:4px;">Refer & Earn 🎁</h3>
 <p style="font-size:10px;color:#bbb;margin-bottom:6px;">Aapko <b>100 Coins (₹1)</b>, Dost ko <b>50 Coins</b>!</p>
-<div id="rLink" style="background:#121212;padding:5px;font-size:9px;color:#ffca28;word-break:break-all;margin-bottom:8px;"></div>
-<button onclick="shareWA()" style="width:100%;padding:7px;border-radius:4px;border:none;background:#25d366;color:#000;font-weight:bold;font-size:11px;cursor:pointer;"><i class="fab fa-whatsapp"></i> WhatsApp Share</button>
+<div id="rLink" style="background:#121212;padding:4px;font-size:9px;color:#ffca28;word-break:break-all;margin-bottom:6px;"></div>
+<button onclick="shareWA()" class="btn" style="width:100%;background:#25d366;color:#000;"><i class="fab fa-whatsapp"></i> WhatsApp Share</button>
+<button onclick="closeRef()" class="btn" style="width:100%;margin-top:4px;">Close</button>
 </div></div>
+
 <div class="modal" id="logM"><div class="m-box">
-<button onclick="closeLog()" style="position:absolute;top:6px;right:8px;background:none;border:none;color:#888;cursor:pointer;">✕</button>
-<div class="auth-t">
-<button id="tbO" class="atb act" onclick="setAuth('otp')">SMS OTP</button>
-<button id="tbP" class="atb" onclick="setAuth('pass')">Password</button>
-</div>
-<div id="secO">
-<input type="text" id="uN" class="inp" style="margin-bottom:5px;" placeholder="Naam">
-<input type="tel" id="uP" class="inp" style="margin-bottom:5px;" placeholder="Mobile Number (10 Digit)">
-<div id="rc-box"></div>
-<button id="btnO" onclick="sendOtp()" style="width:100%;padding:7px;border-radius:4px;border:none;background:#1db954;font-weight:bold;cursor:pointer;">Send OTP</button>
-<div id="vBox" style="display:none;margin-top:5px;">
-<input type="number" id="oInp" class="inp" style="margin-bottom:5px;" placeholder="6-digit OTP">
-<input type="password" id="sPass" class="inp" style="margin-bottom:5px;" placeholder="Password Banayein">
-<button onclick="verOtp()" style="width:100%;padding:7px;border-radius:4px;border:none;background:#ffca28;color:#000;font-weight:bold;cursor:pointer;">Verify & Save</button>
-</div>
-</div>
-<div id="secP" style="display:none;">
-<input type="tel" id="pP" class="inp" style="margin-bottom:5px;" placeholder="Mobile Number">
-<input type="password" id="pPwd" class="inp" style="margin-bottom:6px;" placeholder="Password">
-<button onclick="logPass()" style="width:100%;padding:7px;border-radius:4px;border:none;background:#1db954;font-weight:bold;cursor:pointer;">Login</button>
-</div>
+<h3 style="font-size:13px;margin-bottom:6px;">User Login</h3>
+<input type="text" id="uN" class="inp" style="margin-bottom:4px;" placeholder="Naam">
+<input type="tel" id="uP" class="inp" style="margin-bottom:4px;" placeholder="Mobile Number (10 Digit)">
+<input type="password" id="uPwd" class="inp" style="margin-bottom:6px;" placeholder="Password / PIN (4 digit)">
+<button onclick="saveU()" class="btn" style="width:100%;background:#1db954;color:#000;">Login / Register</button>
+<button onclick="closeLog()" class="btn" style="width:100%;margin-top:4px;">Cancel</button>
 </div></div>
+
 <div class="modal" id="wM"><div class="m-box">
-<button onclick="closeW()" style="position:absolute;top:6px;right:8px;background:none;border:none;color:#888;cursor:pointer;">✕</button>
-<h3 style="font-size:13px;margin-bottom:6px;">Earning Wallet</h3>
-<div style="background:#121212;padding:6px;border-radius:4px;margin-bottom:6px;">
-<div style="font-size:18px;font-weight:bold;color:#1db954;" id="wAmt">₹0.00</div>
+<h3 style="font-size:13px;margin-bottom:4px;">Earning Wallet</h3>
+<div style="background:#121212;padding:5px;border-radius:4px;margin-bottom:6px;">
+<div style="font-size:16px;font-weight:bold;color:#1db954;" id="wAmt">₹0.00</div>
 <div style="font-size:9px;color:#ffca28;" id="cAmt">0 Coins</div>
 </div>
-<input type="text" id="uId" class="inp" style="margin-bottom:5px;" placeholder="UPI ID (jaise: 9876543210@paytm)">
-<input type="number" id="wVal" class="inp" style="margin-bottom:7px;" placeholder="Amount (Min ₹10)">
-<button onclick="reqW()" style="width:100%;padding:7px;border-radius:4px;border:none;background:#1db954;font-weight:bold;cursor:pointer;">Nikashi Bhejein</button>
+<input type="text" id="uId" class="inp" style="margin-bottom:4px;" placeholder="UPI ID (jaise: 9876543210@paytm)">
+<input type="number" id="wVal" class="inp" style="margin-bottom:6px;" placeholder="Amount (Min ₹10)">
+<button onclick="reqW()" class="btn" style="width:100%;background:#1db954;color:#000;">Nikashi Bhejein</button>
+<button onclick="closeW()" class="btn" style="width:100%;margin-top:4px;">Cancel</button>
 </div></div>
+
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
-firebase.initializeApp({databaseURL:"https://rk-music-point-default-rtdb.firebaseio.com"});
-var db=firebase.database(),auth=firebase.auth(),songs=[
+var songs=[
 {t:"Tum Hi Ho - LoFi",a:"Arijit Singh",id:"jc886ZiQHtY"},
 {t:"Sunn Raha Hai Na Tu",a:"Ankit Tiwari",id:"heui5PvDGfU"},
 {t:"Chahun Main Ya Naa",a:"Arijit, Palak",id:"y692c_Z-U34"},
@@ -138,88 +113,57 @@ var db=firebase.database(),auth=firebase.auth(),songs=[
 {t:"Kesariya - LoFi Flip",a:"Arijit Singh",id:"feQH573pdXU"},
 {t:"Raataan Lambiyan - Chill",a:"Jubin Nautiyal",id:"BddP6PYo2gs"}
 ];
-var curU=JSON.parse(localStorage.getItem('rk_u')||"null"),userC=0,hist=JSON.parse(localStorage.getItem('rk_h')||"[]"),dispS=songs.slice(),curTab='all',ytP=null,curT=null,done=false,ads=0,cRes=null,recaptcha=null;
+var curU=JSON.parse(localStorage.getItem('rk_u')||"null"),userC=0,hist=JSON.parse(localStorage.getItem('rk_h')||"[]"),dispS=songs.slice(),curTab='all',ytP=null,curT=null,done=false,ads=0,db=null;
+try{firebase.initializeApp({databaseURL:"https://rk-music-point-default-rtdb.firebaseio.com"});db=firebase.database();}catch(e){}
+
 function getRef(){return new URLSearchParams(location.search).get('ref');}
 function initU(){
 if(curU&&curU.p){
-document.getElementById('uBtn').innerHTML='<i class="fas fa-check-circle"></i> '+curU.n.split(' ')[0];
-document.getElementById('uBtn').style.background='#1db954';document.getElementById('uBtn').style.color='#fff';
+document.getElementById('uBtn').innerText=curU.n.split(' ')[0];document.getElementById('uBtn').style.color='#1db954';
 userC=parseInt(localStorage.getItem('rk_c_'+curU.p)||"0");
-db.ref('users/'+curU.p+'/coins').once('value').then(function(s){if(s.exists()){userC=s.val();localStorage.setItem('rk_c_'+curU.p,userC);}upBal();});
+if(db)db.ref('users/'+curU.p+'/coins').once('value').then(function(s){if(s.exists()){userC=s.val();localStorage.setItem('rk_c_'+curU.p,userC);}upBal();});
 }else{userC=parseInt(localStorage.getItem('rk_temp_c')||"0");}
 upBal();
 }
 function upBal(){
 var r=(userC/100).toFixed(2);
 document.getElementById('hBal').innerText='₹'+r;document.getElementById('wAmt').innerText='₹'+r;document.getElementById('cAmt').innerText=userC+' Coins';
-if(curU&&curU.p){localStorage.setItem('rk_c_'+curU.p,userC);db.ref('users/'+curU.p).update({name:curU.n,coins:userC});}else{localStorage.setItem('rk_temp_c',userC);}
+if(curU&&curU.p){localStorage.setItem('rk_c_'+curU.p,userC);if(db)db.ref('users/'+curU.p).update({name:curU.n,coins:userC});}else{localStorage.setItem('rk_temp_c',userC);}
 }
 function showM(m){document.getElementById('mTxt').innerText=m;document.getElementById('msgM').className='modal act';}
 function closeM(){document.getElementById('msgM').className='modal';}
-function openLog(){
-if(curU&&confirm("Logout karein?")){localStorage.removeItem('rk_u');location.reload();}
-else{document.getElementById('logM').className='modal act';if(!recaptcha)recaptcha=new firebase.auth.RecaptchaVerifier('rc-box',{'size':'invisible'});}
-}
+function openLog(){if(curU&&confirm("Logout karein?")){localStorage.removeItem('rk_u');location.reload();}else document.getElementById('logM').className='modal act';}
 function closeLog(){document.getElementById('logM').className='modal';}
-function setAuth(m){
-document.getElementById('tbO').className='atb '+(m==='otp'?'act':'');document.getElementById('tbP').className='atb '+(m==='pass'?'act':'');
-document.getElementById('secO').style.display=m==='otp'?'block':'none';document.getElementById('secP').style.display=m==='pass'?'block':'none';
-}
-function sendOtp(){
-var p=document.getElementById('uP').value.trim().replace(/\D/g,'');
-if(p.length<10)return alert("10-digit number daalein!");
-if(!recaptcha)recaptcha=new firebase.auth.RecaptchaVerifier('rc-box',{'size':'invisible'});
-document.getElementById('btnO').innerText="Sending...";
-auth.signInWithPhoneNumber("+91"+p,recaptcha).then(function(r){
-cRes=r;document.getElementById('btnO').style.display='none';document.getElementById('vBox').style.display='block';alert("SMS OTP bhej diya gaya hai!");
-}).catch(function(e){alert("Error: "+e.message);document.getElementById('btnO').innerText="Send OTP";});
-}
-function verOtp(){
-var code=document.getElementById('oInp').value.trim(),pwd=document.getElementById('sPass').value.trim(),name=document.getElementById('uN').value.trim()||"User",phone=document.getElementById('uP').value.trim().replace(/\D/g,'');
-if(code.length<6||pwd.length<4)return alert("6-digit OTP aur 4+ akshar ka password daalein!");
-cRes.confirm(code).then(function(){
-curU={n:name,p:phone};localStorage.setItem('rk_u',JSON.stringify(curU));closeLog();
-var ref=getRef();
-db.ref('users/'+phone).once('value').then(function(s){
-if(!s.exists()){
-var ic=0;if(ref&&ref!==phone&&ref.length>=10){ic=50;db.ref('users/'+ref+'/coins').transaction(function(c){return(c||0)+100;});db.ref('referrals').push({by:ref,to:phone,time:new Date().toLocaleString()});showM("Referral se judne par +50 Coins bonus mile!");}else showM("Swagat hai "+name+"!");
-userC=ic;db.ref('users/'+phone).set({name:name,pass:pwd,coins:userC});localStorage.setItem('rk_c_'+phone,userC);upBal();
-}else{db.ref('users/'+phone).update({name:name,pass:pwd});initU();showM("Password update ho gaya!");}
-});
-}).catch(function(){alert("Galat OTP!");});
-}
-function logPass(){
-var p=document.getElementById('pP').value.trim().replace(/\D/g,''),pwd=document.getElementById('pPwd').value.trim();
-if(p.length<10||!pwd)return alert("Number aur Password bharein!");
+function saveU(){
+var n=document.getElementById('uN').value.trim()||"User",p=document.getElementById('uP').value.trim().replace(/\D/g,''),pwd=document.getElementById('uPwd').value.trim();
+if(p.length<10||!pwd)return alert("10-digit number aur password daalein!");
+curU={n:n,p:p};localStorage.setItem('rk_u',JSON.stringify(curU));closeLog();
+if(db){
 db.ref('users/'+p).once('value').then(function(s){
-if(s.exists()&&s.val().pass===pwd){curU={n:s.val().name||"User",p:p};localStorage.setItem('rk_u',JSON.stringify(curU));closeLog();initU();showM("Login safal! Welcome "+curU.n);}
-else alert("Galat details! Agar password nahi banaya to SMS OTP se karein.");
+if(!s.exists()){
+var r=getRef(),ic=0;if(r&&r!==p&&r.length>=10){ic=50;db.ref('users/'+r+'/coins').transaction(function(c){return(c||0)+100;});db.ref('referrals').push({by:r,to:p,time:new Date().toLocaleString()});showM("Referral bonus +50 Coins mile!");}else showM("Swagat hai "+n+"!");
+userC=ic;db.ref('users/'+p).set({name:n,pass:pwd,coins:userC});localStorage.setItem('rk_c_'+p,userC);upBal();
+}else{initU();showM("Welcome back "+n+"!");}
 });
+}else{initU();showM("Login Safal!");}
 }
-function openRef(){
-if(!curU){alert("Pehle Login karein!");openLog();return;}
-document.getElementById('rLink').innerText=location.origin+location.pathname+"?ref="+curU.p;
-document.getElementById('refM').className='modal act';
-}
+function openRef(){if(!curU){alert("Pehle Login karein!");openLog();return;}document.getElementById('rLink').innerText=location.origin+location.pathname+"?ref="+curU.p;document.getElementById('refM').className='modal act';}
 function closeRef(){document.getElementById('refM').className='modal';}
-function shareWA(){
-var t=encodeURIComponent("🎧 Rk Music Point par gana suno aur Real Cash kamao! 💰 Join bonus +50 Coins: "+location.origin+location.pathname+"?ref="+curU.p);
-window.open("https://api.whatsapp.com/send?text="+t,'_blank');
-}
+function shareWA(){var t=encodeURIComponent("🎧 Rk Music Point par gaana suno aur Real Cash kamao! 💰 Join bonus +50 Coins: "+location.origin+location.pathname+"?ref="+curU.p);window.open("https://api.whatsapp.com/send?text="+t,'_blank');}
 function render(){
 var el=document.getElementById('sList');el.innerHTML='';
 if(curTab==='all'){
 dispS.forEach(function(s){
-var li=document.createElement('li');li.className='s-item';li.onclick=function(){playS(s);};
-li.innerHTML='<img src="https://img.youtube.com/vi/'+s.id+'/hqdefault.jpg" onerror="this.src=\'https://via.placeholder.com/80\'"><div class="s-info"><div class="s-title">'+s.t+'</div><div style="font-size:9px;color:#888;">'+s.a+'</div><span class="s-tag">🎁 +5 Coins</span></div><i class="fas fa-play" style="color:#1db954;padding:4px;font-size:12px;"></i>';
-el.appendChild(li);
+var d=document.createElement('div');d.className='s-item';d.onclick=function(){playS(s);};
+d.innerHTML='<img src="https://img.youtube.com/vi/'+s.id+'/hqdefault.jpg"><div class="s-info"><div class="s-title">'+s.t+'</div><div style="font-size:9px;color:#888;">'+s.a+'</div><span style="font-size:8px;background:#2e7d32;color:#fff;padding:1px 3px;border-radius:2px;">+5 Coins</span></div><i class="fas fa-play" style="color:#1db954;font-size:12px;"></i>';
+el.appendChild(d);
 });
 }else{
-if(hist.length===0){el.innerHTML='<li style="text-align:center;padding:15px;color:#666;font-size:11px;">History khali hai.</li>';return;}
+if(hist.length===0){el.innerHTML='<div style="text-align:center;padding:15px;color:#666;font-size:11px;">History khali hai.</div>';return;}
 hist.forEach(function(h){
-var li=document.createElement('li');li.className='s-item';li.onclick=function(){playS(h);};
-li.innerHTML='<img src="https://img.youtube.com/vi/'+h.id+'/hqdefault.jpg"><div class="s-info"><div class="s-title">'+h.t+'</div><div style="font-size:9px;color:#888;">'+(h.time||'')+'</div></div><i class="fas fa-play" style="color:#1db954;padding:4px;font-size:12px;"></i>';
-el.appendChild(li);
+var d=document.createElement('div');d.className='s-item';d.onclick=function(){playS(h);};
+d.innerHTML='<img src="https://img.youtube.com/vi/'+h.id+'/hqdefault.jpg"><div class="s-info"><div class="s-title">'+h.t+'</div><div style="font-size:9px;color:#888;">'+(h.time||'')+'</div></div><i class="fas fa-play" style="color:#1db954;font-size:12px;"></i>';
+el.appendChild(d);
 });
 }
 }
@@ -234,7 +178,7 @@ document.getElementById('ytBox').style.display='block';
 document.getElementById('vHold').innerHTML='<div id="activeYT"></div>';
 ytP=new YT.Player('activeYT',{
 height:'100%',width:'100%',videoId:s.id,playerVars:{autoplay:1,playsinline:1,rel:0},
-events:{'onStateChange':function(e){if(e.data===0&&!done&&curT){done=true;userC+=5;upBal();showM('Mubarak! "'+curT.t+'" poora sunne par +5 Coins add ho gaye!');}}}
+events:{'onStateChange':function(e){if(e.data===0&&!done&&curT){done=true;userC+=5;upBal();showM('Mubarak! "'+curT.t+'" par +5 Coins mile!');}}}
 });
 document.getElementById('ytBox').scrollIntoView({behavior:'smooth'});
 if(curTab==='hist')render();
@@ -243,7 +187,7 @@ function closeP(){if(ytP&&ytP.stopVideo)ytP.stopVideo();document.getElementById(
 function playCustom(){
 var v=document.getElementById('ytInp').value.trim();if(!v)return alert('Link daalein!');
 var id=v.indexOf('youtu.be/')!==-1?v.split('youtu.be/')[1].split('?')[0]:(v.indexOf('v=')!==-1?v.split('v=')[1].split('&')[0]:v);
-if(id.length===11)playS({t:'Custom Song',a:'YouTube',id:id});else alert('Sahi link nahi hai!');
+if(id.length===11)playS({t:'Custom Song',a:'YouTube',id:id});else alert('Sahi link daalein!');
 }
 function setTab(t){curTab=t;document.getElementById('tA').className='tb '+(t==='all'?'act':'');document.getElementById('tH').className='tb '+(t==='hist'?'act':'');document.getElementById('cB').style.display=(t==='hist'?'block':'none');render();}
 function clearH(){if(confirm('Delete history?')){hist=[];localStorage.removeItem('rk_h');render();}}
@@ -257,11 +201,10 @@ if(!upi||upi.indexOf('@')===-1)return alert('Sahi UPI ID bharein!');
 if(isNaN(amt)||amt<10)return alert('Minimum ₹10 withdrawal hai!');
 if(amt>bal)return alert('Aapke paas sirf ₹'+bal.toFixed(2)+' hain!');
 userC-=Math.round(amt*100);upBal();
-db.ref("withdrawals").push({name:curU.n,phone:curU.p,upi:upi,amt:amt,time:new Date().toLocaleString(),status:"Pending"}).then(function(){
+if(db)db.ref("withdrawals").push({name:curU.n,phone:curU.p,upi:upi,amt:amt,time:new Date().toLocaleString(),status:"Pending"});
 showM('✅ ₹'+amt+' ki request lag gayi!\nUPI: '+upi+' par transfer ho jayega.');closeW();
-});
 }
-initU();render();
+render();initU();
 </script>
 </body>
 </html>
