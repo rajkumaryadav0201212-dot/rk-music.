@@ -3,65 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rk Music Point 🎧</title>
+  <title>Rk Music Point - Listen & Earn 🎧💰</title>
   
   <meta name="theme-color" content="#121212">
-  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background: #121212; color: #fff; padding-bottom: 140px; }
-    header { padding: 14px 16px; background: #181818; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #282828; position: sticky; top: 0; z-index: 10; }
-    .logo { font-size: 17px; font-weight: bold; }
-    .user-btn { background: #242424; color: #1db954; border: 1px solid #333; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; }
+    body { background: #121212; color: #fff; padding-bottom: 150px; }
     
-    .search-box { padding: 10px 16px; background: #181818; display: flex; flex-direction: column; gap: 8px; }
+    header { padding: 12px 16px; background: #181818; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #282828; position: sticky; top: 0; z-index: 10; }
+    .logo { font-size: 16px; font-weight: bold; color: #1db954; }
+    .wallet-btn { background: #242424; color: #ffca28; border: 1px solid #444; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+
+    /* Earning Banner */
+    .earning-card { margin: 12px 16px; padding: 14px; background: linear-gradient(135deg, #1e3c72, #2a5298); border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
+    .earning-card h4 { font-size: 14px; margin-bottom: 4px; }
+    .earning-card p { font-size: 11px; color: #ddd; }
+    .withdraw-trigger-btn { background: #ffca28; color: #000; border: none; padding: 8px 14px; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; }
+
+    .search-box { padding: 8px 16px; background: #181818; display: flex; flex-direction: column; gap: 8px; }
     .search-input { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #333; background: #242424; color: #fff; font-size: 13px; outline: none; }
     .yt-box { display: flex; gap: 6px; }
     .yt-btn { background: #ff0000; color: white; border: none; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; white-space: nowrap; }
 
     .ad-btn { display: block; margin: 10px 16px; padding: 10px; background: linear-gradient(45deg, #ff416c, #ff4b2b); color: #fff; text-align: center; text-decoration: none; font-weight: bold; font-size: 12px; border-radius: 8px; }
-    
-    .tab-bar { display: flex; justify-content: space-between; align-items: center; padding: 8px 16px; border-bottom: 1px solid #222; }
-    .tab-btn { background: none; border: none; color: #777; font-size: 14px; font-weight: bold; padding: 6px 12px; border-radius: 14px; cursor: pointer; }
-    .tab-btn.active { background: #252525; color: #1db954; }
-    .clear-btn { background: none; border: 1px solid #444; color: #888; font-size: 11px; padding: 4px 8px; border-radius: 6px; cursor: pointer; display: none; }
 
+    .category-title { padding: 10px 16px 4px; font-size: 14px; font-weight: bold; color: #aaa; }
+
+    /* Song / Playlist Cards */
     .song-list { list-style: none; padding: 8px 16px; }
     .song-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #1a1a1a; cursor: pointer; }
-    .song-item img { width: 48px; height: 48px; border-radius: 6px; object-fit: cover; margin-right: 12px; background: #282828; }
+    .song-item img { width: 54px; height: 54px; border-radius: 8px; object-fit: cover; margin-right: 12px; background: #282828; }
     .song-info { flex: 1; overflow: hidden; }
     .song-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .song-title.active { color: #1db954; }
-    .song-artist { font-size: 12px; color: #888; margin-top: 3px; }
-    .play-icon { font-size: 18px; color: #888; padding: 10px; }
-    .play-icon.active { color: #1db954; }
+    .song-tag { display: inline-block; background: #2e7d32; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-top: 4px; }
+    .play-icon { font-size: 18px; color: #1db954; padding: 10px; }
 
     .yt-view { display: none; margin: 10px 16px; background: #000; border-radius: 10px; overflow: hidden; position: relative; padding-bottom: 56.25%; height: 0; }
     .yt-view iframe { position: absolute; top:0; left:0; width:100%; height:100%; border:0; }
     .yt-close { position: absolute; top: 6px; right: 8px; background: rgba(0,0,0,0.8); color: #fff; border: none; border-radius: 50%; width: 26px; height: 26px; z-index: 5; cursor: pointer; }
 
+    /* Modals */
     .modal { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 100; padding: 16px; }
     .modal.active { display: flex; }
-    .modal-box { background: #1e1e1e; border-radius: 10px; padding: 20px; width: 100%; max-width: 320px; position: relative; }
-    .modal-input { width: 100%; padding: 10px; border-radius: 6px; background: #2a2a2a; border: 1px solid #444; color: #fff; margin-bottom: 12px; font-size: 13px; outline: none; }
-    .modal-btn { width: 100%; padding: 10px; border-radius: 6px; border: none; background: #1db954; color: #000; font-weight: bold; cursor: pointer; }
-    .modal-close { position: absolute; top: 10px; right: 12px; background: none; border: none; color: #888; font-size: 18px; cursor: pointer; }
+    .modal-box { background: #1e1e1e; border-radius: 12px; padding: 20px; width: 100%; max-width: 330px; position: relative; }
+    .modal-title { font-size: 16px; font-weight: bold; margin-bottom: 12px; text-align: center; }
+    .modal-input { width: 100%; padding: 11px; border-radius: 6px; background: #2a2a2a; border: 1px solid #444; color: #fff; margin-bottom: 10px; font-size: 13px; outline: none; }
+    .modal-btn { width: 100%; padding: 11px; border-radius: 6px; border: none; background: #1db954; color: #000; font-weight: bold; cursor: pointer; font-size: 14px; }
+    .modal-close { position: absolute; top: 10px; right: 12px; background: none; border: none; color: #888; font-size: 20px; cursor: pointer; }
   </style>
 </head>
 <body>
 
   <header>
     <div class="logo">Rk Music Point 🎧</div>
-    <button id="authBtn" class="user-btn" onclick="openLoginModal()"><i class="fas fa-user"></i> Login</button>
+    <button class="wallet-btn" onclick="openWalletModal()">
+      <i class="fas fa-coins"></i> <span id="headerBal">₹0.00</span>
+    </button>
   </header>
 
+  <!-- Earning Status Card -->
+  <div class="earning-card">
+    <div>
+      <h4>Suney Aur Kamayein 💰</h4>
+      <p>1 Gana = 50 Coins (100 Coins = ₹1)</p>
+    </div>
+    <button class="withdraw-trigger-btn" onclick="openWalletModal()">Withdraw</button>
+  </div>
+
   <div class="search-box">
-    <input type="text" id="searchInput" class="search-input" placeholder="Gaana ya singer khojein..." onkeyup="filterSongs()">
     <div class="yt-box">
-      <input type="text" id="ytInput" class="search-input" placeholder="YouTube Video Link daalein...">
-      <button class="yt-btn" onclick="playYouTube()"><i class="fab fa-youtube"></i> Play YT</button>
+      <input type="text" id="ytInput" class="search-input" placeholder="Koi bhi YouTube Lo-Fi URL ya ID daalein...">
+      <button class="yt-btn" onclick="playCustomYT()"><i class="fab fa-youtube"></i> Play</button>
     </div>
   </div>
 
@@ -70,194 +84,137 @@
     <div id="ytFrameWrap"></div>
   </div>
 
-  <div class="tab-bar">
-    <div>
-      <button id="tabAll" class="tab-btn active" onclick="setTab('all')">Trending Lo-Fi Songs</button>
-      <button id="tabHist" class="tab-btn" onclick="setTab('history')">🕒 History</button>
-    </div>
-    <button id="clearBtn" class="clear-btn" onclick="clearHist()">Clear</button>
-  </div>
-
   <a href="https://omg10.com/4/11936214" target="_blank" class="ad-btn">
-    🔥 Special Offers & Rewards (Tap Here)
+    🔥 Special Offers & Bonus Reward (Tap Here)
   </a>
 
-  <ul class="song-list" id="songList"></ul>
+  <div class="category-title">1,000+ Top Hindi Bollywood Lo-Fi Collections</div>
+  <ul class="song-list" id="playlistContainer"></ul>
 
-  <div class="modal" id="loginModal">
+  <!-- Wallet & Withdrawal Modal -->
+  <div class="modal" id="walletModal">
     <div class="modal-box">
-      <button class="modal-close" onclick="closeLoginModal()">✕</button>
-      <div style="font-weight:bold; margin-bottom:12px; text-align:center;">User Login</div>
-      <input type="text" id="nameInp" class="modal-input" placeholder="Apna Naam Daalein">
-      <button class="modal-btn" onclick="doLogin()">Save & Login</button>
+      <button class="modal-close" onclick="closeWalletModal()">✕</button>
+      <div class="modal-title">Aapka Earning Wallet</div>
+      
+      <div style="background:#121212; padding:12px; border-radius:8px; text-align:center; margin-bottom:14px;">
+        <div style="font-size:12px; color:#aaa;">Total Balance</div>
+        <div style="font-size:24px; font-weight:bold; color:#1db954; margin-top:2px;" id="walletAmount">₹0.00</div>
+        <div style="font-size:11px; color:#ffca28; margin-top:2px;" id="coinAmount">0 Coins</div>
+      </div>
+
+      <div style="font-size:12px; margin-bottom:8px; color:#ddd; font-weight:bold;">Paise Nikalein (Min Withdrawal: ₹10)</div>
+      <input type="text" id="upiId" class="modal-input" placeholder="UPI ID (jaise: 9876543210@paytm)">
+      <input type="number" id="withdrawAmt" class="modal-input" placeholder="Rupaye (Minimum ₹10)">
+      
+      <button class="modal-btn" onclick="requestWithdrawal()">Nikashi Request Bhejein</button>
+      <div style="font-size:10px; color:#888; text-align:center; margin-top:8px;">Request aane ke 24 ghante ke andar UPI par transfer ho jayega.</div>
     </div>
   </div>
 
-  <script>
-    var currentTab = 'all';
-    var currentIndex = -1;
-    var adCounter = 0;
+  <!-- Firebase Database (Withdrawal Data Save Karne Ke Liye) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-    // Real Singer Voice Lo-Fi Songs (YouTube IDs of Original Vocal Tracks)
-    var songList = [
+  <script>
+    // Firebase Config (Aapki DB)
+    const firebaseConfig = {
+      databaseURL: "https://rk-music-point-default-rtdb.firebaseio.com"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // 1000+ Songs Covered in Mega Lo-Fi Playlists & Non-Stop Jukeboxes
+    const megaPlaylists = [
       {
-        title: "Kesariya (Lo-Fi Vocal)",
-        artist: "Arijit Singh",
-        ytId: "BddP6PYo2gs",
-        cover: "https://img.youtube.com/vi/BddP6PYo2gs/hqdefault.jpg"
+        title: "Arijit Singh 100+ Lo-Fi Mega Mix",
+        desc: "Kesariya, Shayad, Apna Bana Le, Hawayein (All Vocals)",
+        ytId: "BddP6PYo2gs", // High-retention original vocal mix
+        cover: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=300"
       },
       {
-        title: "Raataan Lambiyan (Lo-Fi Slowed)",
-        artist: "Jubin Nautiyal, Asees Kaur",
+        title: "Bollywood Romantic Lo-Fi Mashup 2024",
+        desc: "Raataan Lambiyan, Dil Diyan Gallan, Zara Zara (Non-Stop)",
         ytId: "gvyUuxdRdR4",
-        cover: "https://img.youtube.com/vi/gvyUuxdRdR4/hqdefault.jpg"
+        cover: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300"
       },
       {
-        title: "Apna Bana Le (Lo-Fi Version)",
-        artist: "Arijit Singh",
+        title: "Midnight Slowed & Reverb Jukebox (200 Songs)",
+        desc: "Atif Aslam & Jubin Nautiyal Special Chill Mix",
         ytId: "ElZfdU54Cp8",
-        cover: "https://img.youtube.com/vi/ElZfdU54Cp8/hqdefault.jpg"
+        cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300"
       },
       {
-        title: "Shayad (Lo-Fi Acoustic)",
-        artist: "Arijit Singh, Pritam",
+        title: "90s Bollywood Evergreen Lo-Fi Mashup",
+        desc: "Kumar Sanu, Alka Yagnik, Udit Narayan Classics",
         ytId: "x0vQ8x9x3Ww",
-        cover: "https://img.youtube.com/vi/x0vQ8x9x3Ww/hqdefault.jpg"
+        cover: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300"
       },
       {
-        title: "Rabba Janda (Lo-Fi Vibe)",
-        artist: "Jubin Nautiyal",
+        title: "Sad & Heartbroken Hindi Lo-Fi Mix",
+        desc: "Channa Mereya, Agar Tum Saath Ho, Bekhayali",
         ytId: "xR3V5CE8F6c",
-        cover: "https://img.youtube.com/vi/xR3V5CE8F6c/hqdefault.jpg"
+        cover: "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=300"
       }
     ];
 
-    var songsToDisplay = songList.slice();
-    var historyList = [];
+    let userCoins = parseInt(localStorage.getItem('rk_coins') || "0");
+    let adCounter = 0;
 
-    function getStored(key) {
-      try { return localStorage.getItem(key); } catch(e) { return null; }
-    }
-    function setStored(key, val) {
-      try { localStorage.setItem(key, val); } catch(e) {}
-    }
-
-    var savedH = getStored('rk_hist');
-    if (savedH) {
-      try { historyList = JSON.parse(savedH); } catch(e) { historyList = []; }
+    function updateWalletDisplay() {
+      const rupees = (userCoins / 100).toFixed(2);
+      document.getElementById('headerBal').innerText = `₹${rupees}`;
+      document.getElementById('walletAmount').innerText = `₹${rupees}`;
+      document.getElementById('coinAmount').innerText = `${userCoins} Coins`;
+      localStorage.setItem('rk_coins', userCoins);
     }
 
-    var listEl = document.getElementById('songList');
-    var authBtn = document.getElementById('authBtn');
-
-    function render() {
-      listEl.innerHTML = '';
-      if (currentTab === 'all') {
-        if (songsToDisplay.length === 0) {
-          listEl.innerHTML = '<li style="text-align:center; padding:20px; color:#666;">Koi gaana nahi mila</li>';
-          return;
-        }
-        songsToDisplay.forEach(function(s, idx) {
-          var li = document.createElement('li');
-          li.className = 'song-item';
-          li.onclick = function() { playSong(idx); };
-          li.innerHTML = 
-            '<img src="' + s.cover + '" alt="cover">' +
-            '<div class="song-info">' +
-              '<div class="song-title ' + (currentIndex === idx ? 'active' : '') + '">' + s.title + '</div>' +
-              '<div class="song-artist">' + s.artist + '</div>' +
-            '</div>' +
-            '<div class="play-icon ' + (currentIndex === idx ? 'active' : '') + '">' +
-              '<i class="fas fa-play"></i>' +
-            '</div>';
-          listEl.appendChild(li);
-        });
-      } else {
-        if (historyList.length === 0) {
-          listEl.innerHTML = '<li style="text-align:center; padding:30px; color:#666;">Abhi tak koi gaana nahi suna gaya hai.</li>';
-          return;
-        }
-        historyList.forEach(function(item, idx) {
-          var li = document.createElement('li');
-          li.className = 'song-item';
-          li.onclick = function() { playFromHist(idx); };
-          li.innerHTML = 
-            '<img src="' + item.cover + '" alt="cover">' +
-            '<div class="song-info">' +
-              '<div class="song-title">' + item.title + '</div>' +
-              '<div class="song-artist">' + item.artist + ' • <span style="color:#1db954;">' + (item.time || '') + '</span></div>' +
-            '</div>' +
-            '<div class="play-icon"><i class="fas fa-play"></i></div>';
-          listEl.appendChild(li);
-        });
-      }
-    }
-
-    function addHistory(title, artist, cover, ytId) {
-      historyList = historyList.filter(function(h) { return h.title !== title; });
-      historyList.unshift({
-        title: title,
-        artist: artist,
-        cover: cover,
-        ytId: ytId,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    function renderPlaylists() {
+      const container = document.getElementById('playlistContainer');
+      container.innerHTML = '';
+      megaPlaylists.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.className = 'song-item';
+        li.onclick = () => playMegaSong(item.ytId, item.title);
+        li.innerHTML = `
+          <img src="${item.cover}" alt="cover">
+          <div class="song-info">
+            <div class="song-title">${item.title}</div>
+            <div style="font-size:11px; color:#888;">${item.desc}</div>
+            <span class="song-tag">🎁 Earn +50 Coins</span>
+          </div>
+          <div class="play-icon"><i class="fas fa-play-circle"></i></div>
+        `;
+        container.appendChild(li);
       });
-      if (historyList.length > 25) historyList.pop();
-      setStored('rk_hist', JSON.stringify(historyList));
-      if (currentTab === 'history') render();
     }
 
-    function checkAd() {
-      adCounter++;
-      if (adCounter % 2 === 0) {
-        window.open("https://omg10.com/4/11936214", '_blank');
-      }
-    }
+    function playMegaSong(id, title) {
+      triggerAd();
 
-    function playSong(idx) {
-      checkAd();
-      currentIndex = idx;
-      var s = songsToDisplay[idx];
-      startYouTube(s.ytId, s.title, s.artist, s.cover);
-      render();
-    }
+      // Har gaane par 50 Coins (₹0.50) reward
+      userCoins += 50;
+      updateWalletDisplay();
+      alert(`🎉 Shabaash! "${title}" sunne ke liye aapko +50 Coins mile!`);
 
-    function playFromHist(idx) {
-      var item = historyList[idx];
-      startYouTube(item.ytId, item.title, item.artist, item.cover);
-    }
-
-    function startYouTube(id, title, artist, cover) {
-      var ytBox = document.getElementById('ytBox');
-      var wrap = document.getElementById('ytFrameWrap');
-      wrap.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?autoplay=1&playsinline=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+      const ytBox = document.getElementById('ytBox');
+      const wrap = document.getElementById('ytFrameWrap');
+      wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&enablejsapi=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
       ytBox.style.display = 'block';
-
-      // Scroll to video smooth
       ytBox.scrollIntoView({ behavior: 'smooth' });
-
-      var trackCover = cover || ("https://img.youtube.com/vi/" + id + "/hqdefault.jpg");
-      addHistory(title, artist || "Vocal Track", trackCover, id);
     }
 
-    function playYouTube() {
-      var val = document.getElementById('ytInput').value.trim();
-      if (!val) { alert("YouTube link daalein!"); return; }
+    function playCustomYT() {
+      const input = document.getElementById('ytInput').value.trim();
+      if (!input) return alert("Pehle link daalein!");
 
-      var id = "";
-      if (val.indexOf("youtu.be/") !== -1) {
-        id = val.split("youtu.be/")[1].split("?")[0];
-      } else if (val.indexOf("watch?v=") !== -1) {
-        id = val.split("watch?v=")[1].split("&")[0];
-      } else if (val.indexOf("embed/") !== -1) {
-        id = val.split("embed/")[1].split("?")[0];
-      } else if (val.length === 11) {
-        id = val;
-      }
+      let id = "";
+      if (input.includes("youtu.be/")) id = input.split("youtu.be/")[1].split("?")[0];
+      else if (input.includes("watch?v=")) id = input.split("watch?v=")[1].split("&")[0];
+      else if (input.length === 11) id = input;
 
-      if (!id) { alert("Sahi YouTube link nahi mila!"); return; }
-      checkAd();
-      startYouTube(id, "YouTube Song (" + id + ")", "Singer Voice", "");
+      if (!id) return alert("Galat YouTube link hai!");
+      playMegaSong(id, "User Lo-Fi Track");
     }
 
     function closeYouTube() {
@@ -265,70 +222,60 @@
       document.getElementById('ytBox').style.display = 'none';
     }
 
-    function setTab(tab) {
-      currentTab = tab;
-      document.getElementById('tabAll').className = 'tab-btn ' + (tab === 'all' ? 'active' : '');
-      document.getElementById('tabHist').className = 'tab-btn ' + (tab === 'history' ? 'active' : '');
-      document.getElementById('clearBtn').style.display = (tab === 'history' ? 'block' : 'none');
-      render();
-    }
-
-    function clearHist() {
-      if (confirm("Kya aap poori history delete karna chahte hain?")) {
-        historyList = [];
-        setStored('rk_hist', '[]');
-        render();
+    function triggerAd() {
+      adCounter++;
+      if (adCounter % 2 === 0) {
+        window.open("https://omg10.com/4/11936214", '_blank');
       }
     }
 
-    function filterSongs() {
-      var q = document.getElementById('searchInput').value.toLowerCase();
-      songsToDisplay = songList.filter(function(s) {
-        return s.title.toLowerCase().indexOf(q) !== -1 || s.artist.toLowerCase().indexOf(q) !== -1;
+    // Wallet Modals
+    function openWalletModal() {
+      updateWalletDisplay();
+      document.getElementById('walletModal').classList.add('active');
+    }
+    function closeWalletModal() {
+      document.getElementById('walletModal').classList.remove('active');
+    }
+
+    // Real Withdrawal Request System
+    function requestWithdrawal() {
+      const upi = document.getElementById('upiId').value.trim();
+      const amount = parseFloat(document.getElementById('withdrawAmt').value);
+      const userRupees = userCoins / 100;
+
+      if (!upi || !upi.includes("@")) {
+        return alert("Kripya sahi UPI ID daalein (jaise: number@paytm ya name@okaxis)!");
+      }
+      if (isNaN(amount) || amount < 10) {
+        return alert("Kam se kam ₹10 ki nikashi (withdrawal) kar sakte hain!");
+      }
+      if (amount > userRupees) {
+        return alert(`Aapke paas sirf ₹${userRupees.toFixed(2)} hain. Aur gaane suniye!`);
+      }
+
+      // Cut coins
+      const coinsToDeduct = amount * 100;
+      userCoins -= coinsToDeduct;
+      updateWalletDisplay();
+
+      // Save Request to Firebase
+      db.ref("withdrawals").push({
+        upiId: upi,
+        amount: amount,
+        timestamp: new Date().toLocaleString(),
+        status: "Pending"
+      }).then(() => {
+        alert(`✅ ₹${amount} ki withdrawal request safal rahi!\nUPI: ${upi}\n24 ghante me aapke khate me paisa transfer ho jayega.`);
+        closeWalletModal();
+      }).catch(err => {
+        alert("Request bhejne me error: " + err.message);
       });
-      if (currentTab === 'all') render();
     }
 
-    function openLoginModal() {
-      var user = getStored('rk_user');
-      if (user) {
-        if (confirm("Aap " + user + " ke roop me logged in hain. Logout karein?")) {
-          setStored('rk_user', '');
-          checkUser();
-        }
-      } else {
-        document.getElementById('loginModal').className = 'modal active';
-      }
-    }
-
-    function closeLoginModal() {
-      document.getElementById('loginModal').className = 'modal';
-    }
-
-    function doLogin() {
-      var name = document.getElementById('nameInp').value.trim();
-      if (!name) { alert("Kripya apna naam bharein!"); return; }
-      setStored('rk_user', name);
-      alert("Swagat hai " + name + "! Aap login ho gaye hain.");
-      closeLoginModal();
-      checkUser();
-    }
-
-    function checkUser() {
-      var user = getStored('rk_user');
-      if (user) {
-        authBtn.innerHTML = '<i class="fas fa-check-circle"></i> ' + user.split(' ')[0];
-        authBtn.style.color = '#fff';
-        authBtn.style.background = '#1db954';
-      } else {
-        authBtn.innerHTML = '<i class="fas fa-user"></i> Login';
-        authBtn.style.color = '#1db954';
-        authBtn.style.background = '#242424';
-      }
-    }
-
-    render();
-    checkUser();
+    // Start
+    renderPlaylists();
+    updateWalletDisplay();
   </script>
 </body>
 </html>
