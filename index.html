@@ -1,39 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Rk Music</title>
 <style>
-  body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:center}
-  header{padding:14px;background:#1e1e1e;color:#00e5ff;font-size:18px;font-weight:bold}
-  .tabs{display:flex;gap:8px;padding:12px;overflow-x:auto;background:#222}
-  button{background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;font-size:13px}
-  button.active{background:#00e5ff;color:#000;font-weight:bold}
-  .player-box{padding:12px}
-  iframe{width:100%;height:320px;border:none;border-radius:12px;background:#000}
+body{margin:0;background:#111;color:#fff;font-family:sans-serif;padding:10px}
+h3{text-align:center;color:#00e5ff;margin:10px 0}
+.box{background:#1e1e1e;padding:12px;margin:8px 0;border-radius:6px;cursor:pointer}
+#bar{position:fixed;bottom:0;left:0;right:0;background:#000;padding:12px;color:#00e5ff;border-top:1px solid #333;display:none}
 </style>
 </head>
 <body>
 
-<header>Rk Music Point</header>
-
-<div class="tabs">
-  <button class="active" onclick="playList('PL9bw4s5AgEBsRkYy0Yt8Y3q_Yp5J4Y7j8', this)">Hindi Sad Songs</button>
-  <button onclick="playList('PLDIoUOhQQPlXr63I54l0N1Wv0a8fD0d0c', this)">Bollywood Hits</button>
-  <button onclick="playList('PLw-VjHDlEOgs658kAHR_LAa4B_xG4Vz_d', this)">Arijit Singh Sad</button>
-  <button onclick="playList('PL9bw4s5AgEBsj8eB4U7A5hD_Wv5u8pQ8K', this)">90s Sad Songs</button>
-</div>
-
-<div class="player-box">
-  <iframe id="ytPlayer" src="https://www.youtube.com/embed/videoseries?list=PL9bw4s5AgEBsRkYy0Yt8Y3q_Yp5J4Y7j8&autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-</div>
+<h3>Rk Music (Sad Hits)</h3>
+<div id="songs"></div>
+<div id="bar">Baj raha hai: <b id="title"></b></div>
+<iframe id="audio" style="display:none" allow="autoplay"></iframe>
 
 <script>
-  function playList(listId, btn) {
-    document.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('ytPlayer').src = "https://www.youtube.com/embed/videoseries?list=" + listId + "&autoplay=1";
-  }
+const list = [
+  ["Channa Mereya", "bzSTpdcs-EI"],
+  ["Bekhayali - Kabir Singh", "VOLKJJvfAbg"],
+  ["Tujhe Bhula Diya", "5oEvF_OaNSo"],
+  ["Agar Tum Saath Ho", "sK7riqg2mr4"],
+  ["Tum Hi Ho - Aashiqui 2", "Umqb9KENgmk"],
+  ["Khairiyat - Arijit", "hoNb6HuNmU0"],
+  ["Pachtaoge - Arijit", "PVxc5mIHVuQ"],
+  ["Jiye To Jiye Kaise (90s)", "XW1k3m2a7d8"],
+  ["Dil Tod Ke Hasdi (90s)", "iVpkmzL0t-s"],
+  ["Tadap Tadap Ke (90s)", "Wq_T50a90iE"]
+];
+
+const songsDiv = document.getElementById("songs");
+list.forEach(([name, id]) => {
+  songsDiv.innerHTML += `<div class="box" onclick="play('${id}','${name}')">🎵 ${name}</div>`;
+});
+
+function play(id, name) {
+  document.getElementById("bar").style.display = "block";
+  document.getElementById("title").innerText = name;
+  document.getElementById("audio").src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1";
+}
 </script>
 
 </body>
