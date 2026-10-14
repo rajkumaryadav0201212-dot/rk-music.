@@ -1,133 +1,214 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rk Music</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rk Music Point</title>
 <style>
-  body{margin:0;background:#0d1117;color:#fff;font-family:sans-serif;padding-bottom:120px}
-  header{background:#161b22;padding:12px;text-align:center;color:#58a6ff;font-weight:bold;font-size:17px;position:sticky;top:0;z-index:10}
-  .tabs{display:flex;gap:6px;padding:10px;overflow-x:auto;background:#21262d}
-  button.tbtn{background:#30363d;color:#fff;border:none;padding:7px 14px;border-radius:15px;white-space:nowrap;font-size:12px;cursor:pointer}
-  button.tbtn.active{background:#238636;font-weight:bold}
-  #list{padding:10px}
-  .item{background:#161b22;padding:14px;margin-bottom:8px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border:1px solid #30363d}
-  .item:active{background:#30363d}
-  .sub{font-size:11px;color:#8b949e;margin-top:4px}
-  #bar{position:fixed;bottom:0;left:0;right:0;background:#161b22;padding:10px;border-top:1px solid #30363d;text-align:center;z-index:20}
-  #title{font-size:13px;color:#58a6ff;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .ctrl button{padding:6px 18px;border-radius:20px;font-size:13px;background:#21262d;color:#fff;border:1px solid #58a6ff;margin:0 5px;cursor:pointer}
-  #ytFrame{position:absolute;top:-9999px;left:-9999px;width:1px;height:1px}
+*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
+body{background:#0b111e;color:#fff;padding:12px 12px 115px}
+h3{text-align:center;color:#38bdf8;margin-bottom:10px}
+.search-row{display:flex;gap:6px;margin-bottom:8px}
+input{flex:1;padding:10px 14px;border-radius:20px;border:1px solid #1f2d4a;background:#131d31;color:#fff;outline:none}
+.btn-local{padding:8px 12px;background:#3b82f6;color:#fff;border-radius:18px;font-size:.75rem;cursor:pointer;white-space:nowrap;display:flex;align-items:center}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px}
+.tabs span{padding:5px 12px;background:#182238;border-radius:15px;font-size:.75rem;cursor:pointer;white-space:nowrap}
+.tabs .on{background:#10b981;font-weight:bold}
+.sec-title{font-size:.72rem;color:#64748b;margin:10px 0 6px}
+.card{display:flex;justify-content:space-between;align-items:center;background:#141f36;padding:10px 12px;border-radius:8px;margin-bottom:6px;cursor:pointer;border:1px solid #1f2f50}
+.card.on{background:#1c2d4a;border-color:#38bdf8}
+.card-left{display:flex;align-items:center;gap:10px;overflow:hidden}
+.card-left img{width:42px;height:42px;border-radius:6px;object-fit:cover;background:#1e293b}
+.card-text{overflow:hidden}
+.card h5{font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card small{color:#94a3b8;font-size:.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.bar{position:fixed;bottom:0;left:0;right:0;background:#10192d;padding:8px 14px;text-align:center;border-top:1px solid #1f2d4a;box-shadow:0 -4px 10px rgba(0,0,0,0.5)}
+.bar p{font-size:.75rem;color:#38bdf8;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar button{background:#1e293b;color:#fff;border:none;padding:7px 16px;border-radius:16px;margin:0 4px;cursor:pointer}
+#play{background:#f59e0b;color:#000;font-weight:bold}
 </style>
 </head>
 <body>
 
-<header>Rk Music Point (1000+ Songs)</header>
+<h3>Rk Music Point (1000+ Songs)</h3>
 
+<!-- Search & Local file button -->
+<div class="search-row">
+  <input id="q" placeholder="Koi bhi gaana ya singer search karein..." onkeydown="if(event.key==='Enter') searchOnline()">
+  <button style="padding:0 12px;background:#10b981;border:none;border-radius:20px;color:#fff;font-weight:bold;cursor:pointer" onclick="searchOnline()">Khojo</button>
+  <label class="btn-local">+ Phone Se <input type="file" id="localFiles" accept="audio/*" multiple style="display:none" onchange="loadLocalSongs(this)"></label>
+</div>
+
+<!-- Quick Sad Categories -->
 <div class="tabs">
-  <button class="tbtn active" onclick="loadTab('sad', this)">Bollywood Sad Hits</button>
-  <button class="tbtn" onclick="loadTab('arijit', this)">Arijit Broken Heart</button>
-  <button class="tbtn" onclick="loadTab('90s', this)">90s Sad Classics</button>
-  <button class="tbtn" onclick="loadTab('lofi', this)">Sad Lo-Fi & Mashup</button>
+  <span class="on" onclick="quickFetch('Arijit Singh Sad', this)">Arijit Sad</span>
+  <span onclick="quickFetch('Bollywood Sad Hits', this)">Bollywood Sad</span>
+  <span onclick="quickFetch('Atif Aslam Sad', this)">Atif Aslam</span>
+  <span onclick="quickFetch('90s Bollywood Sad', this)">90s Sad</span>
+  <span onclick="quickFetch('Jubin Nautiyal Sad', this)">Jubin Sad</span>
+  <span onclick="quickFetch('KK Sad Hits', this)">KK Hits</span>
 </div>
 
-<div id="list"></div>
+<div class="sec-title" id="ht" style="display:none">RECENTLY PLAYED</div>
+<div id="hl"></div>
 
-<div id="bar">
-  <div id="title">Gana chunein</div>
-  <div class="ctrl">
-    <button onclick="nav(-1)">⏮ Prev</button>
-    <button id="pBtn" onclick="toggle()">⏸</button>
-    <button onclick="nav(1)">Next ⏭</button>
-  </div>
+<div class="sec-title" id="stitle">GAANE KI LIST</div>
+<div id="sl"></div>
+
+<!-- Bottom Audio Player -->
+<div class="bar">
+  <p id="st">Koi gaana select nahi hai</p>
+  <button onclick="skip(-1)">|&#9664;&#9664; Prev</button>
+  <button id="play" onclick="pp()">Play</button>
+  <button onclick="skip(1)">Next &#9654;&#9654;|</button>
 </div>
 
-<iframe id="ytFrame" allow="autoplay"></iframe>
+<audio id="au" preload="auto"></audio>
 
 <script>
-// Har playlist me 200 se 500+ gaane hain (Kul milakar 1500+ gaane)
-const db = {
-  sad: [
-    {t: "Top 500 Bollywood Sad Collection", pl: "RDCLAK5uy_mK_8s9eWdM312K1Vp7M9x0r7-F8x2M6k", id: "bzSTpdcs-EI", s: "500+ Songs non-stop"},
-    {t: "Kabir Singh & Heartbreak Melodies", pl: "RDCLAK5uy_k15n8s7eB4_pL5Vv1X0y9Z8a7b6C5d4e", id: "VOLKJJvfAbg", s: "Superhit Heartbreak Audio"},
-    {t: "Modern Bollywood Pain Hits (2020-2026)", pl: "RDCLAK5uy_lZ9p8o7i6u5y4t3r2e1w0q9a8s7d6f5", id: "5oEvF_OaNSo", s: "New Heartbroken Playlist"}
-  ],
-  arijit: [
-    {t: "Arijit Singh: Sad & Emotional Vault", pl: "RDCLAK5uy_n8m7v6c5x4z3a2s1d0f9g8h7j6k5l4", id: "Umqb9KENgmk", s: "300+ Pure Arijit Sad Melodies"},
-    {t: "Arijit Slowed & Reverb Sad Mood", pl: "RDCLAK5uy_kZ8m6x5c4v3b2n1m0l9k8j7h6g5f4", id: "hoNb6HuNmU0", s: "Deep Emotional Songs"},
-    {t: "Ae Dil Hai Mushkil & Full Album Sad", pl: "RDCLAK5uy_mX8y7z6w5v4u3t2s1r0q9p8o7n6m5", id: "6FURuLYrR_Q", s: "Sad Collection"}
-  ],
-  "90s": [
-    {t: "90s Evergreen Sad Songs (Kumar Sanu, Alka)", pl: "RDCLAK5uy_l6m5n4b3v2c1x0z9a8s7d6f5g4h3", id: "XW1k3m2a7d8", s: "400+ Golden Era Pain Hits"},
-    {t: "Attaullah Khan & Altaf Raja Sad Qawwali", pl: "RDCLAK5uy_k3j2h1g0f9d8s7a6p5o4i3u2y1t0", id: "iVpkmzL0t-s", s: "Desi Dard Bhare Nagme"},
-    {t: "90s Bollywood Breakup Special", pl: "RDCLAK5uy_n5m4l3k2j1h0g9f8d7s6a5p4o3i2", id: "Wq_T50a90iE", s: "Sad Evergreen Melodies"}
-  ],
-  lofi: [
-    {t: "Bollywood Midnight Sad Lo-Fi Stream", pl: "RDCLAK5uy_m5l4k3j2h1g0f9d8s7a6p5o4i3u2", id: "sK7riqg2mr4", s: "Non-stop Background Lo-Fi"},
-    {t: "Dard Bhare Mashup Audio Edition", pl: "RDCLAK5uy_l4k3j2h1g0f9d8s7a6p5o4i3u2y1", id: "284Ov7ysmfA", s: "Hindi Emotional Mashups"}
-  ]
+let S = [];
+let i = -1;
+let H = JSON.parse(localStorage.getItem('rk_hist_v3') || '[]');
+const A = document.getElementById('au');
+
+// Online Search API (Apple Music CDN - 100% Works in India without CORS/block)
+function searchSongs(query) {
+  document.getElementById('sl').innerHTML = '<p style="font-size:0.8rem;color:#38bdf8;padding:8px">Gaane load ho rahe hain, kripya intezar karein...</p>';
+  const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&country=IN&media=music&entity=song&limit=40`;
+  
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      if(data.results && data.results.length > 0) {
+        S = data.results.map((item, idx) => ({
+          id: item.trackId,
+          t: item.trackName,
+          c: item.artistName + " • " + (item.collectionName || "Single"),
+          u: item.previewUrl,
+          img: item.artworkUrl100 || item.artworkUrl60
+        }));
+        draw();
+      } else {
+        document.getElementById('sl').innerHTML = '<p style="font-size:0.8rem;color:#f87171;padding:8px">Koi gaana nahi mila. Dusra naam likhein.</p>';
+      }
+    })
+    .catch(err => {
+      document.getElementById('sl').innerHTML = '<p style="font-size:0.8rem;color:#f87171;padding:8px">Internet connection check karein.</p>';
+    });
+}
+
+function searchOnline() {
+  const val = document.getElementById('q').value.trim();
+  if(val) searchSongs(val);
+}
+
+function quickFetch(term, el) {
+  document.querySelectorAll('.tabs span').forEach(s => s.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('q').value = term;
+  searchSongs(term);
+}
+
+// Load local files from mobile phone
+function loadLocalSongs(input) {
+  const files = input.files;
+  if (!files.length) return;
+  const localList = [];
+  for (let f of files) {
+    localList.push({
+      id: Math.random(),
+      t: f.name.replace(/\.[^/.]+$/, ""),
+      c: "Phone Storage",
+      u: URL.createObjectURL(f),
+      img: "https://cdn-icons-png.flaticon.com/512/3844/3844724.png"
+    });
+  }
+  S = [...localList, ...S];
+  draw();
+  go(S[0].id);
+}
+
+function draw() {
+  document.getElementById('sl').innerHTML = S.map(x => `
+    <div class="card ${i > -1 && S[i].id === x.id ? 'on' : ''}" onclick="go(${x.id})">
+      <div class="card-left">
+        <img src="${x.img || 'https://via.placeholder.com/60'}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3844/3844724.png'">
+        <div class="card-text">
+          <h5>${x.t}</h5>
+          <small>${x.c}</small>
+        </div>
+      </div>
+      <span style="color:#38bdf8;font-weight:bold;margin-left:8px">${i > -1 && S[i].id === x.id && !A.paused ? '❚❚' : '►'}</span>
+    </div>
+  `).join('');
+
+  // History render
+  if(H.length) {
+    document.getElementById('ht').style.display = 'block';
+    document.getElementById('hl').innerHTML = H.slice(0, 3).map(x => `
+      <div class="card" onclick="go(${x.id})">
+        <div class="card-left">
+          <img src="${x.img || 'https://via.placeholder.com/60'}">
+          <div class="card-text">
+            <h5>${x.t}</h5>
+            <small style="color:#10b981">Recently Played</small>
+          </div>
+        </div>
+        <span style="color:#10b981">►</span>
+      </div>
+    `).join('');
+  }
+}
+
+function go(id) {
+  const idx = S.findIndex(x => x.id === id);
+  if (idx === -1) return;
+  if (i === idx) { pp(); return; }
+  i = idx;
+  const song = S[i];
+  A.src = song.u;
+  A.play().catch(e => console.log("Play error: ", e));
+
+  // Save in history
+  H = [song, ...H.filter(x => x.id !== song.id)].slice(0, 10);
+  localStorage.setItem('rk_hist_v3', JSON.stringify(H));
+
+  // Background play & Screen-off control
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: song.t,
+      artist: song.c,
+      artwork: [{ src: song.img || '', sizes: '96x96', type: 'image/jpeg' }]
+    });
+    navigator.mediaSession.setActionHandler('play', pp);
+    navigator.mediaSession.setActionHandler('pause', pp);
+    navigator.mediaSession.setActionHandler('nexttrack', () => skip(1));
+    navigator.mediaSession.setActionHandler('previoustrack', () => skip(-1));
+  }
+}
+
+function pp() {
+  if (i === -1 && S.length) { go(S[0].id); return; }
+  if (A.paused) A.play(); else A.pause();
+}
+
+function skip(d) {
+  if (!S.length) return;
+  const nextIdx = (i + d + S.length) % S.length;
+  go(S[nextIdx].id);
+}
+
+A.onplay = A.onpause = () => {
+  if(i > -1 && S[i]) {
+    document.getElementById('st').innerText = (A.paused ? 'Paused: ' : 'Baj raha hai: ') + S[i].t;
+  }
+  document.getElementById('play').innerText = A.paused ? 'Play' : 'Pause';
+  draw();
 };
 
-let currentCategory = 'sad';
-let currentIdx = 0;
-let isPlaying = false;
-const frame = document.getElementById('ytFrame');
+A.onended = () => skip(1);
 
-function loadTab(cat, btn) {
-  if (btn) {
-    document.querySelectorAll('.tbtn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  }
-  currentCategory = cat;
-  const listDiv = document.getElementById('list');
-  listDiv.innerHTML = "";
-  db[cat].forEach((item, idx) => {
-    listDiv.innerHTML += `
-      <div class="item" onclick="playCollection(${idx})">
-        <div>
-          <div style="font-size:14px;font-weight:bold">🎵 ${item.t}</div>
-          <div class="sub">${item.s}</div>
-        </div>
-        <span style="color:#58a6ff;font-size:13px;font-weight:bold">&#9658; Play</span>
-      </div>`;
-  });
-}
-
-function playCollection(idx) {
-  currentIdx = idx;
-  const item = db[currentCategory][currentIdx];
-  document.getElementById('title').innerText = "Baj raha hai: " + item.t;
-  document.getElementById('pBtn').innerText = '⏸';
-  isPlaying = true;
-
-  // Background audio engine - IFrame hidden rahega, auto agla gana bajega
-  frame.src = `https://www.youtube.com/embed/${item.id}?list=${item.pl}&autoplay=1&enablejsapi=1`;
-}
-
-function toggle() {
-  const pBtn = document.getElementById('pBtn');
-  if (isPlaying) {
-    frame.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-    pBtn.innerText = '▶';
-    isPlaying = false;
-  } else {
-    frame.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-    pBtn.innerText = '⏸';
-    isPlaying = true;
-  }
-}
-
-function nav(direction) {
-  if (direction === 1) {
-    frame.contentWindow.postMessage('{"event":"command","func":"nextVideo","args":""}', '*');
-  } else {
-    frame.contentWindow.postMessage('{"event":"command","func":"previousVideo","args":""}', '*');
-  }
-  isPlaying = true;
-  document.getElementById('pBtn').innerText = '⏸';
-}
-
-// Default tab load
-loadTab('sad', null);
+// App start par Sad songs load honge
+quickFetch('Arijit Singh Sad', document.querySelector('.tabs span'));
 </script>
 </body>
 </html>
