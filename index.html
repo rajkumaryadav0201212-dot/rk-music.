@@ -4,16 +4,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rk Music</title>
 <style>
-  body{margin:0;background:#111;color:#fff;font-family:sans-serif;padding-bottom:90px}
-  header{padding:12px;text-align:center;background:#1e1e1e;color:#00e5ff;font-weight:bold}
-  .tabs{display:flex;gap:8px;padding:10px;overflow-x:auto;background:#222}
-  button{background:#333;color:#fff;border:none;padding:6px 14px;border-radius:15px;cursor:pointer;white-space:nowrap}
-  #list{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
-  .card{background:#1e1e1e;border-radius:8px;overflow:hidden;font-size:12px}
-  .card img{width:100%;height:100px;object-fit:cover}
-  .card p{padding:6px;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  #player{position:fixed;bottom:0;width:100%;height:80px;background:#000;display:none;border-top:1px solid #333}
-  iframe{width:100%;height:100%;border:none}
+  body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:center}
+  header{padding:14px;background:#1e1e1e;color:#00e5ff;font-size:18px;font-weight:bold}
+  .tabs{display:flex;gap:8px;padding:12px;overflow-x:auto;background:#222}
+  button{background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;cursor:pointer;white-space:nowrap;font-size:13px}
+  button.active{background:#00e5ff;color:#000;font-weight:bold}
+  .player-box{padding:12px}
+  iframe{width:100%;height:320px;border:none;border-radius:12px;background:#000}
 </style>
 </head>
 <body>
@@ -21,45 +18,23 @@
 <header>Rk Music Point</header>
 
 <div class="tabs">
-  <button onclick="load('Hindi Sad Songs')">Sad Songs</button>
-  <button onclick="load('Bollywood Sad Songs')">Bollywood Sad</button>
-  <button onclick="load('Arijit Singh Sad Songs')">Arijit Singh</button>
-  <button onclick="load('90s Hindi Sad Songs')">90s Sad Hits</button>
+  <button class="active" onclick="playList('PL9bw4s5AgEBsRkYy0Yt8Y3q_Yp5J4Y7j8', this)">Hindi Sad Songs</button>
+  <button onclick="playList('PLDIoUOhQQPlXr63I54l0N1Wv0a8fD0d0c', this)">Bollywood Hits</button>
+  <button onclick="playList('PLw-VjHDlEOgs658kAHR_LAa4B_xG4Vz_d', this)">Arijit Singh Sad</button>
+  <button onclick="playList('PL9bw4s5AgEBsj8eB4U7A5hD_Wv5u8pQ8K', this)">90s Sad Songs</button>
 </div>
 
-<div id="list"><p style="grid-column:1/-1;text-align:center">Loading Songs...</p></div>
-
-<div id="player"></div>
+<div class="player-box">
+  <iframe id="ytPlayer" src="https://www.youtube.com/embed/videoseries?list=PL9bw4s5AgEBsRkYy0Yt8Y3q_Yp5J4Y7j8&autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
 
 <script>
-  const KEY = "YOUR_YOUTUBE_API_KEY"; // Yahan apni API Key daalein
-
-  async function load(q) {
-    const list = document.getElementById('list');
-    list.innerHTML = "<p style='grid-column:1/-1;text-align:center'>Loading...</p>";
-    try {
-      const res = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${encodeURIComponent(q)}&type=video&videoCategoryId=10&key=${KEY}`);
-      const data = await res.json();
-      list.innerHTML = "";
-      data.items.forEach(i => {
-        list.innerHTML += `
-          <div class="card" onclick="play('${i.id.videoId}')">
-            <img src="${i.snippet.thumbnails.medium.url}">
-            <p>${i.snippet.title}</p>
-          </div>`;
-      });
-    } catch(e) {
-      list.innerHTML = "<p style='grid-column:1/-1;text-align:center'>Gaane load nahi huye, API key check karein!</p>";
-    }
+  function playList(listId, btn) {
+    document.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('ytPlayer').src = "https://www.youtube.com/embed/videoseries?list=" + listId + "&autoplay=1";
   }
-
-  function play(id) {
-    const p = document.getElementById('player');
-    p.style.display = 'block';
-    p.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" allow="autoplay"></iframe>`;
-  }
-
-  load('Hindi Sad Songs'); // App khulte hi automatic Sad Songs aayenge
 </script>
+
 </body>
 </html>
