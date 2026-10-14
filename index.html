@@ -1,238 +1,65 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html>
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Rk Music Point 🎧</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rk Music</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif;}
-body{background:#121212;color:#fff;padding-bottom:110px;}
-header{padding:8px 12px;background:#181818;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;border-bottom:1px solid #282828;}
-.logo{font-size:14px;font-weight:bold;color:#1db954;}
-.hr{display:flex;gap:4px;}
-.btn{background:#242424;color:#fff;border:1px solid #333;padding:4px 7px;border-radius:12px;font-size:10px;font-weight:bold;cursor:pointer;}
-.card{margin:6px 10px;padding:8px;background:linear-gradient(135deg,#1e3c72,#2a5298);border-radius:6px;display:flex;justify-content:space-between;align-items:center;}
-.ad{display:block;margin:6px 10px;padding:7px;background:linear-gradient(45deg,#ff416c,#ff4b2b);color:#fff;text-align:center;text-decoration:none;font-weight:bold;font-size:11px;border-radius:5px;}
-.inp{width:100%;padding:7px;border-radius:5px;border:1px solid #333;background:#242424;color:#fff;font-size:11px;outline:none;}
-.tb{background:none;border:none;color:#777;font-size:11px;font-weight:bold;padding:4px 6px;border-radius:6px;cursor:pointer;}
-.tb.act{background:#252525;color:#1db954;}
-.s-item{display:flex;align-items:center;padding:6px 10px;border-bottom:1px solid #1a1a1a;cursor:pointer;}
-.s-item img{width:40px;height:40px;border-radius:4px;object-fit:cover;margin-right:8px;background:#222;}
-.s-info{flex:1;overflow:hidden;}
-.s-title{font-size:11px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.yt-v{display:none;margin:6px 10px;background:#000;border-radius:6px;overflow:hidden;border:1px solid #333;}
-.yt-w{position:relative;width:100%;padding-bottom:56.25%;height:0;}
-.yt-w iframe{position:absolute;top:0;left:0;width:100%!important;height:100%!important;border:0;}
-.modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:100;padding:10px;}
-.modal.act{display:flex;}
-.m-box{background:#1e1e1e;border-radius:8px;padding:12px;width:100%;max-width:280px;text-align:center;}
+  body{margin:0;background:#111;color:#fff;font-family:sans-serif;padding-bottom:90px}
+  header{padding:12px;text-align:center;background:#1e1e1e;color:#00e5ff;font-weight:bold}
+  .tabs{display:flex;gap:8px;padding:10px;overflow-x:auto;background:#222}
+  button{background:#333;color:#fff;border:none;padding:6px 14px;border-radius:15px;cursor:pointer;white-space:nowrap}
+  #list{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
+  .card{background:#1e1e1e;border-radius:8px;overflow:hidden;font-size:12px}
+  .card img{width:100%;height:100px;object-fit:cover}
+  .card p{padding:6px;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  #player{position:fixed;bottom:0;width:100%;height:80px;background:#000;display:none;border-top:1px solid #333}
+  iframe{width:100%;height:100%;border:none}
 </style>
 </head>
 <body>
-<header>
-<div class="logo">Rk Music Point 🎧</div>
-<div class="hr">
-<button class="btn" style="background:#25d366;color:#000;" onclick="openRef()"><i class="fab fa-whatsapp"></i> Refer</button>
-<button class="btn" id="uBtn" onclick="openLog()"><i class="fas fa-user"></i> Login</button>
-<button class="btn" style="color:#ffca28;" onclick="openW()"><i class="fas fa-coins"></i> <span id="hBal">₹0.00</span></button>
-</div>
-</header>
-<div class="card">
-<div><h4 style="font-size:11px;">Suney Aur Kamayein 💰</h4><p style="font-size:9px;color:#ddd;">1 Song = 5 Coins | 1 Refer = 100 Coins (₹1)</p></div>
-<button class="btn" style="background:#ffca28;color:#000;" onclick="openW()">Withdraw</button>
-</div>
-<div style="padding:4px 10px;display:flex;flex-direction:column;gap:4px;">
-<input type="text" id="sInp" class="inp" placeholder="Gaana khojein..." onkeyup="filterSongs()">
-<div style="display:flex;gap:4px;">
-<input type="text" id="ytInp" class="inp" placeholder="YouTube Link/ID...">
-<button onclick="playCustom()" class="btn" style="background:#f00;">Play</button>
-</div>
-</div>
-<div id="ytBox" class="yt-v">
-<div style="padding:4px 8px;background:#1a1a1a;display:flex;justify-content:space-between;font-size:10px;color:#1db954;"><span id="pTitle">Playing...</span><button onclick="closeP()" style="background:none;border:none;color:#fff;cursor:pointer;">✕</button></div>
-<div class="yt-w" id="vHold"></div>
-</div>
-<div style="display:flex;justify-content:space-between;padding:4px 10px;border-bottom:1px solid #222;">
-<div><button id="tA" class="tb act" onclick="setTab('all')">Songs</button><button id="tH" class="tb" onclick="setTab('hist')">🕒 History</button></div>
-<button id="cB" style="background:none;border:1px solid #444;color:#888;font-size:9px;padding:1px 4px;border-radius:3px;display:none;cursor:pointer;" onclick="clearH()">Clear</button>
-</div>
-<a href="https://omg10.com/4/11936214" target="_blank" class="ad">🔥 Special Bonus Rewards (Tap Here)</a>
-<div id="sList"></div>
 
-<audio id="bgAud" loop playsinline src="data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA"></audio>
+<header>Rk Music Point</header>
 
-<div class="modal" id="msgM"><div class="m-box">
-<h3 style="color:#1db954;font-size:13px;margin-bottom:4px;">Rk Music Point 🎧</h3>
-<p id="mTxt" style="font-size:11px;color:#ddd;margin-bottom:8px;"></p>
-<button onclick="closeM()" class="btn" style="width:100%;background:#1db954;color:#000;">OK</button>
-</div></div>
-
-<div class="modal" id="refM"><div class="m-box">
-<h3 style="color:#25d366;font-size:13px;margin-bottom:4px;">Refer & Earn 🎁</h3>
-<p style="font-size:10px;color:#bbb;margin-bottom:6px;">Aapko <b>100 Coins (₹1)</b>, Dost ko <b>50 Coins</b>!</p>
-<div id="rLink" style="background:#121212;padding:4px;font-size:9px;color:#ffca28;word-break:break-all;margin-bottom:6px;"></div>
-<button onclick="shareWA()" class="btn" style="width:100%;background:#25d366;color:#000;"><i class="fab fa-whatsapp"></i> WhatsApp Share</button>
-<button onclick="closeRef()" class="btn" style="width:100%;margin-top:4px;">Close</button>
-</div></div>
-
-<div class="modal" id="logM"><div class="m-box">
-<h3 style="font-size:13px;margin-bottom:6px;">User Login</h3>
-<input type="text" id="uN" class="inp" style="margin-bottom:4px;" placeholder="Naam">
-<input type="tel" id="uP" class="inp" style="margin-bottom:4px;" placeholder="Mobile Number (10 Digit)">
-<input type="password" id="uPwd" class="inp" style="margin-bottom:6px;" placeholder="Password / PIN (4 digit)">
-<button onclick="saveU()" class="btn" style="width:100%;background:#1db954;color:#000;">Login / Register</button>
-<button onclick="closeLog()" class="btn" style="width:100%;margin-top:4px;">Cancel</button>
-</div></div>
-
-<div class="modal" id="wM"><div class="m-box">
-<h3 style="font-size:13px;margin-bottom:4px;">Earning Wallet</h3>
-<div style="background:#121212;padding:5px;border-radius:4px;margin-bottom:6px;">
-<div style="font-size:16px;font-weight:bold;color:#1db954;" id="wAmt">₹0.00</div>
-<div style="font-size:9px;color:#ffca28;" id="cAmt">0 Coins</div>
+<div class="tabs">
+  <button onclick="load('Hindi Sad Songs')">Sad Songs</button>
+  <button onclick="load('Bollywood Sad Songs')">Bollywood Sad</button>
+  <button onclick="load('Arijit Singh Sad Songs')">Arijit Singh</button>
+  <button onclick="load('90s Hindi Sad Songs')">90s Sad Hits</button>
 </div>
-<input type="text" id="uId" class="inp" style="margin-bottom:4px;" placeholder="UPI ID (jaise: 9876543210@paytm)">
-<input type="number" id="wVal" class="inp" style="margin-bottom:6px;" placeholder="Amount (Min ₹10)">
-<button onclick="reqW()" class="btn" style="width:100%;background:#1db954;color:#000;">Nikashi Bhejein</button>
-<button onclick="closeW()" class="btn" style="width:100%;margin-top:4px;">Cancel</button>
-</div></div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.youtube.com/iframe_api"></script>
+<div id="list"><p style="grid-column:1/-1;text-align:center">Loading Songs...</p></div>
+
+<div id="player"></div>
+
 <script>
-var songs=[
-{t:"Tum Hi Ho - LoFi",a:"Arijit Singh",id:"jc886ZiQHtY"},
-{t:"Sunn Raha Hai Na Tu",a:"Ankit Tiwari",id:"heui5PvDGfU"},
-{t:"Chahun Main Ya Naa",a:"Arijit, Palak",id:"y692c_Z-U34"},
-{t:"Milne Hai Mujhse Aayi",a:"Arijit Singh",id:"tOQfVqA7sSg"},
-{t:"Galliyan - Slowed Reverb",a:"Ankit Tiwari",id:"0Z5_oNGEgbs"},
-{t:"Banjaara - LoFi Flip",a:"Mohd. Irfan",id:"5uH2b0w--6g"},
-{t:"Humdard - Midnight LoFi",a:"Arijit Singh",id:"ElZfdU54Cp8"},
-{t:"Zaroorat - LoFi",a:"Mustafa Zahid",id:"z3pWe8Hq9uI"},
-{t:"Humnava - Slowed Reverb",a:"Papon",id:"huk8XmmoZX4"},
-{t:"Humnava Mere - Chill",a:"Jubin Nautiyal",id:"eZe4Q_X8VOM"},
-{t:"Apna Bana Le - Slowed",a:"Arijit Singh",id:"ElZfdU54Cp8"},
-{t:"Kesariya - LoFi Flip",a:"Arijit Singh",id:"feQH573pdXU"},
-{t:"Raataan Lambiyan - Chill",a:"Jubin Nautiyal",id:"BddP6PYo2gs"}
-];
-var curU=JSON.parse(localStorage.getItem('rk_u')||"null"),userC=0,hist=JSON.parse(localStorage.getItem('rk_h')||"[]"),dispS=songs.slice(),curTab='all',ytP=null,curT=null,done=false,ads=0,db=null;
-var bgAud=document.getElementById('bgAud');
-try{firebase.initializeApp({databaseURL:"https://rk-music-point-default-rtdb.firebaseio.com"});db=firebase.database();}catch(e){}
+  const KEY = "YOUR_YOUTUBE_API_KEY"; // Yahan apni API Key daalein
 
-function getRef(){return new URLSearchParams(location.search).get('ref');}
-function initU(){
-if(curU&&curU.p){
-document.getElementById('uBtn').innerText=curU.n.split(' ')[0];document.getElementById('uBtn').style.color='#1db954';
-userC=parseInt(localStorage.getItem('rk_c_'+curU.p)||"0");
-if(db)db.ref('users/'+curU.p+'/coins').once('value').then(function(s){if(s.exists()){userC=s.val();localStorage.setItem('rk_c_'+curU.p,userC);}upBal();});
-}else{userC=parseInt(localStorage.getItem('rk_temp_c')||"0");}
-upBal();
-}
-function upBal(){
-var r=(userC/100).toFixed(2);
-document.getElementById('hBal').innerText='₹'+r;document.getElementById('wAmt').innerText='₹'+r;document.getElementById('cAmt').innerText=userC+' Coins';
-if(curU&&curU.p){localStorage.setItem('rk_c_'+curU.p,userC);if(db)db.ref('users/'+curU.p).update({name:curU.n,coins:userC});}else{localStorage.setItem('rk_temp_c',userC);}
-}
-function showM(m){document.getElementById('mTxt').innerText=m;document.getElementById('msgM').className='modal act';}
-function closeM(){document.getElementById('msgM').className='modal';}
-function openLog(){if(curU&&confirm("Logout karein?")){localStorage.removeItem('rk_u');location.reload();}else document.getElementById('logM').className='modal act';}
-function closeLog(){document.getElementById('logM').className='modal';}
-function saveU(){
-var n=document.getElementById('uN').value.trim()||"User",p=document.getElementById('uP').value.trim().replace(/\D/g,''),pwd=document.getElementById('uPwd').value.trim();
-if(p.length<10||!pwd)return alert("10-digit number aur password daalein!");
-curU={n:n,p:p};localStorage.setItem('rk_u',JSON.stringify(curU));closeLog();
-if(db){
-db.ref('users/'+p).once('value').then(function(s){
-if(!s.exists()){
-var r=getRef(),ic=0;if(r&&r!==p&&r.length>=10){ic=50;db.ref('users/'+r+'/coins').transaction(function(c){return(c||0)+100;});db.ref('referrals').push({by:r,to:p,time:new Date().toLocaleString()});showM("Referral bonus +50 Coins mile!");}else showM("Swagat hai "+n+"!");
-userC=ic;db.ref('users/'+p).set({name:n,pass:pwd,coins:userC});localStorage.setItem('rk_c_'+p,userC);upBal();
-}else{initU();showM("Welcome back "+n+"!");}
-});
-}else{initU();showM("Login Safal!");}
-}
-function openRef(){if(!curU){alert("Pehle Login karein!");openLog();return;}document.getElementById('rLink').innerText=location.origin+location.pathname+"?ref="+curU.p;document.getElementById('refM').className='modal act';}
-function closeRef(){document.getElementById('refM').className='modal';}
-function shareWA(){var t=encodeURIComponent("🎧 Rk Music Point par gaana suno aur Real Cash kamao! 💰 Join bonus +50 Coins: "+location.origin+location.pathname+"?ref="+curU.p);window.open("https://api.whatsapp.com/send?text="+t,'_blank');}
+  async function load(q) {
+    const list = document.getElementById('list');
+    list.innerHTML = "<p style='grid-column:1/-1;text-align:center'>Loading...</p>";
+    try {
+      const res = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=20&q=${encodeURIComponent(q)}&type=video&videoCategoryId=10&key=${KEY}`);
+      const data = await res.json();
+      list.innerHTML = "";
+      data.items.forEach(i => {
+        list.innerHTML += `
+          <div class="card" onclick="play('${i.id.videoId}')">
+            <img src="${i.snippet.thumbnails.medium.url}">
+            <p>${i.snippet.title}</p>
+          </div>`;
+      });
+    } catch(e) {
+      list.innerHTML = "<p style='grid-column:1/-1;text-align:center'>Gaane load nahi huye, API key check karein!</p>";
+    }
+  }
 
-function render(){
-var el=document.getElementById('sList');el.innerHTML='';
-if(curTab==='all'){
-dispS.forEach(function(s){
-var d=document.createElement('div');d.className='s-item';d.onclick=function(){playS(s);};
-d.innerHTML='<img src="https://img.youtube.com/vi/'+s.id+'/hqdefault.jpg"><div class="s-info"><div class="s-title">'+s.t+'</div><div style="font-size:9px;color:#888;">'+s.a+'</div><span style="font-size:8px;background:#2e7d32;color:#fff;padding:1px 3px;border-radius:2px;">+5 Coins</span></div><i class="fas fa-play" style="color:#1db954;font-size:12px;"></i>';
-el.appendChild(d);
-});
-}else{
-if(hist.length===0){el.innerHTML='<div style="text-align:center;padding:15px;color:#666;font-size:11px;">History khali hai.</div>';return;}
-hist.forEach(function(h){
-var d=document.createElement('div');d.className='s-item';d.onclick=function(){playS(h);};
-d.innerHTML='<img src="https://img.youtube.com/vi/'+h.id+'/hqdefault.jpg"><div class="s-info"><div class="s-title">'+h.t+'</div><div style="font-size:9px;color:#888;">'+(h.time||'')+'</div></div><i class="fas fa-play" style="color:#1db954;font-size:12px;"></i>';
-el.appendChild(d);
-});
-}
-}
+  function play(id) {
+    const p = document.getElementById('player');
+    p.style.display = 'block';
+    p.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" allow="autoplay"></iframe>`;
+  }
 
-function setMediaSession(s){
-if('mediaSession' in navigator){
-navigator.mediaSession.metadata=new MediaMetadata({title:s.t,artist:s.a||"Rk Music Point",artwork:[{src:'https://img.youtube.com/vi/'+s.id+'/hqdefault.jpg',sizes:'512x512',type:'image/jpeg'}]});
-navigator.mediaSession.setActionHandler('play',function(){if(ytP&&ytP.playVideo)ytP.playVideo();bgAud.play().catch(function(){});});
-navigator.mediaSession.setActionHandler('pause',function(){if(ytP&&ytP.pauseVideo)ytP.pauseVideo();bgAud.pause();});
-}
-}
-
-document.addEventListener("visibilitychange",function(){
-if(document.hidden&&ytP&&curT){
-bgAud.play().catch(function(){});
-setTimeout(function(){if(ytP&&ytP.playVideo)ytP.playVideo();},150);
-}
-});
-
-function onYouTubeIframeAPIReady(){}
-function playS(s){
-ads++;if(ads%2===0)window.open("https://omg10.com/4/11936214",'_blank');
-curT=s;done=false;hist=hist.filter(function(x){return x.t!==s.t;});
-hist.unshift({t:s.t,a:s.a||"",id:s.id,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})});
-if(hist.length>25)hist.pop();localStorage.setItem('rk_h',JSON.stringify(hist));
-document.getElementById('pTitle').innerText='▶ '+s.t;
-document.getElementById('ytBox').style.display='block';
-document.getElementById('vHold').innerHTML='<div id="activeYT"></div>';
-setMediaSession(s);
-bgAud.play().catch(function(){});
-ytP=new YT.Player('activeYT',{
-height:'100%',width:'100%',videoId:s.id,playerVars:{autoplay:1,playsinline:1,rel:0},
-events:{
-'onStateChange':function(e){
-if(e.data===1)bgAud.play().catch(function(){});
-if(e.data===2)bgAud.pause();
-if(e.data===0&&!done&&curT){done=true;userC+=5;upBal();showM('Mubarak! "'+curT.t+'" par +5 Coins mile!');}
-}
-}
-});
-document.getElementById('ytBox').scrollIntoView({behavior:'smooth'});
-if(curTab==='hist')render();
-}
-function closeP(){if(ytP&&ytP.stopVideo)ytP.stopVideo();bgAud.pause();document.getElementById('vHold').innerHTML='';document.getElementById('ytBox').style.display='none';}
-function playCustom(){
-var v=document.getElementById('ytInp').value.trim();if(!v)return alert('Link daalein!');
-var id=v.indexOf('youtu.be/')!==-1?v.split('youtu.be/')[1].split('?')[0]:(v.indexOf('v=')!==-1?v.split('v=')[1].split('&')[0]:v);
-if(id.length===11)playS({t:'Custom Song',a:'YouTube',id:id});else alert('Sahi link daalein!');
-}
-function setTab(t){curTab=t;document.getElementById('tA').className='tb '+(t==='all'?'act':'');document.getElementById('tH').className='tb '+(t==='hist'?'act':'');document.getElementById('cB').style.display=(t==='hist'?'block':'none');render();}
-function clearH(){if(confirm('Delete history?')){hist=[];localStorage.removeItem('rk_h');render();}}
-function filterSongs(){var q=document.getElementById('sInp').value.toLowerCase();dispS=songs.filter(function(s){return s.t.toLowerCase().indexOf(q)!==-1||s.a.toLowerCase().indexOf(q)!==-1;});if(curTab==='all')render();}
-function openW(){upBal();document.getElementById('wM').className='modal act';}
-function closeW(){document.getElementById('wM').className='modal';}
-function reqW(){
-if(!curU){alert("Pehle Login karein!");openLog();return;}
-var upi=document.getElementById('uId').value.trim(),amt=parseFloat(document.getElementById('wVal').value),bal=userC/100;
-if(!upi||upi.indexOf('@')===-1)return alert('Sahi UPI ID bharein!');
-if(isNaN(amt)||amt<10)return alert('Minimum ₹10 withdrawal hai!');
-if(amt>bal)return alert('Aapke paas sirf ₹'+bal.toFixed(2)+' hain!');
-userC-=Math.round(amt*100);upBal();
-if(db)db.ref("withdrawals").push({name:curU.n,phone:curU.p,upi:upi,amt:amt,time:new Date().toLocaleString(),status:"Pending"});
-showM('✅ ₹'+amt+' ki request lag gayi!\nUPI: '+upi+' par transfer ho jayega.');closeW();
-}
-render();initU();
+  load('Hindi Sad Songs'); // App khulte hi automatic Sad Songs aayenge
 </script>
 </body>
 </html>
