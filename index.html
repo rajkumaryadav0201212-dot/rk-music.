@@ -4,44 +4,86 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Rk Music</title>
 <style>
-body{margin:0;background:#111;color:#fff;font-family:sans-serif;padding:10px}
-h3{text-align:center;color:#00e5ff;margin:10px 0}
-.box{background:#1e1e1e;padding:12px;margin:8px 0;border-radius:6px;cursor:pointer}
-#bar{position:fixed;bottom:0;left:0;right:0;background:#000;padding:12px;color:#00e5ff;border-top:1px solid #333;display:none}
+  body{margin:0;background:#111;color:#fff;font-family:sans-serif;padding-bottom:90px}
+  header{background:#222;padding:12px;text-align:center;color:#00e5ff;font-weight:bold}
+  .tabs{display:flex;gap:6px;padding:8px;overflow-x:auto;background:#1a1a1a}
+  button{background:#333;color:#fff;border:none;padding:6px 12px;border-radius:15px;cursor:pointer;white-space:nowrap}
+  .item{background:#222;padding:10px;margin:6px;border-radius:6px;display:flex;align-items:center;gap:10px;cursor:pointer}
+  .item img{width:40px;height:40px;border-radius:4px}
+  #bar{position:fixed;bottom:0;left:0;right:0;background:#000;padding:8px;border-top:1px solid #333;text-align:center;display:none}
+  #bar p{margin:2px;font-size:13px;color:#00e5ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ctrl button{padding:6px 16px;border-radius:20px;font-size:14px;background:#333;color:#fff;border:1px solid #00e5ff;margin:2px}
 </style>
 </head>
 <body>
 
-<h3>Rk Music (Sad Hits)</h3>
-<div id="songs"></div>
-<div id="bar">Baj raha hai: <b id="title"></b></div>
-<iframe id="audio" style="display:none" allow="autoplay"></iframe>
+<header>Rk Music Point</header>
+<div class="tabs">
+  <button onclick="load('Hindi Sad Songs')">Sad Songs</button>
+  <button onclick="load('Arijit Singh Sad')">Arijit Sad</button>
+  <button onclick="load('90s Hindi Sad')">90s Sad</button>
+  <button onclick="load('Bollywood Broken Heart')">Broken Heart</button>
+</div>
+
+<div id="list"><p style="text-align:center">Loading...</p></div>
+
+<div id="bar">
+  <p id="title"></p>
+  <div class="ctrl">
+    <button onclick="nav(-1)">⏮ Prev</button>
+    <button id="pBtn" onclick="toggle()">⏸</button>
+    <button onclick="nav(1)">Next ⏭</button>
+  </div>
+</div>
+
+<audio id="audio" onended="nav(1)"></audio>
 
 <script>
-const list = [
-  ["Channa Mereya", "bzSTpdcs-EI"],
-  ["Bekhayali - Kabir Singh", "VOLKJJvfAbg"],
-  ["Tujhe Bhula Diya", "5oEvF_OaNSo"],
-  ["Agar Tum Saath Ho", "sK7riqg2mr4"],
-  ["Tum Hi Ho - Aashiqui 2", "Umqb9KENgmk"],
-  ["Khairiyat - Arijit", "hoNb6HuNmU0"],
-  ["Pachtaoge - Arijit", "PVxc5mIHVuQ"],
-  ["Jiye To Jiye Kaise (90s)", "XW1k3m2a7d8"],
-  ["Dil Tod Ke Hasdi (90s)", "iVpkmzL0t-s"],
-  ["Tadap Tadap Ke (90s)", "Wq_T50a90iE"]
-];
+let songs = [], i = 0;
+const a = document.getElementById('audio');
 
-const songsDiv = document.getElementById("songs");
-list.forEach(([name, id]) => {
-  songsDiv.innerHTML += `<div class="box" onclick="play('${id}','${name}')">🎵 ${name}</div>`;
-});
-
-function play(id, name) {
-  document.getElementById("bar").style.display = "block";
-  document.getElementById("title").innerText = name;
-  document.getElementById("audio").src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1";
+async function load(q) {
+  const l = document.getElementById('list');
+  l.innerHTML = "<p style='text-align:center'>Loading songs...</p>";
+  try {
+    const res = await fetch(`https://saavn.dev/api/search/songs?query=${encodeURIComponent(q)}&limit=50`);
+    const data = await res.json();
+    songs = data.data.results || [];
+    l.innerHTML = "";
+    songs.forEach((s, idx) => {
+      l.innerHTML += `
+        <div class="item" onclick="playSong(${idx})">
+          <img src="${s.image[1]?.url || ''}">
+          <div style="overflow:hidden">
+            <div style="font-size:13px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden">${s.name}</div>
+            <div style="font-size:11px;color:#888">${s.artists.primary[0]?.name || ''}</div>
+          </div>
+        </div>`;
+    });
+  } catch(e) { l.innerHTML = "<p style='text-align:center'>Error loading songs!</p>"; }
 }
-</script>
 
+function playSong(idx) {
+  i = idx;
+  const s = songs[i];
+  a.src = (s.downloadUrl[3] || s.downloadUrl[2] || s.downloadUrl[0]).url;
+  a.play();
+  document.getElementById('bar').style.display = 'block';
+  document.getElementById('title').innerText = s.name;
+  document.getElementById('pBtn').innerText = '⏸';
+}
+
+function toggle() {
+  if (a.paused) { a.play(); document.getElementById('pBtn').innerText = '⏸'; }
+  else { a.pause(); document.getElementById('pBtn').innerText = '▶'; }
+}
+
+function nav(step) {
+  i = (i + step + songs.length) % songs.length;
+  playSong(i);
+}
+
+load('Hindi Sad Songs');
+</script>
 </body>
 </html>
