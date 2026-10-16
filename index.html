@@ -2,213 +2,337 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rk Music Point</title>
+<title>Rk Music</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
-body{background:#0b111e;color:#fff;padding:12px 12px 115px}
-h3{text-align:center;color:#38bdf8;margin-bottom:10px}
-.search-row{display:flex;gap:6px;margin-bottom:8px}
-input{flex:1;padding:10px 14px;border-radius:20px;border:1px solid #1f2d4a;background:#131d31;color:#fff;outline:none}
-.btn-local{padding:8px 12px;background:#3b82f6;color:#fff;border-radius:18px;font-size:.75rem;cursor:pointer;white-space:nowrap;display:flex;align-items:center}
-.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px}
-.tabs span{padding:5px 12px;background:#182238;border-radius:15px;font-size:.75rem;cursor:pointer;white-space:nowrap}
-.tabs .on{background:#10b981;font-weight:bold}
-.sec-title{font-size:.72rem;color:#64748b;margin:10px 0 6px}
-.card{display:flex;justify-content:space-between;align-items:center;background:#141f36;padding:10px 12px;border-radius:8px;margin-bottom:6px;cursor:pointer;border:1px solid #1f2f50}
-.card.on{background:#1c2d4a;border-color:#38bdf8}
-.card-left{display:flex;align-items:center;gap:10px;overflow:hidden}
-.card-left img{width:42px;height:42px;border-radius:6px;object-fit:cover;background:#1e293b}
-.card-text{overflow:hidden}
-.card h5{font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card small{color:#94a3b8;font-size:.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
-.bar{position:fixed;bottom:0;left:0;right:0;background:#10192d;padding:8px 14px;text-align:center;border-top:1px solid #1f2d4a;box-shadow:0 -4px 10px rgba(0,0,0,0.5)}
-.bar p{font-size:.75rem;color:#38bdf8;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.bar button{background:#1e293b;color:#fff;border:none;padding:7px 16px;border-radius:16px;margin:0 4px;cursor:pointer}
-#play{background:#f59e0b;color:#000;font-weight:bold}
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#121212;color:#fff;padding-bottom:120px}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#181818;position:sticky;top:0;z-index:9}
+.logo{color:#1db954;font-weight:bold;font-size:20px;display:flex;align-items:center;gap:6px}
+.btn{background:#1db954;color:#000;border:none;padding:6px 12px;border-radius:20px;font-weight:bold;font-size:12px;cursor:pointer}
+
+/* YouTube Input */
+.yt-box{display:flex;gap:8px;padding:10px 16px 4px}
+.yt-box input{flex:1;padding:9px 14px;background:#242424;border:1px solid #333;border-radius:20px;color:#fff;outline:none;font-size:13px}
+.yt-btn{background:#e50914;color:#fff;border:none;padding:0 14px;border-radius:20px;font-weight:bold;font-size:12px;cursor:pointer}
+
+/* YouTube Frame */
+.yt-screen{width:100%;max-width:360px;margin:10px auto;border-radius:10px;overflow:hidden;background:#000;display:none;aspect-ratio:16/9}
+.yt-screen iframe{width:100%;height:100%;border:none}
+
+/* Tabs */
+.tabs{display:flex;gap:10px;padding:10px 16px 4px}
+.tab-btn{background:#242424;color:#aaa;border:none;padding:6px 14px;border-radius:16px;font-size:13px;font-weight:bold;cursor:pointer}
+.tab-btn.active{background:#1db954;color:#000}
+
+/* Search */
+.search-box{padding:6px 16px 10px}
+.search-box input{width:100%;padding:9px 14px;background:#242424;border:none;border-radius:20px;color:#fff;outline:none;font-size:13px}
+
+/* List */
+.song-list{list-style:none;padding:0 12px}
+.song-item{display:flex;align-items:center;padding:10px;border-radius:8px;cursor:pointer;margin-bottom:4px}
+.song-item.active{background:#282828;color:#1db954}
+.song-thumb{width:45px;height:45px;border-radius:6px;object-fit:cover;margin-right:12px;background:#333}
+.song-info{flex:1;overflow:hidden}
+.song-title{font-size:14px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.song-artist{font-size:12px;color:#888}
+.empty-msg{text-align:center;color:#666;padding:30px 16px;font-size:13px}
+
+/* Bottom Player */
+.player{position:fixed;bottom:0;left:0;width:100%;background:#181818;border-top:1px solid #282828;padding:8px 16px;z-index:99}
+.seek-wrap{display:flex;align-items:center;gap:8px;font-size:11px;color:#aaa}
+.seek-bar{flex:1;height:5px;background:#444;border-radius:3px;cursor:pointer;position:relative}
+.fill{width:0%;height:100%;background:#1db954;border-radius:3px}
+.p-body{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.track-meta{max-width:40%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.p-controls{display:flex;align-items:center;gap:8px}
+.ctrl-btn{background:none;border:none;color:#fff;cursor:pointer;display:flex;align-items:center}
+.play-btn{background:#fff;color:#000;border-radius:50%;padding:4px}
 </style>
 </head>
 <body>
 
-<h3>Rk Music Point (1000+ Songs)</h3>
+<header>
+  <div class="logo"><span class="material-icons">graphic_eq</span> Rk Music</div>
+  <button class="btn" onclick="document.getElementById('fileIn').click()">+ Local Songs</button>
+  <input type="file" id="fileIn" accept="audio/*" multiple style="display:none">
+</header>
 
-<!-- Search & Local file button -->
-<div class="search-row">
-  <input id="q" placeholder="Koi bhi gaana ya singer search karein..." onkeydown="if(event.key==='Enter') searchOnline()">
-  <button style="padding:0 12px;background:#10b981;border:none;border-radius:20px;color:#fff;font-weight:bold;cursor:pointer" onclick="searchOnline()">Khojo</button>
-  <label class="btn-local">+ Phone Se <input type="file" id="localFiles" accept="audio/*" multiple style="display:none" onchange="loadLocalSongs(this)"></label>
+<!-- YouTube Paste Bar -->
+<div class="yt-box">
+  <input type="text" id="ytUrl" placeholder="Paste YouTube link...">
+  <button class="yt-btn" onclick="addYoutubeLink()">Play YT</button>
 </div>
 
-<!-- Quick Sad Categories -->
+<!-- Screen Frame for YouTube Video -->
+<div class="yt-screen" id="ytScreen">
+  <iframe id="ytIframe" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
+<!-- Navigation Tabs -->
 <div class="tabs">
-  <span class="on" onclick="quickFetch('Arijit Singh Sad', this)">Arijit Sad</span>
-  <span onclick="quickFetch('Bollywood Sad Hits', this)">Bollywood Sad</span>
-  <span onclick="quickFetch('Atif Aslam Sad', this)">Atif Aslam</span>
-  <span onclick="quickFetch('90s Bollywood Sad', this)">90s Sad</span>
-  <span onclick="quickFetch('Jubin Nautiyal Sad', this)">Jubin Sad</span>
-  <span onclick="quickFetch('KK Sad Hits', this)">KK Hits</span>
+  <button class="tab-btn active" id="tabSongs" onclick="switchTab('songs')">Tracks</button>
+  <button class="tab-btn" id="tabHistory" onclick="switchTab('history')">History (<span id="histCount">0</span>)</button>
 </div>
 
-<div class="sec-title" id="ht" style="display:none">RECENTLY PLAYED</div>
-<div id="hl"></div>
-
-<div class="sec-title" id="stitle">GAANE KI LIST</div>
-<div id="sl"></div>
-
-<!-- Bottom Audio Player -->
-<div class="bar">
-  <p id="st">Koi gaana select nahi hai</p>
-  <button onclick="skip(-1)">|&#9664;&#9664; Prev</button>
-  <button id="play" onclick="pp()">Play</button>
-  <button onclick="skip(1)">Next &#9654;&#9654;|</button>
+<!-- Search -->
+<div class="search-box">
+  <input type="text" id="search" placeholder="Search song..." oninput="filterCurrentView()">
 </div>
 
-<audio id="au" preload="auto"></audio>
+<ul class="song-list" id="list"></ul>
+<audio id="audio" preload="auto"></audio>
+
+<!-- Bottom Controls -->
+<div class="player">
+  <div class="seek-wrap">
+    <span id="cur">0:00</span>
+    <div class="seek-bar" id="seekBox" onclick="seekAudio(event)">
+      <div class="fill" id="fill"></div>
+    </div>
+    <span id="dur">0:00</span>
+  </div>
+  <div class="p-body">
+    <div class="track-meta">
+      <b id="pTitle" style="font-size:13px">No track</b><br>
+      <small id="pArtist" style="color:#aaa;font-size:11px">Rk Music</small>
+    </div>
+    <div class="p-controls">
+      <button class="ctrl-btn" onclick="skipSong(-1)"><span class="material-icons">skip_previous</span></button>
+      <button class="ctrl-btn" onclick="skipSec(-10)"><span class="material-icons">replay_10</span></button>
+      <button class="ctrl-btn play-btn" onclick="togglePlay()"><span class="material-icons" id="playIcon">play_arrow</span></button>
+      <button class="ctrl-btn" onclick="skipSec(10)"><span class="material-icons">forward_10</span></button>
+      <button class="ctrl-btn" onclick="skipSong(1)"><span class="material-icons">skip_next</span></button>
+    </div>
+  </div>
+</div>
 
 <script>
-let S = [];
-let i = -1;
-let H = JSON.parse(localStorage.getItem('rk_hist_v3') || '[]');
-const A = document.getElementById('au');
+let songs = [
+  {type:"audio", title:"Lo-Fi Beats (Sample 1)", artist:"Rk Music", src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", img:"https://picsum.photos/100?1"},
+  {type:"audio", title:"Chill Melodies (Sample 2)", artist:"Rk Music", src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", img:"https://picsum.photos/100?2"}
+];
 
-// Online Search API (Apple Music CDN - 100% Works in India without CORS/block)
-function searchSongs(query) {
-  document.getElementById('sl').innerHTML = '<p style="font-size:0.8rem;color:#38bdf8;padding:8px">Gaane load ho rahe hain, kripya intezar karein...</p>';
-  const url = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&country=IN&media=music&entity=song&limit=40`;
-  
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      if(data.results && data.results.length > 0) {
-        S = data.results.map((item, idx) => ({
-          id: item.trackId,
-          t: item.trackName,
-          c: item.artistName + " • " + (item.collectionName || "Single"),
-          u: item.previewUrl,
-          img: item.artworkUrl100 || item.artworkUrl60
-        }));
-        draw();
-      } else {
-        document.getElementById('sl').innerHTML = '<p style="font-size:0.8rem;color:#f87171;padding:8px">Koi gaana nahi mila. Dusra naam likhein.</p>';
-      }
-    })
-    .catch(err => {
-      document.getElementById('sl').innerHTML = '<p style="font-size:0.8rem;color:#f87171;padding:8px">Internet connection check karein.</p>';
-    });
+let historyList = JSON.parse(localStorage.getItem('rk_history') || '[]');
+let currentTab = 'songs';
+let curIdx = 0, isPlay = false;
+
+const audio = document.getElementById('audio'),
+      listEl = document.getElementById('list'),
+      pTitle = document.getElementById('pTitle'),
+      pArtist = document.getElementById('pArtist'),
+      fill = document.getElementById('fill'),
+      curTime = document.getElementById('cur'),
+      durTime = document.getElementById('dur'),
+      playIcon = document.getElementById('playIcon'),
+      ytScreen = document.getElementById('ytScreen'),
+      ytIframe = document.getElementById('ytIframe'),
+      histCount = document.getElementById('histCount');
+
+function updateHistoryCount() {
+  histCount.textContent = historyList.length;
 }
 
-function searchOnline() {
-  const val = document.getElementById('q').value.trim();
-  if(val) searchSongs(val);
+function addToHistory(song) {
+  historyList = historyList.filter(s => (s.title !== song.title || s.artist !== song.artist));
+  historyList.unshift(song);
+  if (historyList.length > 50) historyList.pop();
+  localStorage.setItem('rk_history', JSON.stringify(historyList));
+  updateHistoryCount();
 }
 
-function quickFetch(term, el) {
-  document.querySelectorAll('.tabs span').forEach(s => s.classList.remove('on'));
-  el.classList.add('on');
-  document.getElementById('q').value = term;
-  searchSongs(term);
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('tabSongs').classList.toggle('active', tab === 'songs');
+  document.getElementById('tabHistory').classList.toggle('active', tab === 'history');
+  renderList(tab === 'songs' ? songs : historyList);
 }
 
-// Load local files from mobile phone
-function loadLocalSongs(input) {
-  const files = input.files;
-  if (!files.length) return;
-  const localList = [];
-  for (let f of files) {
-    localList.push({
-      id: Math.random(),
-      t: f.name.replace(/\.[^/.]+$/, ""),
-      c: "Phone Storage",
-      u: URL.createObjectURL(f),
-      img: "https://cdn-icons-png.flaticon.com/512/3844/3844724.png"
-    });
+function renderList(data) {
+  if (!data || data.length === 0) {
+    listEl.innerHTML = `<div class="empty-msg">${currentTab === 'history' ? 'Koi song history nahi hai.' : 'Koi gaana nahi mila.'}</div>`;
+    return;
   }
-  S = [...localList, ...S];
-  draw();
-  go(S[0].id);
+
+  listEl.innerHTML = data.map((s, i) => {
+    return `
+    <li class="song-item" onclick="playSelected(${i})">
+      <img class="song-thumb" src="${s.img || 'https://picsum.photos/100'}">
+      <div class="song-info">
+        <div class="song-title">${s.title}</div>
+        <div class="song-artist">${s.artist}</div>
+      </div>
+      <span class="material-icons">play_circle</span>
+    </li>`;
+  }).join('');
 }
 
-function draw() {
-  document.getElementById('sl').innerHTML = S.map(x => `
-    <div class="card ${i > -1 && S[i].id === x.id ? 'on' : ''}" onclick="go(${x.id})">
-      <div class="card-left">
-        <img src="${x.img || 'https://via.placeholder.com/60'}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3844/3844724.png'">
-        <div class="card-text">
-          <h5>${x.t}</h5>
-          <small>${x.c}</small>
-        </div>
-      </div>
-      <span style="color:#38bdf8;font-weight:bold;margin-left:8px">${i > -1 && S[i].id === x.id && !A.paused ? '❚❚' : '►'}</span>
-    </div>
-  `).join('');
-
-  // History render
-  if(H.length) {
-    document.getElementById('ht').style.display = 'block';
-    document.getElementById('hl').innerHTML = H.slice(0, 3).map(x => `
-      <div class="card" onclick="go(${x.id})">
-        <div class="card-left">
-          <img src="${x.img || 'https://via.placeholder.com/60'}">
-          <div class="card-text">
-            <h5>${x.t}</h5>
-            <small style="color:#10b981">Recently Played</small>
-          </div>
-        </div>
-        <span style="color:#10b981">►</span>
-      </div>
-    `).join('');
-  }
-}
-
-function go(id) {
-  const idx = S.findIndex(x => x.id === id);
-  if (idx === -1) return;
-  if (i === idx) { pp(); return; }
-  i = idx;
-  const song = S[i];
-  A.src = song.u;
-  A.play().catch(e => console.log("Play error: ", e));
-
-  // Save in history
-  H = [song, ...H.filter(x => x.id !== song.id)].slice(0, 10);
-  localStorage.setItem('rk_hist_v3', JSON.stringify(H));
-
-  // Background play & Screen-off control
+function updateMediaSession(song) {
   if ('mediaSession' in navigator) {
     navigator.mediaSession.metadata = new MediaMetadata({
-      title: song.t,
-      artist: song.c,
-      artwork: [{ src: song.img || '', sizes: '96x96', type: 'image/jpeg' }]
+      title: song.title,
+      artist: song.artist,
+      album: 'Rk Music',
+      artwork: [{ src: song.img, sizes: '512x512', type: 'image/jpeg' }]
     });
-    navigator.mediaSession.setActionHandler('play', pp);
-    navigator.mediaSession.setActionHandler('pause', pp);
-    navigator.mediaSession.setActionHandler('nexttrack', () => skip(1));
-    navigator.mediaSession.setActionHandler('previoustrack', () => skip(-1));
+
+    navigator.mediaSession.setActionHandler('play', togglePlay);
+    navigator.mediaSession.setActionHandler('pause', togglePlay);
+    navigator.mediaSession.setActionHandler('previoustrack', () => skipSong(-1));
+    navigator.mediaSession.setActionHandler('nexttrack', () => skipSong(1));
+    navigator.mediaSession.setActionHandler('seekbackward', () => skipSec(-10));
+    navigator.mediaSession.setActionHandler('seekforward', () => skipSec(10));
   }
 }
 
-function pp() {
-  if (i === -1 && S.length) { go(S[0].id); return; }
-  if (A.paused) A.play(); else A.pause();
-}
+function playSelected(idx) {
+  const activeList = currentTab === 'songs' ? songs : historyList;
+  if (!activeList[idx]) return;
+  curIdx = idx;
+  const song = activeList[curIdx];
 
-function skip(d) {
-  if (!S.length) return;
-  const nextIdx = (i + d + S.length) % S.length;
-  go(S[nextIdx].id);
-}
+  pTitle.textContent = song.title;
+  pArtist.textContent = song.artist;
+  addToHistory(song);
+  updateMediaSession(song);
 
-A.onplay = A.onpause = () => {
-  if(i > -1 && S[i]) {
-    document.getElementById('st').innerText = (A.paused ? 'Paused: ' : 'Baj raha hai: ') + S[i].t;
+  if (song.type === "yt") {
+    audio.pause();
+    ytScreen.style.display = "block";
+    ytIframe.src = `https://www.youtube.com/embed/${song.ytId}?autoplay=1&enablejsapi=1`;
+  } else {
+    ytScreen.style.display = "none";
+    ytIframe.src = "";
+    audio.src = song.src;
+    audio.play().catch(e => console.log(e));
   }
-  document.getElementById('play').innerText = A.paused ? 'Play' : 'Pause';
-  draw();
+
+  isPlay = true;
+  playIcon.textContent = 'pause';
+}
+
+function togglePlay() {
+  const activeList = currentTab === 'songs' ? songs : historyList;
+  const song = activeList[curIdx];
+  if (!song) return;
+
+  if (song.type === "yt") {
+    if (isPlay) {
+      ytIframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+      isPlay = false;
+      playIcon.textContent = 'play_arrow';
+    } else {
+      ytIframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+      isPlay = true;
+      playIcon.textContent = 'pause';
+    }
+  } else {
+    if (audio.paused) {
+      audio.play();
+      isPlay = true;
+      playIcon.textContent = 'pause';
+    } else {
+      audio.pause();
+      isPlay = false;
+      playIcon.textContent = 'play_arrow';
+    }
+  }
+}
+
+function skipSong(dir) {
+  const activeList = currentTab === 'songs' ? songs : historyList;
+  if (activeList.length === 0) return;
+  curIdx = (curIdx + dir + activeList.length) % activeList.length;
+  playSelected(curIdx);
+}
+
+function skipSec(sec) {
+  const activeList = currentTab === 'songs' ? songs : historyList;
+  const song = activeList[curIdx];
+  if (!song) return;
+
+  if (song.type === "yt") {
+    ytIframe.contentWindow.postMessage(JSON.stringify({
+      event: 'command',
+      func: 'seekTo',
+      args: [sec > 0 ? 10 : -10, true]
+    }), '*');
+  } else if (audio.duration) {
+    audio.currentTime = Math.min(Math.max(audio.currentTime + sec, 0), audio.duration);
+  }
+}
+
+function seekAudio(e) {
+  const box = document.getElementById('seekBox').getBoundingClientRect();
+  const pct = (e.clientX - box.left) / box.width;
+  if (audio.duration) audio.currentTime = audio.duration * pct;
+}
+
+function fmtTime(s) {
+  if (isNaN(s) || !s) return "0:00";
+  return Math.floor(s/60) + ":" + String(Math.floor(s%60)).padStart(2, '0');
+}
+
+audio.ontimeupdate = () => {
+  if (audio.duration) {
+    fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+    curTime.textContent = fmtTime(audio.currentTime);
+  }
 };
 
-A.onended = () => skip(1);
+audio.onloadedmetadata = () => durTime.textContent = fmtTime(audio.duration);
+audio.onended = () => skipSong(1);
 
-// App start par Sad songs load honge
-quickFetch('Arijit Singh Sad', document.querySelector('.tabs span'));
+function extractYtId(url) {
+  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+  return match ? match[1] : null;
+}
+
+function addYoutubeLink() {
+  const input = document.getElementById('ytUrl');
+  const id = extractYtId(input.value.trim());
+  if (!id) {
+    alert("Kripya sahi YouTube link dalein!");
+    return;
+  }
+
+  const ytSong = {
+    type: "yt",
+    ytId: id,
+    title: "YouTube Video (" + id + ")",
+    artist: "YouTube Stream",
+    img: "https://img.youtube.com/vi/" + id + "/hqdefault.jpg"
+  };
+
+  songs.unshift(ytSong);
+  input.value = "";
+  switchTab('songs');
+  playSelected(0);
+}
+
+document.getElementById('fileIn').onchange = (e) => {
+  Array.from(e.target.files).forEach(f => {
+    songs.unshift({
+      type: "audio",
+      title: f.name.replace(/\.[^/.]+$/, ""),
+      artist: "Device Storage",
+      src: URL.createObjectURL(f),
+      img: "https://picsum.photos/100"
+    });
+  });
+  switchTab('songs');
+  playSelected(0);
+};
+
+function filterCurrentView() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const source = currentTab === 'songs' ? songs : historyList;
+  renderList(source.filter(s => s.title.toLowerCase().includes(q) || s.artist.toLowerCase().includes(q)));
+}
+
+updateHistoryCount();
+renderList(songs);
 </script>
 </body>
 </html>
